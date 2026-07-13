@@ -1,0 +1,39 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "Home page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "component": "widgets.seo",
+      "repeatable": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "media": {
+      "type": "component",
+      "component": "shared.media",
+      "repeatable": false
+    },
+    "cards": {
+      "type": "component",
+      "component": "widgets.card-base",
+      "repeatable": true
+    },
+    "content": {
+      "type": "blocks"
+    }
+  }
+}

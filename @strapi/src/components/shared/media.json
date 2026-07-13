@@ -1,0 +1,155 @@
+{
+  "collectionName": "components_shared_media",
+  "info": {
+    "displayName": "Media"
+  },
+  "options": {},
+  "attributes": {
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "hasADifferentImageOnViewports": {
+      "type": "boolean",
+      "private": true,
+      "default": false
+    },
+    "isLg": {
+      "type": "boolean",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasADifferentImageOnViewports"
+            },
+            true
+          ]
+        }
+      },
+      "default": false
+    },
+    "isMd": {
+      "type": "boolean",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasADifferentImageOnViewports"
+            },
+            true
+          ]
+        }
+      },
+      "default": false
+    },
+    "isSm": {
+      "type": "boolean",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasADifferentImageOnViewports"
+            },
+            true
+          ]
+        }
+      },
+      "default": false
+    },
+    "isXs": {
+      "type": "boolean",
+      "private": true,
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasADifferentImageOnViewports"
+            },
+            true
+          ]
+        }
+      },
+      "default": false
+    },
+    "lg": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "isLg"
+            },
+            true
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "md": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "isMd"
+            },
+            true
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "sm": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "isSm"
+            },
+            true
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "xs": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "isXs"
+            },
+            true
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    }
+  },
+  "config": {}
+}

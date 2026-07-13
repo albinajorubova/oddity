@@ -1,0 +1,3 @@
+@mixin blur($value) {
+  backdrop-filter: blur(#{$value});
+}

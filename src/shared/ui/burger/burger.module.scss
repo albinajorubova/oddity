@@ -1,0 +1,28 @@
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-4) var(--spacing-12);
+  background-color: var(--background-button-secondary-gray-80);
+  border-radius: vw(48);
+  overflow: hidden;
+
+  @include blur(10px);
+  @include btnS();
+
+  &.open {
+    background-color: transparent;
+
+    .text {
+      span {
+        @include mq(md) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.text {
+  padding-inline: var(--spacing-4);
+}

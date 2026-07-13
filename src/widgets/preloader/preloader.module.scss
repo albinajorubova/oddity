@@ -1,0 +1,56 @@
+$count: 8;
+$pi: 3.14159265359;
+$radius: #{vw(200)};
+
+.root {
+  --preloader-progress: 0;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  background-color: var(--background-graphite);
+  color: var(--text-primary-white);
+  overflow: hidden;
+  clip-path: inset(0% 0% calc(var(--close-progress) * 100%) 0%);
+}
+
+.inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.icon {
+  position: relative;
+  width: vw(888);
+  height: vw(888);
+}
+
+.line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: vw(360);
+  height: 1px;
+  background-color: currentColor;
+  transform-origin: 0 50%;
+  clip-path: inset(0% calc((1 - var(--preloader-progress)) * 100% - 2px * (1 - var(--preloader-progress)) ) 0 0);
+
+  @for $i from 1 through $count {
+    $index: $i - 1;
+    $angle: calc($index * 360deg / $count);
+
+    &:nth-child(#{$i}) {
+      transform: rotate($angle) translateX(calc(lerp(#{vw(55)}, #{vw(172)}, var(--preloader-progress))));
+    }
+  }
+
+}
+
+.lines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

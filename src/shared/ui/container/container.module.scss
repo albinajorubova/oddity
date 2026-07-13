@@ -1,0 +1,16 @@
+.root {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: var(--padding-horizontal-base);
+  padding-right: var(--padding-horizontal-base);
+}
+
+.size {
+  &Lg {
+    max-width: var(--max-content-width);
+  }
+
+  &Md {
+    max-width: var(--max-content-width-md);
+  }
+}

@@ -1,0 +1,10 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing-24);
+  padding: var(--spacing-32);
+  background-color: var(--c-base-grey);
+  color: white;
+  border-radius: vw(8);
+}

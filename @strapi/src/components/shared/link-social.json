@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_link_socials",
+  "info": {
+    "displayName": "LinkSocial"
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true,
+      "regex": "^(https?:\\/\\/([\\w-]+\\.)+[\\w-]{2,}(\\/[\\w\\-._~:/?#[\\]@!$&'()*+,;=]*)?|[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,})$"
+    },
+    "text": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "target_blank": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "config": {}
+}

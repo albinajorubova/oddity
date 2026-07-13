@@ -1,0 +1,125 @@
+services:
+  postgres:
+    container_name: ${PROJECT_SLUG}_postgres
+    image: dockerhub.timeweb.cloud/postgres:16.0-alpine
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: postgres.env
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  backend:
+    container_name: ${PROJECT_SLUG}_backend
+    image: ${CI_REGISTRY_IMAGE}/backend:${VERSION_TAG}
+    restart: unless-stopped
+    env_file: backend.env
+    environment:
+      NODE_ENV: ${ENVIRONMENT}
+      VIRTUAL_HOST: ${VIRTUAL_HOST_BACKEND}
+      VIRTUAL_PORT: 1337
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_BACKEND}
+      LETSENCRYPT_EMAIL: andrey.l@snp.agency
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads
+    networks:
+      - internal
+      - reverse_proxy
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Strapi готов, когда отвечает встроенный /_health (204). wget есть в alpine.
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:1337/_health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 180s          # запас на миграции/прогрев Strapi
+    stop_grace_period: 30s       # время на корректное завершение
+
+  frontend:
+    container_name: ${PROJECT_SLUG}_frontend
+    image: ${CI_REGISTRY_IMAGE}/frontend:${VERSION_TAG}
+    restart: unless-stopped
+    env_file: frontend.env
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST_FRONTEND}
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_FRONTEND}
+      LETSENCRYPT_EMAIL: andrey.l@snp.agency
+    networks:
+      - internal
+      - reverse_proxy
+    depends_on:
+      backend:
+        condition: service_healthy   # фронт стартует только когда Strapi готов
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    stop_grace_period: 20s
+
+  imgproxy:
+    container_name: ${PROJECT_SLUG}_imgproxy
+    image: dockerhub.timeweb.cloud/darthsim/imgproxy:v3.8.0
+    restart: unless-stopped
+    env_file: imgproxy.env
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST_IMGPROXY}
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_IMGPROXY}
+      LETSENCRYPT_EMAIL: andrey.l@snp.agency
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads:ro
+    networks:
+      - internal
+      - reverse_proxy
+    depends_on:
+      backend:
+        condition: service_started   # imgproxy читает том uploads, ждать готовности Strapi не нужно
+    healthcheck:
+      test: ["CMD", "imgproxy", "health"]   # встроенная команда imgproxy
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  meilisearch:
+    container_name: ${PROJECT_SLUG}_meilisearch
+    image: dockerhub.timeweb.cloud/getmeili/meilisearch:v1.11
+    restart: unless-stopped
+    env_file: meilisearch.env
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST_MEILI}
+      VIRTUAL_PORT: 7700
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST_MEILI}
+      LETSENCRYPT_EMAIL: andrey.l@snp.agency
+    volumes:
+      - meilisearch-data:/meili_data
+    networks:
+      - internal
+      - reverse_proxy
+
+volumes:
+  strapi-data:
+    name: ${PROJECT_SLUG}_strapi-data
+  strapi-uploads:
+    name: ${PROJECT_SLUG}_strapi-uploads
+  meilisearch-data:
+    name: ${PROJECT_SLUG}_meilisearch-data
+
+networks:
+  internal:
+    name: ${PROJECT_SLUG}_internal
+    driver: bridge
+  reverse_proxy:
+    external: true

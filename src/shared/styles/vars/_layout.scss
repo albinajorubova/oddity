@@ -1,0 +1,41 @@
+@use 'sass:map';
+@use '../mixins/breakpoints' as *;
+
+$vwScreens: (
+  2xl: 1440,
+  lg: 1024,
+  md: 768,
+  sm: 375,
+);
+
+$vhScreens: (
+  2xl: 750,
+  lg: 568,
+  md: 1024,
+  sm: 812,
+);
+
+@mixin layout {
+  $default-key: 2xl;
+  $last-screen: map.get($vwScreens, $default-key);
+  $actual-screens: map.remove($vwScreens, $default-key);
+
+  --vw-screen: #{$last-screen};
+
+  @each $vw, $screen in $actual-screens {
+    @include mq($vw) {
+      --vw-screen: #{$screen};
+    }
+  }
+
+  $last-screen: map.get($vhScreens, $default-key);
+  $actual-screens: map.remove($vhScreens, $default-key);
+
+  --v-min-h: #{$last-screen};
+
+  @each $vh, $screen in $actual-screens {
+    @include mq($vh) {
+      --v-min-h: #{$screen};
+    }
+  }
+}

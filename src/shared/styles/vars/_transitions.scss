@@ -1,0 +1,4 @@
+@mixin transitions {
+  --default-transition-duration: 0.4s;
+  --default-transition-timing-function: var(--ease-in-out-quad);
+}

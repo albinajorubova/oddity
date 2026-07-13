@@ -1,0 +1,124 @@
+version: "3.8"
+services:
+  backend:
+    container_name: ${PROJECT_SLUG}_backend
+    build:
+      context: ./@strapi
+      dockerfile: ../docker/backend/${ENVIRONMENT}/Dockerfile
+      args:
+        - NODE_ENV=${ENVIRONMENT}
+    restart: unless-stopped
+    env_file:
+      - ./@strapi/.env
+    environment:
+      # Все переменные загружаются из ./@strapi/.env через env_file
+      # DATABASE_HOST должен быть именем сервиса postgres для работы в docker-compose сети
+      DATABASE_HOST: postgres
+      NODE_ENV: ${ENVIRONMENT}
+    volumes:
+      - ./@strapi:/opt/app
+      - strapi-node-modules:/opt/app/node_modules
+      - strapi-uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - internal
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: ${PROJECT_SLUG}_postgres
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    env_file:
+      - ./@strapi/.env
+    image: dockerhub.timeweb.cloud/postgres:16.0-alpine
+    # Образ postgres автоматически читает POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB из env_file
+    # Добавьте эти переменные в ./@strapi/.env (можно со значениями из DATABASE_*)
+    environment:
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/ #using a volume
+      #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
+
+    ports:
+      - "5432:5432"
+    networks:
+      - internal
+
+  frontend:
+    container_name: ${PROJECT_SLUG}_frontend
+    build:
+      context: .
+      dockerfile: ./docker/frontend/${ENVIRONMENT}/Dockerfile
+      args:
+        - NODE_ENV=${ENVIRONMENT}
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+      - frontend-node-modules:/app/node_modules
+      - frontend-next:/app/.next
+    ports:
+      - "3000:3000"
+    networks:
+      - internal
+    env_file:
+      - ./.env
+
+  imgproxy:
+    container_name: ${PROJECT_SLUG}_imgproxy
+    image: dockerhub.timeweb.cloud/darthsim/imgproxy:v3.8.0
+    restart: unless-stopped
+    environment:
+      IMGPROXY_BIND: "0.0.0.0:8080"
+      IMGPROXY_LOCAL_FILESYSTEM_ROOT: /opt/app/public
+      # Подпись URL отключена (key и salt не задаются) — используются local:// ссылки без подписи
+      IMGPROXY_ENABLE_DEBUG_HEADERS: "true"
+      IMGPROXY_USE_ETAG: "true"
+      IMGPROXY_ENABLE_WEBP_DETECTION: "true"
+      IMGPROXY_ENABLE_AVIF_DETECTION: "true"
+      IMGPROXY_ALLOWED_SOURCES: "${IMGPROXY_ALLOWED_SOURCES:-local}"
+      IMGPROXY_MAX_SRC_RESOLUTION: "${IMGPROXY_MAX_SRC_RESOLUTION:-268402689}"
+      IMGPROXY_MAX_SRC_FILE_SIZE: "${IMGPROXY_MAX_SRC_FILE_SIZE:-268435456}"
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - internal
+    depends_on:
+      - backend
+
+  meilisearch:
+    container_name: ${PROJECT_SLUG}_meilisearch
+    image: dockerhub.timeweb.cloud/getmeili/meilisearch:v1.11
+    restart: unless-stopped
+    environment:
+      MEILI_MASTER_KEY: "${MEILI_MASTER_KEY:-masterKey123}"
+      MEILI_ENV: "${MEILI_ENV:-development}"
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - meilisearch-data:/meili_data
+    ports:
+      - "7700:7700"
+    networks:
+      - internal
+
+volumes:
+  strapi-data:
+    name: ${PROJECT_SLUG}_strapi-data
+  strapi-uploads:
+    name: ${PROJECT_SLUG}_strapi-uploads
+  strapi-node-modules:
+    name: ${PROJECT_SLUG}_strapi-modules
+  frontend-node-modules:
+    name: ${PROJECT_SLUG}_frontend-node-modules
+  frontend-next:
+    name: ${PROJECT_SLUG}_frontend-next
+  meilisearch-data:
+    name: ${PROJECT_SLUG}_meilisearch-data
+
+networks:
+  internal:
+    name: ${PROJECT_SLUG}_network_internal
+    driver: bridge

@@ -1,0 +1,23 @@
+@use 'vars/colors' as *;
+@use 'vars/spacing' as *;
+@use 'vars/layout' as *;
+@use 'vars/z-indexes' as *;
+@use 'vars/easings' as *;
+@use 'vars/transitions' as *;
+@use 'mixins/breakpoints' as *;
+@use 'functions/vw' as *;
+
+:root {
+  /* Easings */
+  @include easings;
+  /* Transitions */
+  @include transitions;
+  /* Layout */
+  @include layout;
+  /* GAP system */
+  @include spacing;
+  /* Z-indexes */
+  @include zIndex;
+  /* Colors */
+  @include colors;
+}

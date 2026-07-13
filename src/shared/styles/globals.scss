@@ -1,0 +1,38 @@
+@use "mixins/sr-only" as *;
+@use "mixins/breakpoints" as *;
+
+@forward "reset";
+@forward "root";
+@forward "base";
+@forward "typo";
+
+#__next {
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.sr-only {
+  @include sr-only()
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.justify {
+  text-align: justify;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.lenis.lenis-smooth {
+  overscroll-behavior: none;
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}

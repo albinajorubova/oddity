@@ -1,0 +1,37 @@
+@use "../vars/breakpoints" as *;
+
+@use "sass:string";
+@use "sass:math";
+@use "sass:map";
+@use "sass:meta";
+
+@mixin mq($mq-breakpoint, $direction: max, $mq-breakpoints: $breakpoints) {
+  $mq-media-query: "screen and";
+
+  @if $mq-breakpoint == landscape or $mq-breakpoint == portrait {
+    $mq-media-query: "#{$mq-media-query} (orientation: #{$mq-breakpoint})";
+  } @else if $mq-breakpoint == retina {
+    $mq-media-query: "#{$mq-media-query} #{$min-dpr}," +
+      "#{$mq-media-query} #{$min-res}";
+  } @else {
+    // If $mq-breakpoint is not a number and a key that exists in
+    // $mq-breakpoints, get and use the value
+    // Else if $mq-breakpoint is a number, use it as is
+    @if meta.type-of($mq-breakpoint) !=
+      number and
+      map.has-key($mq-breakpoints, $mq-breakpoint)
+    {
+      $mq-breakpoint: map.get($mq-breakpoints, $mq-breakpoint);
+    }
+
+    @if ($direction == min) {
+      $mq-media-query: "#{$mq-media-query} (#{$direction}-width: #{$mq-breakpoint}px)";
+    } @else {
+      $mq-media-query: "#{$mq-media-query} (#{$direction}-width: #{$mq-breakpoint - 1}px)";
+    }
+  }
+
+  @media #{$mq-media-query} {
+    @content;
+  }
+}

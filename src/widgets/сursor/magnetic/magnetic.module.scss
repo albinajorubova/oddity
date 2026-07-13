@@ -1,0 +1,17 @@
+.root {
+  &.show {
+    .icon {
+      opacity: 1;
+    }
+  }
+}
+
+.icon {
+  position: absolute;
+  top: vw(6);
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity var(--animation-duration-m)
+    var(--animation-easing-default);
+}

@@ -1,0 +1,21 @@
+@use 'sass:list';
+
+$zIndexes: (
+  'preloader',
+  'cursor',
+  'transition-layout',
+  'header',
+  'modal',
+  'menu',
+  'transition',
+  'header-dropdown',
+  'selectors'
+);
+
+@mixin zIndex {
+  @each $name in $zIndexes {
+    $index: list.length($zIndexes) - list.index($zIndexes, $name) + 1;
+
+    --z-#{$name}: #{$index};
+  }
+}

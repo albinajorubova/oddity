@@ -1,0 +1,18 @@
+// helpers
+@function vwInner($pixels) {
+  @return calc(((#{$pixels} / var(--vw-screen)) * 100) * 1vw);
+}
+
+@function vVH($pixels) {
+  @return calc(((#{$pixels} / var(--v-min-h)) * 100) * 1svh);
+}
+
+// helpers
+
+@function vw($pixels) {
+  @return calc(((#{$pixels} / var(--vw-screen)) * 100) * 1vw);
+}
+
+@function v-min-vh-vw($pixels) {
+  @return min(#{vVH($pixels)}, #{vwInner($pixels)});
+}

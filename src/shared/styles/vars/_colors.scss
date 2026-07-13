@@ -1,0 +1,13 @@
+@mixin colors {
+  /* Colors */
+  --c-white: #fff;
+  --c-graphite: #222;
+  --c-light-graphite: #454545;
+  --c-dark-grey: #d4d4d4;
+  --c-light-grey: #f1f1f1;
+  --c-grey: #e8e8e8;
+
+  /* Theme colors */
+  --main-background-color: var(--c-graphite);
+  --main-text-color: var(--c-white);
+}

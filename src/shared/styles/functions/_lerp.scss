@@ -1,0 +1,3 @@
+@function lerp($px, $px2, $p) {
+  @return calc(#{$px} * (1 - #{$p}) + #{$px2} * #{$p});
+}

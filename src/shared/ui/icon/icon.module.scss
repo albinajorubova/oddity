@@ -1,0 +1,45 @@
+@use '@/shared/styles/functions' as *;
+
+.root {
+  position: relative;
+
+  path,
+  circle,
+  rect {
+    &:not([stroke]) {
+      fill: currentColor;
+    }
+
+    &[stroke] {
+      fill: transparent;
+      stroke: currentColor;
+    }
+  }
+}
+
+.size {
+  &Xs {
+    width: vw(12);
+    height: vw(12);
+  }
+
+  &S {
+    width: vw(16);
+    height: vw(16);
+  }
+
+  &M {
+    width: vw(24);
+    height: vw(24);
+  }
+
+  &L {
+    width: vw(28);
+    height: vw(28);
+  }
+
+  &Xl {
+    width: vw(32);
+    height: vw(32);
+  }
+}

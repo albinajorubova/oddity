@@ -1,0 +1,14 @@
+@use 'sass:list';
+@use 'sass:meta';
+
+@mixin transition($props: (color, background-color), $duration: var(--default-transition-duration, 0.3s), $timing: var(--default-transition-timing-function, ease-in-out)) {
+  $result: ();
+
+  @each $item in $props {
+    $p: list.nth($item, 1);
+    $value: #{$p} #{$duration} #{$timing};
+    $result: list.append($result, $value, comma);
+  }
+  
+  transition: $result;
+}

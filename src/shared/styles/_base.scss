@@ -1,0 +1,29 @@
+@use "mixins/scrollbar" as *;
+@use "typo" as *;
+
+html,
+body,
+#app-root {
+  height: 100%;
+  @include hide-scroll-bar();
+}
+
+#app-root {
+  position: relative;
+}
+
+html {
+  font-size: var(--vw-font-size);
+}
+
+body {
+  overscroll-behavior: none;
+  font-synthesis-weight: none;
+  text-rendering: optimizelegibility;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: max-content;
+  background-color: var(--main-background-color);
+  color: var(--main-text-color);
+}

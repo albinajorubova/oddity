@@ -1,0 +1,26 @@
+{
+  "name": "strapi-plugin-auto-save",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automatically saves Strapi content entries as you type",
+  "exports": {
+    "./strapi-admin": "./strapi-admin.js",
+    "./strapi-server": "./strapi-server.js",
+    "./package.json": "./package.json"
+  },
+  "strapi": {
+    "kind": "plugin",
+    "name": "auto-save",
+    "displayName": "Auto Save",
+    "description": "Debounced background saves with a live status panel in the content manager"
+  },
+  "peerDependencies": {
+    "@strapi/design-system": "2.0.0-rc.29",
+    "@strapi/icons": "2.0.0-rc.29",
+    "@strapi/strapi": "^5.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  }
+}

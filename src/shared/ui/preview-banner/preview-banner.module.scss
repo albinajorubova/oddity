@@ -1,0 +1,37 @@
+.root {
+  position: fixed;
+  top: var(--spacing-16);
+  right: var(--spacing-20);
+  z-index: 9999;
+  padding: var(--spacing-16);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.button {
+  padding: var(--spacing-16) var(--spacing-20);
+  font-size: vw(20);
+  background: #4646e1;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: Arial;
+
+  &:hover {
+    background-color: #5757e4;
+  }
+}

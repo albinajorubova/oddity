@@ -1,0 +1,30 @@
+.root {
+  display: block;
+}
+
+.weight {
+  &-regular {
+    font-weight: 400;
+  }
+  &-medium {
+    font-weight: 500;
+  }
+  &-semibold {
+    font-weight: 600;
+  }
+  &-bold {
+    font-weight: 700;
+  }
+}
+
+.colorPrimary {
+  color: var(--text-primary-dark);
+}
+
+.colorSecondary {
+  color: var(--text-secondary-gray);
+}
+
+.colorInherit {
+  color: inherit;
+}

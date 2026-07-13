@@ -1,0 +1,59 @@
+.root {
+  --size-outer: #{vw(48)};
+  --size-inner: #{vw(48)};
+  --md: 0;
+
+  position: fixed;
+  z-index: calc(var(--z-header) + 1);
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-outer);
+  height: var(--size-outer);
+  pointer-events: none;
+  color: var(--text-primary-graphite);
+
+  @media (pointer: coarse) {
+    display: none;
+  }
+}
+
+.inner {
+  position: relative;
+  width: var(--size-inner);
+  height: var(--size-inner);
+  border-radius: 50%;
+  transform: scale(lerp(1, 0.9, var(--md)));
+  transition:
+    opacity var(--animation-duration-m) var(--animation-easing-default),
+    visibility var(--animation-duration-m) var(--animation-easing-default);
+}
+
+.typeEl {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateX(90%) translateY(40%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.type {
+  &-hidden {
+    .inner {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+
+.hide {
+  opacity: 0;
+}

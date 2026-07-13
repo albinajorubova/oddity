@@ -1,0 +1,209 @@
+---
+- name: Production routine setup
+  hosts: production
+  become: true
+  gather_facts: true
+
+  vars:
+    project_dir: "/var/www/{{ project_user }}"
+    docker_ubuntu_codename: jammy
+    nginx_site_name: "{{ project_user }}"
+    nginx_site_path: "/etc/nginx/sites-available/{{ nginx_site_name }}"
+    nginx_enabled_path: "/etc/nginx/sites-enabled/{{ nginx_site_name }}"
+    nginx_config_src: "{{ playbook_dir }}/../templates/nginx.conf"
+    project_ssh_public_key_file: "{{ playbook_dir }}/../keys/{{ project_user }}.pub"
+
+  pre_tasks:
+    - name: Validate required runtime vars
+      ansible.builtin.assert:
+        that:
+          - project_user is defined
+          - project_user | length > 0
+          - project_group is defined
+          - project_group | length > 0
+        fail_msg: >-
+          Pass required variables at runtime:
+          -e "project_user=<user> project_group=<group>"
+
+    - name: Validate nginx config file exists on control machine
+      ansible.builtin.stat:
+        path: "{{ nginx_config_src }}"
+      delegate_to: localhost
+      become: false
+      register: nginx_config_file
+
+    - name: Validate project SSH public key file exists on control machine
+      ansible.builtin.stat:
+        path: "{{ project_ssh_public_key_file }}"
+      delegate_to: localhost
+      become: false
+      register: ssh_public_key_file
+
+    - name: Fail if required local files are missing
+      ansible.builtin.assert:
+        that:
+          - nginx_config_file.stat.exists
+          - ssh_public_key_file.stat.exists
+        fail_msg: >-
+          Missing required file(s). Ensure these exist:
+          {{ nginx_config_src }} and {{ project_ssh_public_key_file }}
+
+    - name: Load SSH public key from file
+      ansible.builtin.set_fact:
+        project_ssh_public_key: "{{ lookup('file', project_ssh_public_key_file) | trim }}"
+
+    - name: Validate loaded SSH key format
+      ansible.builtin.assert:
+        that:
+          - project_ssh_public_key is match("^(ssh-rsa|ssh-ed25519|ecdsa-sha2-nistp256)\\s+.+")
+        fail_msg: >-
+          Invalid SSH public key format in {{ project_ssh_public_key_file }}.
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install base dependencies
+      ansible.builtin.apt:
+        name:
+          - curl
+          - software-properties-common
+          - ca-certificates
+          - apt-transport-https
+          - gnupg
+          - lsb-release
+          - wget
+        state: present
+
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+
+    - name: Enable nginx service
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: true
+        state: started
+
+    - name: Install certbot packages
+      ansible.builtin.apt:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+
+    - name: Ensure docker keyrings directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Add Docker GPG key
+      ansible.builtin.shell: |
+        set -euo pipefail
+        wget -qO- https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor > /etc/apt/keyrings/docker.gpg
+        chmod 0644 /etc/apt/keyrings/docker.gpg
+      args:
+        executable: /bin/bash
+        creates: /etc/apt/keyrings/docker.gpg
+
+    - name: Add Docker apt repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/docker.list
+        mode: "0644"
+        content: |
+          deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ docker_ubuntu_codename }} stable
+
+    - name: Show docker-ce apt policy
+      ansible.builtin.command: apt-cache policy docker-ce
+      changed_when: false
+
+    - name: Install docker packages
+      ansible.builtin.apt:
+        update_cache: true
+        name:
+          - docker-ce
+          - docker-compose
+        state: present
+
+    - name: Ensure docker group exists
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Create project user
+      ansible.builtin.user:
+        name: "{{ project_user }}"
+        shell: /bin/bash
+        create_home: true
+        groups: docker
+        append: true
+        state: present
+
+    - name: Create nginx cache directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - /var/cache/nginx/api
+        - /var/cache/nginx/frontend
+
+    - name: Copy nginx site config from repository file
+      ansible.builtin.copy:
+        src: "{{ nginx_config_src }}"
+        dest: "{{ nginx_site_path }}"
+        mode: "0644"
+
+    - name: Enable nginx site
+      ansible.builtin.file:
+        src: "{{ nginx_site_path }}"
+        dest: "{{ nginx_enabled_path }}"
+        state: link
+
+    - name: Disable default nginx site
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Validate nginx config
+      ansible.builtin.command: nginx -t
+      changed_when: false
+
+    - name: Restart nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
+
+    - name: Create project directory
+      ansible.builtin.file:
+        path: "{{ project_dir }}"
+        state: directory
+        owner: "{{ project_user }}"
+        group: "{{ project_group }}"
+        mode: "0755"
+
+    - name: Ensure .ssh directory exists for project user
+      ansible.builtin.file:
+        path: "/home/{{ project_user }}/.ssh"
+        state: directory
+        owner: "{{ project_user }}"
+        group: "{{ project_group }}"
+        mode: "0700"
+
+    - name: Install authorized key from local file
+      ansible.posix.authorized_key:
+        user: "{{ project_user }}"
+        state: present
+        key: "{{ project_ssh_public_key }}"
+
+    - name: Ensure authorized_keys permissions
+      ansible.builtin.file:
+        path: "/home/{{ project_user }}/.ssh/authorized_keys"
+        state: file
+        owner: "{{ project_user }}"
+        group: "{{ project_group }}"
+        mode: "0600"

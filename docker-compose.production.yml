@@ -1,0 +1,108 @@
+services:
+  postgres:
+    container_name: ${PROJECT_SLUG}_postgres
+    image: dockerhub.timeweb.cloud/postgres:16.0-alpine
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: postgres.env
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  backend:
+    container_name: ${PROJECT_SLUG}_backend
+    image: ${CI_REGISTRY_IMAGE}/backend:${VERSION_TAG}
+    restart: unless-stopped
+    env_file: backend.env
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # Strapi готов, когда отвечает встроенный /_health (204). wget есть в alpine.
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:1337/_health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 180s          # запас на миграции/прогрев Strapi
+    stop_grace_period: 30s
+
+  frontend:
+    container_name: ${PROJECT_SLUG}_frontend
+    image: ${CI_REGISTRY_IMAGE}/frontend:${VERSION_TAG}
+    restart: unless-stopped
+    env_file: frontend.env
+    networks:
+      - internal
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy   # фронт стартует только когда Strapi готов
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    stop_grace_period: 20s
+
+  imgproxy:
+    container_name: ${PROJECT_SLUG}_imgproxy
+    image: dockerhub.timeweb.cloud/darthsim/imgproxy:v3.8.0
+    restart: unless-stopped
+    env_file: imgproxy.env
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - internal
+    depends_on:
+      backend:
+        condition: service_started   # imgproxy читает том uploads, ждать готовности Strapi не нужно
+    healthcheck:
+      test: ["CMD", "imgproxy", "health"]   # встроенная команда imgproxy
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  meilisearch:
+    container_name: ${PROJECT_SLUG}_meilisearch
+    image: dockerhub.timeweb.cloud/getmeili/meilisearch:v1.11
+    restart: unless-stopped
+    env_file: meilisearch.env
+    volumes:
+      - meilisearch-data:/meili_data
+    ports:
+      - "7700:7700"
+    networks:
+      - internal
+
+volumes:
+  strapi-data:
+    name: ${PROJECT_SLUG}_strapi-data
+  strapi-uploads:
+    name: ${PROJECT_SLUG}_strapi-uploads
+  meilisearch-data:
+    name: ${PROJECT_SLUG}_meilisearch-data
+
+networks:
+  internal:
+    name: ${PROJECT_SLUG}_internal
+    driver: bridge

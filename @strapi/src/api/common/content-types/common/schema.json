@@ -1,0 +1,30 @@
+{
+  "kind": "singleType",
+  "collectionName": "commons",
+  "info": {
+    "singularName": "common",
+    "pluralName": "commons",
+    "displayName": "Common"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "component": "widgets.seo",
+      "repeatable": false
+    },
+    "socials": {
+      "type": "component",
+      "component": "shared.link-social",
+      "repeatable": true
+    },
+    "contacts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::contact.contact"
+    }
+  }
+}

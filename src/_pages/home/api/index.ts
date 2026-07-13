@@ -1,0 +1,1 @@
+export { getHomePage } from "./getHomePage";

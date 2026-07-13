@@ -1,0 +1,12 @@
+.wrap {
+  height: 100svh;
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: max-content;
+  min-height: 100%;
+}

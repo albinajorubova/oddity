@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_media_galleries",
+  "info": {
+    "displayName": "Media Gallery",
+    "icon": "images",
+    "description": "Gallery of images and videos"
+  },
+  "options": {},
+  "attributes": {
+    "items": {
+      "type": "component",
+      "component": "shared.media",
+      "repeatable": true
+    }
+  }
+}

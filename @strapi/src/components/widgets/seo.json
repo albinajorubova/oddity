@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_widgets_seos",
+  "info": {
+    "displayName": "Seo"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "ogImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "customField",
+      "customField": "plugin::color-picker.color",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "structuredData": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}

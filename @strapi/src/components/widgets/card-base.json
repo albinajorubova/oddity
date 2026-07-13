@@ -1,0 +1,72 @@
+{
+  "collectionName": "components_widgets_card_bases",
+  "info": {
+    "displayName": "CardBase"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "link": {
+      "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasLink"
+            },
+            true
+          ]
+        }
+      }
+    },
+    "price": {
+      "type": "decimal",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasPrice"
+            },
+            true
+          ]
+        }
+      }
+    },
+    "image": {
+      "type": "component",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "hasImage"
+            },
+            true
+          ]
+        }
+      },
+      "component": "shared.media",
+      "repeatable": false
+    },
+    "hasImage": {
+      "type": "boolean",
+      "private": true,
+      "default": false
+    },
+    "hasLink": {
+      "type": "boolean",
+      "private": true,
+      "default": false
+    },
+    "hasPrice": {
+      "type": "boolean",
+      "private": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

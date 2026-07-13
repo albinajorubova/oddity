@@ -1,0 +1,9 @@
+@use 'sass:math';
+
+@function rem($target, $context: 16px) {
+  @if $target == 0 {
+    @return 0;
+  }
+
+  @return math.div($target, $context) + 0rem;
+}
