@@ -1,0 +1,14 @@
+.root {
+  display: inline-flex;
+  align-items: baseline;
+  column-gap: 0;
+  white-space: nowrap;
+}
+
+.letter {
+  display: inline-block;
+  transform-origin: center bottom;
+  will-change: transform, color, filter, opacity, font-weight;
+  font-weight: 700;
+  color: var(--c-black);
+}

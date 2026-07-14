@@ -1,6 +1,9 @@
+"use client";
+
 import clsx from "clsx";
 
 import { Button } from "@shared/ui/button";
+import { OddLogo } from "@shared/ui/odd-logo";
 import { HOME_HERO_STUB } from "@/_pages/home/model";
 
 import s from "./hero.module.scss";
@@ -15,7 +18,9 @@ export const HeroSection = (props: HeroSectionProps) => {
 
   return (
     <section className={clsx(s.root, className)}>
-      <h1 className={s.brand}>{content.brand}</h1>
+      <h1 className={s.brand} aria-label={content.brand}>
+        <OddLogo text={content.brand} />
+      </h1>
 
       <div className={s.copy}>
         <p className={s.est}>{content.est}</p>
