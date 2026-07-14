@@ -4,7 +4,9 @@ import { strapiClient } from "@shared/api/strapi";
  * Получает данные главной страницы из Strapi
  * @param options - Опции для запроса, включая status для draft mode
  */
-export const getHomePage = async (options?: { status?: "draft" | "published" }) => {
+export const getHomePage = async (options?: {
+  status?: "draft" | "published";
+}) => {
   const homepage = strapiClient.single("home-page");
 
   const findOptions: Parameters<typeof homepage.find>[0] = {

@@ -9,7 +9,7 @@ import s from "./link.module.scss";
 
 export type LinkProps = Pick<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  "target"
+  "target" | "onMouseEnter" | "onMouseLeave"
 > & {
   className?: string;
   children: React.ReactNode;
@@ -28,6 +28,8 @@ export const Link = (props: LinkProps) => {
     size = "s",
     disabled,
     target,
+    onMouseEnter,
+    onMouseLeave,
   } = props;
 
   const mods = mod(s, {
@@ -41,6 +43,8 @@ export const Link = (props: LinkProps) => {
       className={clsx(s.root, className, mods)}
       href={href}
       target={target}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {children}
     </Button>

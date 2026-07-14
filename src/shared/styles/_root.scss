@@ -8,6 +8,8 @@
 @use 'functions/vw' as *;
 
 :root {
+  --font-family-base: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+
   /* Easings */
   @include easings;
   /* Transitions */
@@ -20,4 +22,19 @@
   @include zIndex;
   /* Colors */
   @include colors;
+
+  --padding-horizontal-base: #{vw(32)};
+  --max-content-width: #{vw(1440)};
+  --max-content-width-md: #{vw(1024)};
+  --header-height: #{vw(72)};
+
+  @include mq(lg) {
+    --padding-horizontal-base: #{vw(24)};
+    --header-height: #{vw(64)};
+  }
+
+  @include mq(md) {
+    --padding-horizontal-base: #{vw(16)};
+    --header-height: #{vw(56)};
+  }
 }

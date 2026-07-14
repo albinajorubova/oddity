@@ -1,7 +1,9 @@
 .root {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--spacing-24);
-  padding: var(--spacing-24);
+  min-height: 100%;
+  padding-top: var(--header-height);
+}
+
+.inner {
+  width: 100%;
 }

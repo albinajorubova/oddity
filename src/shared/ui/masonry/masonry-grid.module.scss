@@ -1,0 +1,19 @@
+.root {
+  display: grid;
+  grid-template-columns: repeat(var(--masonry-columns, 5), minmax(0, 1fr));
+  column-gap: var(--masonry-column-gap, var(--spacing-16));
+  align-items: start;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--masonry-row-gap, var(--spacing-24));
+  min-width: 0;
+}
+
+.item {
+  width: 100%;
+  min-width: 0;
+}

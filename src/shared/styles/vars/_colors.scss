@@ -1,13 +1,24 @@
 @mixin colors {
-  /* Colors */
+  /* Neutrals */
   --c-white: #fff;
+  --c-black: #000;
   --c-graphite: #222;
   --c-light-graphite: #454545;
+  --c-grey-100: #f5f5f5;
+  --c-grey-400: #8a8a8a;
+  --c-grey-600: #454545;
   --c-dark-grey: #d4d4d4;
   --c-light-grey: #f1f1f1;
   --c-grey: #e8e8e8;
 
-  /* Theme colors */
-  --main-background-color: var(--c-graphite);
-  --main-text-color: var(--c-white);
+  /* Lime family accents */
+  --c-accent: #bfff00; /* acid lime */
+  --c-accent-lime: #bfff00;
+  --c-accent-chartreuse: #d4ff00;
+  --c-accent-yellow: #ffe600;
+  --c-accent-orange: #ffb347;
+
+  /* Theme — white canvas, black type */
+  --main-background-color: var(--c-white);
+  --main-text-color: var(--c-black);
 }

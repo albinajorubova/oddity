@@ -11,6 +11,18 @@ import path from "node:path";
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+      {
+        protocol: "https",
+        hostname: "i.picsum.photos",
+      },
+    ],
+  },
   sassOptions: {
     includePaths: [
       path.join(__dirname, "src", "shared", "ui"),
