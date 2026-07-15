@@ -1,56 +1,43 @@
 export {
-  changeGap,
   compress,
+  setLetterSlots,
   spread,
-  visualShuffle,
   visualSwap,
   visualSwapNeighbors,
 } from "./layout";
 export {
-  bounceLetter,
-  colorLetter,
+  blurLetter,
+  changeColor,
+  changeGap,
+  changeOpacity,
+  changeWeight,
+  compressGap,
   dropLetter,
-  fadeLetter,
+  flipLetter,
   glowLetter,
+  hideLetter,
   moveLetter,
   raiseLetter,
+  replaceGlyph,
   rotateLetter,
   scaleLetter,
+  shiftX,
+  shiftY,
+  showLetter,
+  shuffleLetters,
   skewLetter,
+  spreadGap,
+  squashLetter,
+  stretchLetter,
+  swapLetters,
+  swapNeighbors,
   tiltLetter,
-} from "./legacy";
+} from "./ops";
 export {
   alternate,
   fan,
   scatter,
   stepped,
 } from "./patterns";
-export {
-  blurBy,
-  bounce,
-  breath,
-  drop,
-  fadeBy,
-  glowBy,
-  mirror,
-  raise,
-  rotateBy,
-  scaleBy,
-  shiftX,
-  shiftY,
-  skewBy,
-  tilt,
-  tint,
-  waveTilt,
-  weightBy,
-} from "./primitives";
-export { blurLetter, mirrorLetter } from "./special";
 export type { PerLetter, Target } from "./target";
 export { apply, resolveAmount, resolveTargets } from "./target";
-export {
-  changeWeight,
-  squash,
-  squashLetter,
-  stretch,
-  stretchLetter,
-} from "./typography";

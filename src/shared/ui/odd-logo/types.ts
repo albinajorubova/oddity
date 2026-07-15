@@ -1,12 +1,8 @@
-/** Visual state of a single letter. DOM order is always identity. */
 export type LetterState = {
   id: string;
   char: string;
+  glyph?: string;
 
-  /**
-   * Visual column (0-based). Default = identity index.
-   * “Swap” effects exchange slots — never DOM order.
-   */
   slot: number;
 
   x: number;
@@ -29,17 +25,11 @@ export type LetterState = {
   glow: number;
 };
 
-/**
- * Logo tree. `letters` stay in fixed identity order (O,D,D,I,T,Y).
- * All oddness is transforms / slots / gap.
- */
 export type LogoState = {
-  /** Extra spacing in em, applied as composite X offset. */
   gap: number;
   letters: LetterState[];
 };
 
-/** Pure state transformer. Compose many to build a beat. */
 export type LogoAction = (state: LogoState) => LogoState;
 
 export const LOGO_COLORS = {

@@ -1,10 +1,8 @@
 import type { LetterState, LogoAction, LogoState } from "../types";
 import { clampIndex, updateLetter } from "../utils";
 
-/** One letter, several indices, or the whole word. */
 export type Target = number | readonly number[] | "all";
 
-/** Constant or per-letter value (index, count) → value. */
 export type PerLetter<T> = T | ((index: number, count: number) => T);
 
 export const resolveAmount = <T>(
@@ -29,10 +27,6 @@ export const resolveTargets = (target: Target, count: number): number[] => {
 
 type LetterPatch = Partial<Omit<LetterState, "id" | "char">>;
 
-/**
- * Apply one patch to a target scope.
- * The only place that knows how to touch many letters at once.
- */
 export const apply =
   (target: Target, patch: PerLetter<LetterPatch>): LogoAction =>
   (state: LogoState) => {

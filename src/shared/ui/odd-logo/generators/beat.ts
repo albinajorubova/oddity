@@ -1,27 +1,23 @@
 import { composeLogoState } from "../compose";
 import type { LogoState } from "../types";
-import type { BeatId } from "./config";
-import { type BeatPicker, createBeatPicker } from "./picker";
-import { BEAT_RECIPES } from "./presets";
+import type { RecipeId } from "./config";
+import { createRecipePicker, type RecipePicker } from "./picker";
+import { RECIPES } from "./recipes";
 
-const defaultPicker = createBeatPicker();
+const defaultPicker = createRecipePicker();
 
-/**
- * Build one odd LogoState from a named beat recipe.
- * Pass a per-instance `picker` so cooldown stays local to the logo.
- */
 export const createBeat = (
   wordOrState: string | LogoState = "ODDITY",
-  picker: BeatPicker = defaultPicker,
-  forced?: BeatId,
+  picker: RecipePicker = defaultPicker,
+  forced?: RecipeId,
 ): LogoState => {
   const letterCount =
     typeof wordOrState === "string"
       ? wordOrState.length
       : wordOrState.letters.length;
 
-  const beatId = forced ?? picker();
-  const recipe = BEAT_RECIPES[beatId];
+  const recipeId = forced ?? picker();
+  const actions = RECIPES[recipeId](letterCount);
 
-  return composeLogoState(recipe(letterCount), wordOrState);
+  return composeLogoState(actions, wordOrState);
 };

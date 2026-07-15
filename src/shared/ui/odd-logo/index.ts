@@ -1,6 +1,13 @@
 export * from "./actions";
 export { animateLogo, LOGO_EASE, setLogoInstant } from "./animation";
 export { composeLogoState } from "./compose";
+export type {
+  LogoController,
+  LogoControllerOptions,
+  LogoPhase,
+  PlaySource,
+} from "./controller";
+export { createLogoController } from "./controller";
 export * from "./generators";
 export { createDefaultLogoState, tokenize } from "./letters";
 export type { OddLogoProps } from "./odd-logo";

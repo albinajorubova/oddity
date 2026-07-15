@@ -1,6 +1,5 @@
 import { DEFAULT_LETTER, type LetterState, type LogoState } from "./types";
 
-/** Stable identities — create once, DOM order never changes. */
 export const tokenize = (word: string): Pick<LetterState, "id" | "char">[] => {
   const counts: Record<string, number> = {};
 

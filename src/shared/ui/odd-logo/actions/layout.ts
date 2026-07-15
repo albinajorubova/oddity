@@ -1,11 +1,6 @@
 import type { LogoAction } from "../types";
 import { clamp, clampIndex, updateLetter } from "../utils";
 
-/**
- * Layout layer — gap + visual slots.
- * Never reorders DOM. Never touches color / opacity / scale / rotate.
- */
-
 export const changeGap =
   (gap: number): LogoAction =>
   (state) => ({
@@ -23,10 +18,6 @@ export const compress =
   (state) =>
     changeGap(-Math.abs(amount))(state);
 
-/**
- * Visual neighbor swap — exchange `slot` only.
- * DOM stays ODDITY; letters slide into each other’s columns via x.
- */
 export const visualSwap =
   (a: number, b: number): LogoAction =>
   (state) => {
@@ -61,32 +52,17 @@ export const visualSwapNeighbors =
     return visualSwap(from, to)(state);
   };
 
-export const visualShuffle = (): LogoAction => (state) => {
-  const count = state.letters.length;
-  if (count < 2) return state;
+export const setLetterSlots =
+  (slots: readonly number[]): LogoAction =>
+  (state) => {
+    const count = state.letters.length;
+    if (slots.length !== count) return state;
 
-  const slots = state.letters.map((_, i) => i);
-  for (let i = slots.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const a = slots[i];
-    const b = slots[j];
-    if (a === undefined || b === undefined) continue;
-    slots[i] = b;
-    slots[j] = a;
-  }
-
-  // Avoid a no-op identity permutation when possible.
-  const isIdentity = slots.every((slot, i) => slot === i);
-  if (isIdentity && count > 1) {
-    slots[0] = 1;
-    slots[1] = 0;
-  }
-
-  return {
-    ...state,
-    letters: state.letters.map((letter, i) => ({
-      ...letter,
-      slot: slots[i] ?? letter.slot,
-    })),
+    return {
+      ...state,
+      letters: state.letters.map((letter, i) => ({
+        ...letter,
+        slot: slots[i] ?? letter.slot,
+      })),
+    };
   };
-};

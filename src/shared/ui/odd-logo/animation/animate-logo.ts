@@ -6,7 +6,7 @@ export const LOGO_EASE = "expo.inOut";
 
 export type AnimateLogoArgs = {
   root: HTMLElement;
-  /** Target state tree — animation engine knows nothing else. */
+
   next: LogoState;
   duration: number;
 };
@@ -14,7 +14,6 @@ export type AnimateLogoArgs = {
 const fontSizePx = (root: HTMLElement) =>
   Number.parseFloat(getComputedStyle(root).fontSize) || 16;
 
-/** Extra spread/compress — keyed by visual slot so shuffle stays even. */
 const gapOffsetPx = (
   root: HTMLElement,
   slot: number,
@@ -26,7 +25,6 @@ const gapOffsetPx = (
   return (slot - center) * gapEm * fontSizePx(root);
 };
 
-/** Measure letter widths in fixed DOM (identity) order. */
 const measureWidths = (root: HTMLElement, letters: readonly LetterState[]) =>
   letters.map((letter) => {
     const node = root.querySelector<HTMLElement>(
@@ -41,17 +39,13 @@ const prefixWidth = (widths: readonly number[], end: number) => {
   return sum;
 };
 
-/**
- * Map visual slot → identity index.
- * letters[i].slot = where letter i appears left→right.
- */
 const buildVisualOrder = (letters: readonly LetterState[]) => {
   const order = Array.from({ length: letters.length }, () => -1);
   for (let identity = 0; identity < letters.length; identity++) {
     const slot = letters[identity]?.slot ?? identity;
     if (slot >= 0 && slot < order.length) order[slot] = identity;
   }
-  // fill holes if any
+
   let cursor = 0;
   for (let s = 0; s < order.length; s++) {
     if (order[s] !== -1) continue;
@@ -62,11 +56,6 @@ const buildVisualOrder = (letters: readonly LetterState[]) => {
   return order;
 };
 
-/**
- * Pack letters by their real widths in visual order.
- * x = packedLeft(slot) − naturalLeft(identity)
- * → no empty gaps / overlaps from width mismatch.
- */
 const reflowOffsetPx = (
   widths: readonly number[],
   letters: readonly LetterState[],
@@ -121,10 +110,6 @@ const letterVars = (
       : "none",
 });
 
-/**
- * Animation layer — pure A → B tween on transforms only.
- * Shuffle uses width-aware reflow, not equal columns.
- */
 export const animateLogo = ({
   root,
   next,

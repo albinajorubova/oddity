@@ -1,32 +1,24 @@
 import { LOGO_COLORS } from "../types";
 
-/**
- * Shared motion tokens — reuse identical values across beats.
- * Tune intensity here; presets only compose primitives.
- */
 export const MOTION = {
   accent: LOGO_COLORS.lime,
 
-  /** Vertical scatter amplitudes (px-ish via GSAP y). */
   scatterY: {
-    mid: 14, // spread, compressed
-    strong: 22, // gravity
+    mid: 14,
+    strong: 22,
   },
 
-  /** Single-letter raise (positive = up). */
   raise: {
-    soft: 6, // glitch
-    mid: 8, // mistake, glitch drop neighbor
-    strong: 10, // highlight
+    soft: 6,
+    mid: 8,
+    strong: 10,
   },
 
-  /** Layout gap (em). */
   gap: {
     spread: 0.16,
     compress: 0.08,
   },
 
-  /** Rotation / lean. */
   tilt: {
     fan: 1.8,
     wave: 2.5,
@@ -46,17 +38,16 @@ export const MOTION = {
   rotate: {
     gravityBase: 4,
     gravityStep: 2,
+    one: 5,
   },
 
   scale: {
     highlight: 1.06,
+    one: 1.08,
   },
 } as const;
 
-/**
- * Beat registry — names + picker weights in one place.
- */
-export const BEAT_CONFIG = {
+export const RECIPE_CONFIG = {
   spread: { weight: 2 },
   highlight: { weight: 1 },
   compressed: { weight: 2 },
@@ -66,10 +57,15 @@ export const BEAT_CONFIG = {
   glitch: { weight: 3 },
 } as const;
 
-export type BeatId = keyof typeof BEAT_CONFIG;
+export type RecipeId = keyof typeof RECIPE_CONFIG;
 
-export const BEAT_IDS = Object.keys(BEAT_CONFIG) as BeatId[];
+export const RECIPE_IDS = Object.keys(RECIPE_CONFIG) as RecipeId[];
 
-export const BEAT_WEIGHTS = Object.fromEntries(
-  BEAT_IDS.map((id) => [id, BEAT_CONFIG[id].weight]),
-) as Record<BeatId, number>;
+export const RECIPE_WEIGHTS = Object.fromEntries(
+  RECIPE_IDS.map((id) => [id, RECIPE_CONFIG[id].weight]),
+) as Record<RecipeId, number>;
+
+export type BeatId = RecipeId;
+export const BEAT_CONFIG = RECIPE_CONFIG;
+export const BEAT_IDS = RECIPE_IDS;
+export const BEAT_WEIGHTS = RECIPE_WEIGHTS;

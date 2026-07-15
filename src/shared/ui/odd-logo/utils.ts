@@ -8,7 +8,6 @@ export const clampIndex = (index: number, length: number) => {
   return ((index % length) + length) % length;
 };
 
-/** Patch one letter by identity index. `id` / `char` stay fixed. */
 export const updateLetter = (
   state: LogoState,
   index: number,
@@ -41,7 +40,6 @@ export const mapLetters = (
   letters: state.letters.map(mapFn),
 });
 
-/** Pick a random int in `[min, max]` inclusive. */
 export const randomInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -53,7 +51,6 @@ export const pick = <T>(items: readonly T[]): T => {
   return item;
 };
 
-/** Run action with probability; otherwise identity. */
 export const maybe =
   (action: LogoAction, probability = 0.5): LogoAction =>
   (state) =>

@@ -1,15 +1,17 @@
-import type { BeatId } from "./config";
-import { BEAT_IDS, BEAT_WEIGHTS } from "./config";
+import type { RecipeId } from "./config";
+import { RECIPE_IDS, RECIPE_WEIGHTS } from "./config";
 
-export type BeatPicker = () => BeatId;
+export type RecipePicker = () => RecipeId;
+
+export type BeatPicker = RecipePicker;
 
 const pickWeighted = (
-  ids: readonly BeatId[],
-  weights: Record<BeatId, number>,
-): BeatId => {
+  ids: readonly RecipeId[],
+  weights: Record<RecipeId, number>,
+): RecipeId => {
   const total = ids.reduce((sum, id) => sum + (weights[id] ?? 0), 0);
   if (total <= 0) {
-    return ids[0] ?? "spread";
+    return ids[0] ?? "accentColor";
   }
 
   let cursor = Math.random() * total;
@@ -18,22 +20,18 @@ const pickWeighted = (
     if (cursor <= 0) return id;
   }
 
-  return ids[ids.length - 1] ?? "spread";
+  return ids[ids.length - 1] ?? "accentColor";
 };
 
-/**
- * Weighted beat picker with short-term cooldown.
- * Prevents the same beat repeating within `cooldown` picks.
- */
-export const createBeatPicker = (
-  weights: Record<BeatId, number> = BEAT_WEIGHTS,
+export const createRecipePicker = (
+  weights: Record<RecipeId, number> = RECIPE_WEIGHTS,
   cooldown = 3,
-): BeatPicker => {
-  const recent: BeatId[] = [];
+): RecipePicker => {
+  const recent: RecipeId[] = [];
 
   return () => {
-    const available = BEAT_IDS.filter((id) => !recent.includes(id));
-    const pool = available.length > 0 ? available : BEAT_IDS;
+    const available = RECIPE_IDS.filter((id) => !recent.includes(id));
+    const pool = available.length > 0 ? available : RECIPE_IDS;
     const next = pickWeighted(pool, weights);
 
     recent.push(next);
@@ -44,3 +42,5 @@ export const createBeatPicker = (
     return next;
   };
 };
+
+export const createBeatPicker = createRecipePicker;

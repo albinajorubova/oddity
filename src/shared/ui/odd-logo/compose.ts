@@ -1,10 +1,6 @@
 import { createDefaultLogoState } from "./letters";
 import type { LogoAction, LogoState } from "./types";
 
-/**
- * Apply a stack of atomic actions onto a base logo state.
- * Pure: same base + actions → same LogoState.
- */
 export const composeLogoState = (
   actions: readonly LogoAction[],
   base: LogoState | string = "ODDITY",
