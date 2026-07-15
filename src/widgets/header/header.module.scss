@@ -24,7 +24,6 @@
 
 .navLink {
   @include captionM;
-  @include blotch-hover;
 
   padding-inline: var(--spacing-4);
   font-weight: 500;
@@ -81,7 +80,6 @@
 
 .login {
   @include captionM;
-  @include blotch-hover;
 
   padding-inline: var(--spacing-4);
   font-weight: 500;
