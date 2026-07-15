@@ -113,9 +113,8 @@ export const createLogoController = (
     if (reducedMotion) return false;
 
     if (source === "hover") {
-      if (phase === "playing" || phase === "hover" || phase === "returning") {
-        return false;
-      }
+      // Hover can interrupt idle "playing"; blocked only during active hover / return.
+      if (phase === "hover" || phase === "returning") return false;
       if (Date.now() - lastHoverAt < hoverCooldownMs) return false;
       return true;
     }
@@ -137,7 +136,8 @@ export const createLogoController = (
 
   const resumeIdle = () => {
     if (reducedMotion) return;
-    if (phase === "idle" && timers.length > 0) return;
+    // Only after a real hover — ignore leave while idle/intro/playing.
+    if (phase !== "hover") return;
 
     clearTimers();
     lastHoverAt = Date.now();

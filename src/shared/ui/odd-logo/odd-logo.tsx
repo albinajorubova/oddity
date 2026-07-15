@@ -28,7 +28,7 @@ export const OddLogo = (props: OddLogoProps) => {
     idleMaxMs = 30_000,
     oddHoldMs = 900,
     introDelayMs = 900,
-    hoverCooldownMs = 400,
+    hoverCooldownMs = 50,
   } = props;
 
   const baseState = useMemo(() => createDefaultLogoState(text), [text]);
