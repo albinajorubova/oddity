@@ -28,7 +28,6 @@ export type LogoControllerOptions = {
 export type LogoController = {
   canPlay: (source: PlaySource) => boolean;
   playHover: () => void;
-  resumeIdle: () => void;
   start: () => void;
   destroy: () => void;
   setReducedMotion: (value: boolean) => void;
@@ -130,23 +129,18 @@ export const createLogoController = (
     if (!canPlay("hover")) return;
 
     clearTimers();
+    lastHoverAt = Date.now();
     phase = "hover";
     goTo(createBeat(getBaseState(), pickRecipe), true);
-  };
 
-  const resumeIdle = () => {
-    if (reducedMotion) return;
-    // Only after a real hover — ignore leave while idle/intro/playing.
-    if (phase !== "hover") return;
+    schedule(oddHoldMs, () => {
+      phase = "returning";
+      goHome(true);
 
-    clearTimers();
-    lastHoverAt = Date.now();
-    phase = "returning";
-    goHome(true);
-
-    schedule(duration * 1000, () => {
-      phase = "idle";
-      schedule(nextIdleDelay(), playIdleBeat);
+      schedule(duration * 1000, () => {
+        phase = "idle";
+        schedule(nextIdleDelay(), playIdleBeat);
+      });
     });
   };
 
@@ -187,7 +181,6 @@ export const createLogoController = (
   return {
     canPlay,
     playHover,
-    resumeIdle,
     start,
     destroy,
     setReducedMotion,

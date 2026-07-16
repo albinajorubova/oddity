@@ -77,17 +77,12 @@ export const OddLogo = (props: OddLogoProps) => {
     controller.playHover();
   };
 
-  const onLeave = () => {
-    controller.resumeIdle();
-  };
-
   return (
     <span
       ref={rootRef}
       className={clsx(s.root, className)}
       aria-hidden
       onMouseEnter={onHover}
-      onMouseLeave={onLeave}
     >
       {letters.map((letter) => (
         <span
