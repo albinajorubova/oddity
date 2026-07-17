@@ -7,6 +7,7 @@ import Image from "next/image";
 import type { ArchiveItem } from "@entities/archive-card";
 
 import { Container } from "@shared/ui/container";
+import { mod } from "@shared/utils";
 
 import s from "./archive-detail-page.module.scss";
 
@@ -28,47 +29,67 @@ export const ArchiveDetailPage = (props: ArchiveDetailPageProps) => {
     [item],
   );
 
+  const mediaItems = useMemo(
+    () => [
+      { id: "cover", url: item.imageUrl, aspect: item.aspect },
+      ...(item.galleryImages ?? []).map((image, index) => ({
+        id: `gallery-${index}`,
+        url: image.url,
+        aspect: image.aspect,
+      })),
+    ],
+    [item],
+  );
+
   return (
     <main className={clsx(s.root, className)}>
       <Container className={s.inner}>
-        <section className={s.hero}>
-          <div className={s.heroMedia}>
-            <Image
-              className={s.heroImage}
-              src={item.imageUrl}
-              alt={`${item.artist} — ${item.title}`}
-              fill
-              priority
-            />
+        <div className={s.layout}>
+          <div className={s.copy}>
+            <header className={s.heroCopy}>
+              <p className={s.kicker}>{item.category}</p>
+              <h1 className={s.title}>{item.title}</h1>
+              <p className={s.subtitle}>
+                {item.artist} <span className={s.dot}>/</span> {item.year}
+              </p>
+            </header>
+
+            <div className={s.summary}>
+              <p className={s.lead}>
+                A singular artifact from the ODDITY archive, presented as a
+                dedicated detail page with its cover, metadata, and supporting
+                context.
+              </p>
+            </div>
+
+            <dl className={s.meta}>
+              {facts.map((fact) => (
+                <div key={fact.label} className={s.metaRow}>
+                  <dt className={s.metaLabel}>{fact.label}</dt>
+                  <dd className={s.metaValue}>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          <div className={s.heroCopy}>
-            <p className={s.kicker}>{item.category}</p>
-            <h1 className={s.title}>{item.title}</h1>
-            <p className={s.subtitle}>
-              {item.artist} <span className={s.dot}>/</span> {item.year}
-            </p>
-          </div>
-        </section>
-
-        <section className={s.content}>
-          <div className={s.summary}>
-            <p className={s.lead}>
-              A singular artifact from the ODDITY archive, presented as a
-              dedicated detail page with its cover, metadata, and supporting
-              context.
-            </p>
-          </div>
-
-          <dl className={s.meta}>
-            {facts.map((fact) => (
-              <div key={fact.label} className={s.metaRow}>
-                <dt className={s.metaLabel}>{fact.label}</dt>
-                <dd className={s.metaValue}>{fact.value}</dd>
+          <aside className={s.media}>
+            {mediaItems.map((image, index) => (
+              <div
+                key={image.id}
+                className={clsx(s.mediaItem, mod(s, { aspect: image.aspect }))}
+              >
+                <Image
+                  className={s.mediaImage}
+                  src={image.url}
+                  alt={`${item.title} — image ${index + 1}`}
+                  fill
+                  priority={index === 0}
+                  sizes="(max-width: 768px) 100vw, 42vw"
+                />
               </div>
             ))}
-          </dl>
-        </section>
+          </aside>
+        </div>
       </Container>
     </main>
   );

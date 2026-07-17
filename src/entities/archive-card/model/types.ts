@@ -5,6 +5,11 @@ export type ArchiveItemAspect =
   | "landscape"
   | "wide";
 
+export type ArchiveGalleryImage = {
+  url: string;
+  aspect: ArchiveItemAspect;
+};
+
 export type ArchiveItem = {
   id: string;
   slug: string;
@@ -14,4 +19,5 @@ export type ArchiveItem = {
   category: string;
   imageUrl: string;
   aspect: ArchiveItemAspect;
+  galleryImages?: ArchiveGalleryImage[];
 };

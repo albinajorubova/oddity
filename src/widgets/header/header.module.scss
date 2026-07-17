@@ -11,8 +11,31 @@
 
   width: 100%;
   height: var(--header-height);
+  background-color: transparent;
 
-  background-color: var(--c-white);
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background-color: transparent;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, rgb(0 0 0 / 0%) 100%);
+    mask-image: linear-gradient(180deg, #000 0%, rgb(0 0 0 / 0%) 100%);
+
+    @include blur(24px);
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @include mq(sm) {
+    &::before {
+      @include blur(24px);
+    }
+  }
 }
 
 .nav {

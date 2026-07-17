@@ -5,36 +5,80 @@
 }
 
 .inner {
+  width: 100%;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
+  gap: var(--spacing-48);
+  align-items: start;
+
+  @include mq(lg) {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-32);
+  }
+}
+
+.copy {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-48);
+  gap: var(--spacing-40);
+  max-width: 36rem;
+
+  @include mq(lg) {
+    max-width: none;
+    order: 2;
+  }
 }
 
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr);
-  gap: var(--spacing-32);
-  align-items: end;
+.media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+
+  @include mq(lg) {
+    order: 1;
+  }
 }
 
-.heroMedia {
+.mediaItem {
   position: relative;
   overflow: hidden;
   width: 100%;
-  aspect-ratio: 4 / 5;
   background: var(--c-grey-100);
-  border-radius: 0;
 }
 
-.heroImage {
+.mediaImage {
   object-fit: cover;
+}
+
+.aspect {
+  &-square.mediaItem {
+    aspect-ratio: 1 / 1;
+  }
+
+  &-portrait.mediaItem {
+    aspect-ratio: 2 / 3;
+  }
+
+  &-tall.mediaItem {
+    aspect-ratio: 3 / 5;
+  }
+
+  &-landscape.mediaItem {
+    aspect-ratio: 3 / 2;
+  }
+
+  &-wide.mediaItem {
+    aspect-ratio: 16 / 9;
+  }
 }
 
 .heroCopy {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-12);
-  padding-bottom: var(--spacing-12);
 }
 
 .kicker,
@@ -44,12 +88,20 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--c-grey-400);
+
+  @include mq(lg) {
+    font-size: 0.95rem;
+  }
 }
 
 .title {
   font-size: vw(52);
   line-height: 0.95;
   letter-spacing: -0.04em;
+
+  @include mq(lg) {
+    font-size: 3rem;
+  }
 }
 
 .subtitle,
@@ -57,23 +109,16 @@
 .metaValue {
   font-size: vw(16);
   line-height: 1.5;
+
+  @include mq(lg) {
+    font-size: 0.95rem;
+  }
 }
 
 .dot {
   display: inline-block;
   margin: 0 var(--spacing-8);
   color: var(--c-grey-400);
-}
-
-.content {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr);
-  gap: var(--spacing-32);
-  align-items: start;
-}
-
-.summary {
-  max-width: 52rem;
 }
 
 .meta {
@@ -88,23 +133,4 @@
   gap: var(--spacing-16);
   padding-top: var(--spacing-12);
   border-top: 1px solid var(--c-grey-200);
-}
-
-@include mq(lg) {
-  .hero,
-  .content {
-    grid-template-columns: 1fr;
-  }
-
-  .title {
-    font-size: 3rem;
-  }
-
-  .subtitle,
-  .lead,
-  .metaValue,
-  .kicker,
-  .metaLabel {
-    font-size: 0.95rem;
-  }
 }

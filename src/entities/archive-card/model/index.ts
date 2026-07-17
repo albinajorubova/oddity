@@ -1,1 +1,5 @@
-export type { ArchiveItem, ArchiveItemAspect } from "./types";
+export type {
+  ArchiveGalleryImage,
+  ArchiveItem,
+  ArchiveItemAspect,
+} from "./types";

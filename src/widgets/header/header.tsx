@@ -8,6 +8,7 @@ import { Button } from "@shared/ui/button";
 import { Container } from "@shared/ui/container";
 import { Link } from "@shared/ui/link";
 import { MarkerHighlight } from "@shared/ui/marker";
+import { RollingText } from "@shared/ui/rolling-text";
 import { HOME_NAV_STUB } from "@/_pages/home/model";
 
 import s from "./header.module.scss";
@@ -38,7 +39,7 @@ export const Header = (props: HeaderProps) => {
         onMouseEnter={setRandomHoverBlotch}
       >
         <span className={s.searchDot} aria-hidden />
-        <span>SEARCH</span>
+        <RollingText text="SEARCH" />
       </Button>
 
       <div className={s.actions}>

@@ -1,0 +1,24 @@
+.root {
+  display: inline-flex;
+}
+
+.letter {
+  display: inline-block;
+  overflow: hidden;
+  height: 1em;
+  line-height: 1em;
+}
+
+.drum {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  transition:
+    transform var(--duration) var(--ease-out-quint) var(--delay);
+}
+
+.root:hover .drum,
+:global(a:hover) .root .drum,
+:global(button:hover) .root .drum {
+  transform: translateY(var(--direction));
+}
