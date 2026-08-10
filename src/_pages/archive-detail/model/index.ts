@@ -1,8 +1,17 @@
+export {
+  getArchiveSectionNav,
+  hasDnaSection,
+  hasTracksSection,
+} from "./section-nav";
 export { ARCHIVE_DETAIL_STUBS, getArchiveDetailBySlug } from "./stubs";
 export type {
   ArchiveAvailabilityLink,
-  ArchiveContentType,
+  ArchiveCategories,
+  ArchiveCharacteristics,
   ArchiveDetail,
   ArchiveGallerySlide,
+  ArchiveSectionId,
+  ArchiveSectionNavItem,
   ArchiveStatus,
+  ArchiveTrack,
 } from "./types";

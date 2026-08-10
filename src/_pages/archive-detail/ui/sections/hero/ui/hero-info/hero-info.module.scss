@@ -34,16 +34,16 @@
   }
 }
 
-.original {
-  font-size: vw(13);
-  line-height: 1.4;
+.artist {
+  margin: 0;
+  font-size: vw(18);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
   color: var(--c-grey-600);
-}
 
-.originalLabel {
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c-grey-400);
+  @include mq(md) {
+    font-size: 1.05rem;
+  }
 }
 
 .description {

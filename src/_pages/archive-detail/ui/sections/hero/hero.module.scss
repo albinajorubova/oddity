@@ -2,6 +2,7 @@
   min-height: calc(100vh - var(--header-height));
   padding-top: var(--spacing-32);
   padding-bottom: var(--spacing-48);
+  scroll-margin-top: var(--header-height);
 }
 
 .inner {

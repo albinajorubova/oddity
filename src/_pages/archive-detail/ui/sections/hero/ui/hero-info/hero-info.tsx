@@ -19,7 +19,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
   return (
     <div className={clsx(s.root, className)}>
       <p className={s.kicker}>
-        {item.type.toUpperCase()}
+        ALBUM
         <span className={s.sep}> / </span>
         {item.year}
         <span className={s.sep}> / </span>
@@ -28,12 +28,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
 
       <h1 className={s.title}>{item.title}</h1>
 
-      {item.originalTitle && (
-        <p className={s.original}>
-          <span className={s.originalLabel}>Original title</span>{" "}
-          {item.originalTitle}
-        </p>
-      )}
+      <p className={s.artist}>{item.artist}</p>
 
       <div className={s.description}>
         {paragraphs.map((paragraph) => (
@@ -44,16 +39,16 @@ export const HeroInfo = (props: HeroInfoProps) => {
       {item.editorNote && <p className={s.editorNote}>{item.editorNote}</p>}
 
       <dl className={s.facts}>
-        {item.director && (
+        {item.label && (
           <div className={s.fact}>
-            <dt className={s.factLabel}>Director</dt>
-            <dd className={s.factValue}>{item.director}</dd>
+            <dt className={s.factLabel}>Label</dt>
+            <dd className={s.factValue}>{item.label}</dd>
           </div>
         )}
-        {item.runtime && (
+        {item.duration && (
           <div className={s.fact}>
-            <dt className={s.factLabel}>Runtime</dt>
-            <dd className={s.factValue}>{item.runtime}</dd>
+            <dt className={s.factLabel}>Duration</dt>
+            <dd className={s.factValue}>{item.duration}</dd>
           </div>
         )}
         <div className={s.fact}>

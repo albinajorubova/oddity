@@ -1,11 +1,3 @@
-export type ArchiveContentType =
-  | "Movie"
-  | "Series"
-  | "Anime"
-  | "Music"
-  | "Book"
-  | "Game";
-
 export type ArchiveStatus = "Released" | "Ongoing" | "Upcoming" | "Restored";
 
 export type ArchiveAvailabilityLink = {
@@ -19,21 +11,50 @@ export type ArchiveGallerySlide = {
   alt: string;
 };
 
-/** Core fields needed for detail hero (from content model). */
+export type ArchiveCharacteristics = {
+  oddity: string[];
+  meme: string[];
+};
+
+export type ArchiveCategories = {
+  genres?: string[];
+  themes?: string[];
+  atmosphere?: string[];
+  mood?: string[];
+  tags?: string[];
+};
+
+export type ArchiveTrack = {
+  id: string;
+  title: string;
+  duration?: string;
+};
+
+/** Scroll sections currently wired on the album detail page. */
+export type ArchiveSectionId = "core" | "dna" | "tracks";
+
+export type ArchiveSectionNavItem = {
+  id: ArchiveSectionId;
+  label: string;
+};
+
+/** Album detail card (music-only focus). */
 export type ArchiveDetail = {
   id: string;
   slug: string;
   title: string;
-  originalTitle?: string;
-  type: ArchiveContentType;
   year: number;
   country: string;
-  runtime?: string;
+  duration?: string;
   status: ArchiveStatus;
-  /** One or more body paragraphs for the hero. */
   shortDescription: string | string[];
   editorNote?: string;
-  director?: string;
+  artist: string;
+  label?: string;
   availability: ArchiveAvailabilityLink[];
+  /** Cover + alt art. */
   gallery: ArchiveGallerySlide[];
+  characteristics?: ArchiveCharacteristics;
+  categories?: ArchiveCategories;
+  tracks?: ArchiveTrack[];
 };

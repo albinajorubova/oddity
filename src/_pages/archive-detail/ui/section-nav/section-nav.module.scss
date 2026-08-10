@@ -1,0 +1,46 @@
+.root {
+  position: fixed;
+  top: 50%;
+  right: var(--spacing-24);
+  z-index: 5;
+  transform: translateY(-50%);
+
+  @include mq(lg) {
+    display: none;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-flex;
+  color: var(--c-grey-400);
+  text-decoration: none;
+
+  @include transition((color), 0.3s);
+
+  @include hover {
+    color: var(--c-black);
+  }
+}
+
+.active {
+  color: var(--c-black);
+}
+
+.marker {
+  display: inline-flex;
+}
+
+.label {
+  font-size: vw(11);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
