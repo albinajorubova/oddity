@@ -58,14 +58,14 @@ export const ARCHIVE_ITEMS_STUB: ArchiveItem[] = [
   },
   {
     id: "2",
-    slug: "lolita",
-    artist: "Stanley Kubrick",
-    title: "Lolita",
-    year: 1962,
+    slug: "mulholland-drive",
+    artist: "David Lynch",
+    title: "Mulholland Drive",
+    year: 2001,
     category: "Movies",
-    imageUrl: "https://picsum.photos/seed/oddity-lolita/600/900",
+    imageUrl: "https://picsum.photos/seed/oddity-mulholland/600/900",
     aspect: "portrait",
-    galleryImages: gallery("lolita", [
+    galleryImages: gallery("mulholland", [
       { w: 800, h: 800, aspect: "square" },
       { w: 1000, h: 560, aspect: "wide" },
     ]),

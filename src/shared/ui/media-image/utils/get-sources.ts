@@ -1,11 +1,12 @@
+import { IMAGE_MAX_WIDTH, IMG_PROXY_DEFAULTS } from "@shared/config";
 import type {
   BreakpointKeys,
   ImageProxySourceItem,
   MediaBreakpointKeys,
   RebuiltImage,
 } from "@shared/types";
-import { IMG_PROXY_DEFAULTS, IMAGE_MAX_WIDTH } from "@shared/config";
 import { imageproxyUrl } from "@shared/utils/imgproxy";
+import { shouldProcessWithImgProxy } from "@shared/utils/normalize-image-source-url";
 import { BREAKPOINTS, IMAGE_BREAKPOINTS } from "@/shared/config/breakpoints";
 
 type SourceKeys = MediaBreakpointKeys;
@@ -25,20 +26,30 @@ const { format, dpr, quality } = IMG_PROXY_DEFAULTS;
 /**
  * Генерирует ссылку на изображение через imgproxy с дефолтными настройками
  * (format, dpr, quality) и заданной шириной.
+ * Файлы из /public (например /images/...) отдаются как есть — без imgproxy.
  */
-const buildImageUrl = (url: string, width?: number): string =>
-  imageproxyUrl(
+const buildImageUrl = (url: string, width?: number): string => {
+  if (!shouldProcessWithImgProxy(url)) {
+    return url;
+  }
+
+  return imageproxyUrl(
     url,
     format,
     dpr,
     quality,
     width !== undefined ? { width } : undefined,
   );
+};
 
 /**
  * Создает строку srcSet, формируя imgproxy-ссылки для каждого размера
  */
 const createSrcSet = (url: string, sizes: number[]): string => {
+  if (!shouldProcessWithImgProxy(url)) {
+    return url;
+  }
+
   return sizes.map((size) => `${buildImageUrl(url, size)} ${size}w`).join(", ");
 };
 
@@ -130,15 +141,23 @@ const createSourceObject = (
   sizes: string,
 ): SourceObject => {
   const breakpointSize = getBreakpointSize(key);
+  const useProxy = shouldProcessWithImgProxy(image.url);
 
   const srcSet = createSrcSetFromImage(image);
-  const defaultSrc = buildImageUrl(image.url, IMAGE_BREAKPOINTS.xs);
+  const defaultSrc = useProxy
+    ? buildImageUrl(image.url, IMAGE_BREAKPOINTS.xs)
+    : image.url;
+
+  const mimeFromPath = image.url.match(/\.(\w+)(?:\?|$)/)?.[1];
+  const type = useProxy
+    ? `image/${format}`
+    : `image/${mimeFromPath === "jpg" ? "jpeg" : mimeFromPath || format}`;
 
   return {
     srcSet,
     src: defaultSrc,
     media: createMediaQuery(key, breakpointSize),
-    type: `image/${format}`,
+    type,
     breakpointSize: isDefaultKey(key) ? 0 : breakpointSize || 0,
     sizes,
     altText: getImageAlt(image),

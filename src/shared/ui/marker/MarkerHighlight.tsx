@@ -35,6 +35,7 @@ export type MarkerHighlightProps = {
   variant?: MarkerVariant;
   direction?: MarkerDirection;
   disabled?: boolean;
+  active?: boolean;
   duration?: number;
 };
 
@@ -66,6 +67,7 @@ export const MarkerHighlight = (props: MarkerHighlightProps) => {
     variant = "background",
     direction = "ltr",
     disabled = false,
+    active = false,
     duration = MARKER_MOTION.duration,
   } = props;
 
@@ -78,10 +80,14 @@ export const MarkerHighlight = (props: MarkerHighlightProps) => {
   const lastMaskRef = useRef<MarkerMaskId | null>(null);
   const activeRef = useRef(false);
   const disabledRef = useRef(disabled);
+  const forcedActiveRef = useRef(active);
   const durationRef = useRef(duration);
   const directionRef = useRef(direction);
+  const playInRef = useRef<() => void>(() => undefined);
+  const playOutRef = useRef<() => void>(() => undefined);
 
   disabledRef.current = disabled;
+  forcedActiveRef.current = active;
   durationRef.current = duration;
   directionRef.current = direction;
 
@@ -236,6 +242,7 @@ export const MarkerHighlight = (props: MarkerHighlightProps) => {
 
     const playOut = () => {
       if (disabledRef.current || !activeRef.current) return;
+      if (forcedActiveRef.current) return;
       const stroke = strokeRef.current;
       const layers = layersRef.current;
       if (!stroke || !layers) return;
@@ -278,6 +285,9 @@ export const MarkerHighlight = (props: MarkerHighlightProps) => {
       );
     };
 
+    playInRef.current = playIn;
+    playOutRef.current = playOut;
+
     root.addEventListener("pointerenter", playIn);
     root.addEventListener("pointerleave", playOut);
 
@@ -292,6 +302,11 @@ export const MarkerHighlight = (props: MarkerHighlightProps) => {
       focusParent?.removeEventListener("blur", playOut);
     };
   }, []);
+
+  useEffect(() => {
+    if (active) playInRef.current();
+    else playOutRef.current();
+  }, [active]);
 
   const style = {
     "--marker-color": resolveColor(color),

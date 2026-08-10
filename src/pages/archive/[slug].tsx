@@ -1,12 +1,11 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-import type { ArchiveItem } from "@entities/archive-card";
-
+import type { ArchiveDetail } from "@/_pages/archive-detail/model";
+import { getArchiveDetailBySlug } from "@/_pages/archive-detail/model";
 import { ArchiveDetailPage } from "@/_pages/archive-detail/ui";
-import { ARCHIVE_ITEMS_STUB } from "@/_pages/home/model";
 
 type ArchivePageProps = {
-  item: ArchiveItem;
+  item: ArchiveDetail;
   isDraftMode: boolean;
   cms: Record<string, never>;
 };
@@ -23,7 +22,11 @@ export const getServerSideProps: GetServerSideProps<ArchivePageProps> = async (
   const slug = context.params?.slug;
   const resolvedSlug = Array.isArray(slug) ? slug[0] : slug;
 
-  const item = ARCHIVE_ITEMS_STUB.find((entry) => entry.slug === resolvedSlug);
+  if (!resolvedSlug) {
+    return { notFound: true };
+  }
+
+  const item = getArchiveDetailBySlug(resolvedSlug);
 
   if (!item) {
     return { notFound: true };
