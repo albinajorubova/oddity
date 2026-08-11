@@ -28,7 +28,11 @@ export const ArchiveCard = (props: ArchiveCardProps) => {
       href={`/archive/${item.slug}`}
       className={clsx(s.root, className, mods)}
     >
-      <div className={s.media}>
+      <div
+        className={s.media}
+        data-flip-id={item.slug}
+        data-flip-role="card"
+      >
         <Image
           className={s.image}
           src={item.imageUrl}

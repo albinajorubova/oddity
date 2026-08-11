@@ -18,9 +18,7 @@ const hasCategories = (item: ArchiveDetail) => {
 };
 
 export const hasDnaSection = (item: ArchiveDetail) =>
-  hasCharacteristics(item) ||
-  hasCategories(item) ||
-  item.gallery.length > 0;
+  hasCharacteristics(item) || hasCategories(item) || Boolean(item.cover.url);
 
 export const hasTracksSection = (item: ArchiveDetail) =>
   Boolean(item.tracks?.length);

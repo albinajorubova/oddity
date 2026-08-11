@@ -5,8 +5,7 @@ export type ArchiveAvailabilityLink = {
   href: string;
 };
 
-export type ArchiveGallerySlide = {
-  id: string;
+export type ArchiveCover = {
   url: string;
   alt: string;
 };
@@ -52,8 +51,8 @@ export type ArchiveDetail = {
   artist: string;
   label?: string;
   availability: ArchiveAvailabilityLink[];
-  /** Cover + alt art. */
-  gallery: ArchiveGallerySlide[];
+  /** Single album cover. */
+  cover: ArchiveCover;
   characteristics?: ArchiveCharacteristics;
   categories?: ArchiveCategories;
   tracks?: ArchiveTrack[];

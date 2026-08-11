@@ -5,32 +5,10 @@
 }
 
 .stage {
-  position: relative;
+  overflow: hidden;
   width: 100%;
   aspect-ratio: 1 / 1;
-}
-
-.back,
-.front {
-  overflow: hidden;
   background-color: var(--c-grey-100);
-}
-
-.back {
-  position: absolute;
-  top: -6%;
-  right: -8%;
-  width: 72%;
-  aspect-ratio: 1 / 1;
-  transform: rotate(3deg);
-  opacity: 0.85;
-}
-
-.front {
-  position: relative;
-  z-index: 1;
-  width: 88%;
-  aspect-ratio: 1 / 1;
 }
 
 .image {

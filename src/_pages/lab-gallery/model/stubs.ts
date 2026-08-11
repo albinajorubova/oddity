@@ -1,33 +1,7 @@
 import type { ArchiveItem } from "@entities/archive-card";
 
-export type HomeHeroStub = {
-  brand: string;
-  est: string;
-  description: string;
-  ctaLabel: string;
-};
-
-export type HomeNavItem = {
-  label: string;
-  href: string;
-};
-
-export const HOME_HERO_STUB: HomeHeroStub = {
-  brand: "ODDITY",
-  est: "EST. 2026 / DIGITAL ARCHIVE",
-  description: "A CURATED ARCHIVE OF EXTRAORDINARY ALBUMS.",
-  ctaLabel: "EXPLORE",
-};
-
-export const HOME_NAV_STUB: HomeNavItem[] = [
-  { label: "ARCHIVE", href: "/archive" },
-  { label: "COLLECTIONS", href: "/collections" },
-  { label: "STORIES", href: "/stories" },
-  { label: "ABOUT", href: "/about" },
-];
-
-/** Stub gallery — albums only, one real cover each. */
-export const ARCHIVE_ITEMS_STUB: ArchiveItem[] = [
+/** Same covers as home — lab sandbox for Flip stages. */
+export const LAB_GALLERY_ITEMS: ArchiveItem[] = [
   {
     id: "1",
     slug: "sgt-peppers-lonely-hearts-club-band",

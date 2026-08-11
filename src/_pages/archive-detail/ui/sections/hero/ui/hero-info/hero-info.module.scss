@@ -3,6 +3,10 @@
   flex-direction: column;
   gap: var(--spacing-20);
   max-width: 34rem;
+
+  &.isPending {
+    opacity: 0;
+  }
 }
 
 .kicker {

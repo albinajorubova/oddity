@@ -1,14 +1,9 @@
 import type { ArchiveDetail } from "./types";
 
-const cover = (
-  slug: string,
-  seeds: readonly string[],
-): ArchiveDetail["gallery"] =>
-  seeds.map((seed, index) => ({
-    id: `${slug}-${index + 1}`,
-    url: `https://picsum.photos/seed/${seed}/800/800`,
-    alt: index === 0 ? `${slug} cover` : `${slug} artwork ${index + 1}`,
-  }));
+const cover = (file: string, alt: string): ArchiveDetail["cover"] => ({
+  url: `/images/covers/${file}`,
+  alt,
+});
 
 export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
   {
@@ -29,11 +24,10 @@ export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
       { label: "Apple Music", href: "#" },
       { label: "Bandcamp", href: "#" },
     ],
-    gallery: cover("dark-side", [
-      "oddity-darkside-a",
-      "oddity-darkside-b",
-      "oddity-darkside-c",
-    ]),
+    cover: cover(
+      "dark-side-of-the-moon.jpg",
+      "Pink Floyd — The Dark Side of the Moon cover",
+    ),
     characteristics: {
       oddity: ["Artistic", "Philosophical", "Emotional", "Experimental"],
       meme: ["Cult"],
@@ -75,10 +69,10 @@ export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    gallery: cover("kind-of-blue", [
-      "oddity-kindblue-a",
-      "oddity-kindblue-b",
-    ]),
+    cover: cover(
+      "kind-of-blue.jpg",
+      "Miles Davis — Kind of Blue cover",
+    ),
     characteristics: {
       oddity: ["Artistic", "Emotional", "Accessible", "Philosophical"],
       meme: ["Cult"],
@@ -115,10 +109,10 @@ export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    gallery: cover("nevermind", [
-      "oddity-nevermind-a",
-      "oddity-nevermind-b",
-    ]),
+    cover: cover(
+      "nevermind.jpg",
+      "Nirvana — Nevermind cover",
+    ),
     characteristics: {
       oddity: ["Emotional", "Dark", "Chaotic", "Accessible"],
       meme: ["Cult", "Edge"],
@@ -162,10 +156,10 @@ export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    gallery: cover("sgt-pepper", [
-      "oddity-pepper-a",
-      "oddity-pepper-b",
-    ]),
+    cover: cover(
+      "sgt-pepper.jpg",
+      "The Beatles — Sgt. Pepper's Lonely Hearts Club Band cover",
+    ),
     characteristics: {
       oddity: ["Artistic", "Experimental", "Funny", "Accessible"],
       meme: ["Cult", "Camp"],
@@ -222,10 +216,10 @@ export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    gallery: cover("crimson", [
-      "oddity-crimson-a",
-      "oddity-crimson-b",
-    ]),
+    cover: cover(
+      "crimson-king.jpg",
+      "King Crimson — In the Court of the Crimson King cover",
+    ),
     characteristics: {
       oddity: ["Experimental", "Dark", "Artistic", "Chaotic"],
       meme: ["Cult", "Edge"],
@@ -266,10 +260,10 @@ export const ARCHIVE_DETAIL_STUBS: ArchiveDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    gallery: cover("aladdin-sane", [
-      "oddity-bowie-a",
-      "oddity-bowie-b",
-    ]),
+    cover: cover(
+      "aladdin-sane.jpg",
+      "David Bowie — Aladdin Sane cover",
+    ),
     characteristics: {
       oddity: ["Artistic", "Weird", "Emotional", "Experimental"],
       meme: ["Cult", "Camp"],

@@ -28,8 +28,8 @@ export const HeroSection = (props: HeroSectionProps) => {
           <HeroInfo item={item} className={s.info} />
           <HeroCover
             className={s.gallery}
-            slides={item.gallery}
-            title={item.title}
+            cover={item.cover}
+            slug={item.slug}
           />
         </div>
       </Container>

@@ -1,4 +1,7 @@
+"use client";
+
 import clsx from "clsx";
+import { useRouter } from "next/router";
 
 import {
   getArchiveSectionNav,
@@ -19,24 +22,36 @@ export type ArchiveDetailPageProps = {
 
 export const ArchiveDetailPage = (props: ArchiveDetailPageProps) => {
   const { className, item } = props;
+  const router = useRouter();
   const sectionNav = getArchiveSectionNav(item);
   const showDna = hasDnaSection(item);
   const showTracks = hasTracksSection(item);
 
+  const handleBack = () => {
+    // back → popstate → historyScroll restore; morph делает TransitionLayout
+    if (window.history.length > 1) {
+      router.back();
+      return;
+    }
+    void router.push("/");
+  };
+
   return (
-    <main className={clsx(s.root, className)}>
+    <div className={clsx(s.root, className)}>
+      <button type="button" className={s.back} onClick={handleBack}>
+        ← Archive
+      </button>
       <SectionNav items={sectionNav} />
       <HeroSection item={item} />
       {showDna && (
         <CharacterSection
-          title={item.title}
-          gallery={item.gallery}
+          cover={item.cover}
           characteristics={item.characteristics}
           categories={item.categories}
         />
       )}
       {showTracks && item.tracks && <TracksSection tracks={item.tracks} />}
-    </main>
+    </div>
   );
 };
 

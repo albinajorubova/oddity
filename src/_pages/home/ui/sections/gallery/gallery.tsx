@@ -28,6 +28,7 @@ export type GallerySectionProps = {
   className?: string;
 };
 
+/** Навигация обычным Link — morph делает TransitionLayout (sync). */
 export const GallerySection = (props: GallerySectionProps) => {
   const { className } = props;
 

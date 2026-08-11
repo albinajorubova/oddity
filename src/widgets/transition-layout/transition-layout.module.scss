@@ -13,3 +13,43 @@
   background: #fff;
   pointer-events: none;
 }
+
+.pageEnter {
+  opacity: 0;
+}
+
+.pageFixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100svh;
+  z-index: var(--z-page, 2);
+  overflow-y: auto;
+  overflow-x: clip;
+  background-color: var(--main-background-color, #fff);
+}
+
+.pageOut {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pageIn {
+  z-index: 3;
+  overflow: visible;
+}
+
+.flipFlying {
+  position: relative;
+  z-index: 10;
+}
+
+.isHidden {
+  visibility: hidden;
+}
+
+.scrollFreeze {
+  position: relative;
+  top: var(--transition-scroll-freeze, 0);
+}
