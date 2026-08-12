@@ -3,7 +3,7 @@
 import type { ComponentProps } from "react";
 import clsx from "clsx";
 
-import { setRandomHoverBlotch } from "@shared/config";
+import { setRandomHoverBlotch, ROUTES } from "@shared/config";
 import { Button } from "@shared/ui/button";
 import { Container } from "@shared/ui/container";
 import { Link } from "@shared/ui/link";
@@ -24,7 +24,7 @@ export const Header = (props: HeaderProps) => {
     <Container tag="header" className={clsx(s.root, className)} {...rest}>
       <nav className={s.nav} aria-label="Primary">
         {HOME_NAV_STUB.map((item) => (
-          <Link key={item.href} href={item.href} className={s.navLink}>
+          <Link key={item.label} href={item.href} className={s.navLink}>
             <MarkerHighlight color="lime" variant="background">
               {item.label}
             </MarkerHighlight>
@@ -33,7 +33,7 @@ export const Header = (props: HeaderProps) => {
       </nav>
 
       <Button
-        href="/search"
+        href={ROUTES.search}
         className={s.search}
         aria-label="Search"
         onMouseEnter={setRandomHoverBlotch}
@@ -43,12 +43,12 @@ export const Header = (props: HeaderProps) => {
       </Button>
 
       <div className={s.actions}>
-        <Link href="/login" className={s.login}>
+        <Link href={ROUTES.login} className={s.login}>
           <MarkerHighlight color="lime" variant="background">
             LOGIN
           </MarkerHighlight>
         </Link>
-        <Button href="/join" className={s.join}>
+        <Button href={ROUTES.join} className={s.join}>
           JOIN ↗
         </Button>
       </div>

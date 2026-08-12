@@ -1,18 +1,9 @@
 .root {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
-  gap: var(--spacing-40);
-  align-items: end;
-  padding-top: var(--spacing-48);
-  padding-bottom: var(--spacing-56);
-
-  @include mq(lg) {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-24);
-    align-items: start;
-    padding-top: var(--spacing-32);
-    padding-bottom: var(--spacing-40);
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100svh - var(--header-height));
+  padding-block: var(--spacing-48);
 }
 
 .brand {
@@ -32,62 +23,29 @@
   }
 }
 
-.copy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-12);
-  max-width: vw(320);
-  padding-bottom: var(--spacing-16);
-
-  @include mq(lg) {
-    max-width: none;
-    padding-bottom: 0;
-  }
-}
-
-.est {
-  font-size: vw(11);
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--c-grey-400);
-}
-
-.description {
-  font-size: vw(16);
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-
-  @include mq(md) {
-    font-size: vw(14);
-  }
-}
-
 .cta {
+  position: fixed;
+  z-index: var(--z-header);
+  right: var(--padding-horizontal-base);
+  bottom: var(--padding-horizontal-base);
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
-  width: vw(120);
-  height: vw(120);
+  width: vw(88);
+  height: vw(88);
   border-radius: 50%;
   background-color: var(--c-accent);
   color: var(--c-black);
   text-decoration: none;
-  transform: scale(1);
-
-  @include transition((transform), 0.3s);
 
   @include mq(lg) {
-    width: vw(96);
-    height: vw(96);
+    width: vw(72);
+    height: vw(72);
   }
 
   @include mq(md) {
-    width: vw(80);
-    height: vw(80);
+    width: vw(64);
+    height: vw(64);
   }
 }
 

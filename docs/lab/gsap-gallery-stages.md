@@ -1,20 +1,20 @@
 # GSAP Gallery — этапы (Oddity lab)
 
 Sandbox: **`/lab/gallery`**  
-Этапы 1–3 — lab. Этап 4 — реальные home → `/archive/[slug]`.
+Этапы 1–3 — lab. Этап 4 — реальные collections → `/collections/[slug]`.
 
-Логика как в WebGPU-туториале (keep / remove / add), техника — **GSAP Flip** (lab) / **fixed overlay + gsap** (cross-route).
+Логика как в WebGPU-туториале (keep / remove / add), техника — **GSAP Flip** (lab) / **sync TransitionLayout** (cross-route).
 
 | Туториал | GSAP |
 |----------|------|
-| keep + tweenBounds | `Flip.getState` → layout → `Flip.from` (lab) / fixed overlay tween (route) |
-| remove | `gsap.to(others, { opacity })` / hide target via store |
+| keep + tweenBounds | `Flip.getState` → layout → `Flip.from` (lab) / morph в TransitionLayout (route) |
+| remove | `gsap.to(others, { opacity })` / hide target |
 | add | fade / stagger текста и блоков |
 
 Тайминги: `docs/design/ODDITY-design-system.md` §2.3.
 
 Код lab: `src/_pages/lab-gallery/ui/use-lab-flip.ts`  
-Код route: `src/widgets/archive-flip/`
+Код route: `src/widgets/transition-layout/`
 
 ---
 
@@ -46,24 +46,21 @@ Sandbox: **`/lab/gallery`**
 
 ---
 
-## Этап 4 — Next: home → `/archive/[slug]` (done)
+## Этап 4 — Next: collections → `/collections/[slug]` (done)
 
-Cross-route нельзя держать на одном Flip-state: DOM страницы уходит.
-Решение — **persistent fixed overlay** вне Lenis Scroll.
+Cross-route: **sync TransitionLayout** — обе страницы в DOM во время morph.
 
-1. Клик по карточке → `fromRect` + `startFlight({ direction: 'to-detail' })` → `router.push`  
-2. Overlay летит `fromRect` → `[data-flip-role=hero]`  
-3. Пока летит — `hideTarget` прячет реальный hero (и card-источник)  
-4. Back «← Archive» → `to-home`: from hero → card в сетке  
+1. Клик по карточке → navigate на `/collections/[slug]`  
+2. Morph card → hero (`collections-to-detail`)  
+3. Back «← Collections» → `detail-to-collections`: hero → card  
 
 Файлы:
-- `src/widgets/archive-flip/` — store + overlay  
-- home `GallerySection` — startFlight + mediaHidden  
-- `HeroCover` — `data-flip-role="hero"` + hide  
-- `_app` — `<ArchiveFlipOverlay />` вне `<Scroll>`
+- `src/widgets/transition-layout/` — sync SwitchElement + анимации  
+- collections `GallerySection` — `CollectionCard` с `data-flip-*`  
+- `HeroCover` — `data-flip-role="hero"`  
 
 ---
 
 ## Этап 5 — полировка
 
-Тайминги design system, reduced motion, cursor, lock mid-transition, remove/add siblings на home.
+Тайминги design system, reduced motion, cursor, lock mid-transition, remove/add siblings.

@@ -1,6 +1,6 @@
-export { archiveToHomeTransition } from "./archive-to-home";
+export { collectionsToDetailTransition } from "./collections-to-detail";
+export { detailToCollectionsTransition } from "./detail-to-collections";
 export { fadeTransition } from "./fade";
-export { homeToArchiveTransition } from "./home-to-archive";
 export type {
   AnimationType,
   KillableAnimation,
@@ -8,16 +8,16 @@ export type {
   TransitionAnimationParams,
 } from "./types";
 
-import { archiveToHomeTransition } from "./archive-to-home";
+import { collectionsToDetailTransition } from "./collections-to-detail";
+import { detailToCollectionsTransition } from "./detail-to-collections";
 import { fadeTransition } from "./fade";
-import { homeToArchiveTransition } from "./home-to-archive";
 import type { AnimationType, TransitionAnimation } from "./types";
 
 export const ANIMATION_FUNCTIONS: Record<
   AnimationType,
   TransitionAnimation
 > = {
-  "home-to-archive": homeToArchiveTransition,
-  "archive-to-home": archiveToHomeTransition,
+  "collections-to-detail": collectionsToDetailTransition,
+  "detail-to-collections": detailToCollectionsTransition,
   fade: fadeTransition,
 };

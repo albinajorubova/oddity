@@ -91,7 +91,7 @@ export const TransitionLayout = memo(
         });
 
         const effectiveSlug =
-          animationType === "archive-to-home"
+          animationType === "detail-to-collections"
             ? prevSlugRef.current
             : slug;
 

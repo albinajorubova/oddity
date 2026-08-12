@@ -1,6 +1,9 @@
 export type KillableAnimation = { kill: () => void };
 
-export type AnimationType = "home-to-archive" | "archive-to-home" | "fade";
+export type AnimationType =
+  | "collections-to-detail"
+  | "detail-to-collections"
+  | "fade";
 
 export type TransitionAnimationParams = {
   prevNode: HTMLElement | null;

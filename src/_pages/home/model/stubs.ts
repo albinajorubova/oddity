@@ -1,9 +1,7 @@
-import type { ArchiveItem } from "@entities/archive-card";
+import { ROUTES } from "@shared/config";
 
 export type HomeHeroStub = {
   brand: string;
-  est: string;
-  description: string;
   ctaLabel: string;
 };
 
@@ -14,78 +12,11 @@ export type HomeNavItem = {
 
 export const HOME_HERO_STUB: HomeHeroStub = {
   brand: "ODDITY",
-  est: "EST. 2026 / DIGITAL ARCHIVE",
-  description: "A CURATED ARCHIVE OF EXTRAORDINARY ALBUMS.",
   ctaLabel: "EXPLORE",
 };
 
 export const HOME_NAV_STUB: HomeNavItem[] = [
-  { label: "ARCHIVE", href: "/archive" },
-  { label: "COLLECTIONS", href: "/collections" },
-  { label: "STORIES", href: "/stories" },
-  { label: "ABOUT", href: "/about" },
-];
-
-/** Stub gallery — albums only, one real cover each. */
-export const ARCHIVE_ITEMS_STUB: ArchiveItem[] = [
-  {
-    id: "1",
-    slug: "sgt-peppers-lonely-hearts-club-band",
-    artist: "The Beatles",
-    title: "Sgt. Pepper's Lonely Hearts Club Band",
-    year: 1967,
-    category: "Music",
-    imageUrl: "/images/covers/sgt-pepper.jpg",
-    aspect: "square",
-  },
-  {
-    id: "2",
-    slug: "in-the-court-of-the-crimson-king",
-    artist: "King Crimson",
-    title: "In the Court of the Crimson King",
-    year: 1969,
-    category: "Music",
-    imageUrl: "/images/covers/crimson-king.jpg",
-    aspect: "square",
-  },
-  {
-    id: "3",
-    slug: "aladdin-sane",
-    artist: "David Bowie",
-    title: "Aladdin Sane",
-    year: 1973,
-    category: "Music",
-    imageUrl: "/images/covers/aladdin-sane.jpg",
-    aspect: "square",
-  },
-  {
-    id: "4",
-    slug: "the-dark-side-of-the-moon",
-    artist: "Pink Floyd",
-    title: "The Dark Side of the Moon",
-    year: 1973,
-    category: "Music",
-    imageUrl: "/images/covers/dark-side-of-the-moon.jpg",
-    aspect: "square",
-  },
-  {
-    id: "5",
-    slug: "kind-of-blue",
-    artist: "Miles Davis",
-    title: "Kind of Blue",
-    year: 1959,
-    category: "Music",
-    imageUrl: "/images/covers/kind-of-blue.jpg",
-    aspect: "square",
-  },
-  {
-    id: "6",
-    slug: "nevermind",
-    artist: "Nirvana",
-    title: "Nevermind",
-    year: 1991,
-    category: "Music",
-    imageUrl: "/images/covers/nevermind.jpg",
-    aspect: "square",
-  },
+  { label: "COLLECTIONS", href: ROUTES.collections },
+  { label: "STORIES", href: ROUTES.stories },
+  { label: "ABOUT", href: ROUTES.about },
 ];

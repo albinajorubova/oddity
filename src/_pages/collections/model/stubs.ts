@@ -1,7 +1,7 @@
 import type { CollectionItem } from "@entities/collection-card";
 
-/** Same covers as collections — lab sandbox for Flip stages. */
-export const LAB_GALLERY_ITEMS: CollectionItem[] = [
+/** Stub gallery — albums only, one real cover each. */
+export const COLLECTION_ITEMS_STUB: CollectionItem[] = [
   {
     id: "1",
     slug: "sgt-peppers-lonely-hearts-club-band",

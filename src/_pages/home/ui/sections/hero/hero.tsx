@@ -2,8 +2,10 @@
 
 import clsx from "clsx";
 
+import { ROUTES } from "@shared/config";
 import { Button } from "@shared/ui/button";
 import { OddLogo } from "@shared/ui/odd-logo";
+import { RollingText } from "@shared/ui/rolling-text";
 import { HOME_HERO_STUB } from "@/_pages/home/model";
 
 import s from "./hero.module.scss";
@@ -22,13 +24,12 @@ export const HeroSection = (props: HeroSectionProps) => {
         <OddLogo text={content.brand} />
       </h1>
 
-      <div className={s.copy}>
-        <p className={s.est}>{content.est}</p>
-        <p className={s.description}>{content.description}</p>
-      </div>
-
-      <Button href="#gallery" className={s.cta} aria-label={content.ctaLabel}>
-        <span className={s.ctaLabel}>{content.ctaLabel}</span>
+      <Button
+        href={ROUTES.collections}
+        className={s.cta}
+        aria-label={content.ctaLabel}
+      >
+        <RollingText text={content.ctaLabel} className={s.ctaLabel} />
       </Button>
     </section>
   );

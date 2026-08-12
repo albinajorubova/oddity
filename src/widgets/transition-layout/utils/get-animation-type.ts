@@ -1,3 +1,5 @@
+import { ROUTES, ROUTE_PATTERNS } from "@shared/config";
+
 import type { AnimationType } from "../animations";
 
 export type GetAnimationTypeParams = {
@@ -11,29 +13,29 @@ export function getAnimationType({
   nextRoute,
   slug,
 }: GetAnimationTypeParams): AnimationType {
-  const fromHome = prevRoute === "/";
-  const toHome = nextRoute === "/";
-  const fromArchive = prevRoute === "/archive/[slug]";
-  const toArchive = nextRoute === "/archive/[slug]";
+  const fromCollections = prevRoute === ROUTES.collections;
+  const toCollections = nextRoute === ROUTES.collections;
+  const fromDetail = prevRoute === ROUTE_PATTERNS.collectionDetail;
+  const toDetail = nextRoute === ROUTE_PATTERNS.collectionDetail;
 
-  if (fromHome && toArchive && slug) {
+  if (fromCollections && toDetail && slug) {
     const card = document.querySelector(
       `[data-flip-id="${slug}"][data-flip-role="card"]`,
     );
     const hero = document.querySelector(
       `[data-flip-id="${slug}"][data-flip-role="hero"]`,
     );
-    if (card && hero) return "home-to-archive";
+    if (card && hero) return "collections-to-detail";
   }
 
-  if (fromArchive && toHome && slug) {
+  if (fromDetail && toCollections && slug) {
     const card = document.querySelector(
       `[data-flip-id="${slug}"][data-flip-role="card"]`,
     );
     const hero = document.querySelector(
       `[data-flip-id="${slug}"][data-flip-role="hero"]`,
     );
-    if (card && hero) return "archive-to-home";
+    if (card && hero) return "detail-to-collections";
   }
 
   return "fade";

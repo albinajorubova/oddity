@@ -4,3 +4,4 @@ export * from './img-proxy';
 export * from "./breakpoints";
 export * from "./vars";
 export * from "./accents";
+export * from "./routes";
