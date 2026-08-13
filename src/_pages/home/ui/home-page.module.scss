@@ -7,3 +7,36 @@
 .inner {
   width: 100%;
 }
+
+.cta {
+  position: fixed;
+  z-index: var(--z-header);
+  right: var(--padding-horizontal-base);
+  bottom: var(--padding-horizontal-base);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: vw(88);
+  height: vw(88);
+  border-radius: 50%;
+  background-color: var(--c-accent);
+  color: var(--c-black);
+  text-decoration: none;
+
+  @include mq(lg) {
+    width: vw(72);
+    height: vw(72);
+  }
+
+  @include mq(md) {
+    width: vw(64);
+    height: vw(64);
+  }
+}
+
+.ctaLabel {
+  @include captionM;
+
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}

@@ -1,0 +1,66 @@
+.root {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: 100%;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.item {
+  position: absolute;
+  margin: 0;
+  aspect-ratio: var(--aspect-ratio, 1);
+  width: min(var(--slot-max-w), calc(var(--slot-max-h) * var(--aspect-ratio, 1)));
+  max-height: var(--slot-max-h);
+
+  &:nth-child(1) {
+    --slot-max-w: #{vw(200)};
+    --slot-max-h: #{vw(280)};
+    top: 10%;
+    left: 6%;
+  }
+
+  &:nth-child(2) {
+    --slot-max-w: #{vw(280)};
+    --slot-max-h: #{vw(200)};
+    top: 42%;
+    left: 4%;
+  }
+
+  &:nth-child(3) {
+    --slot-max-w: #{vw(180)};
+    --slot-max-h: #{vw(220)};
+    bottom: 12%;
+    left: 14%;
+  }
+
+  &:nth-child(4) {
+    --slot-max-w: #{vw(260)};
+    --slot-max-h: #{vw(180)};
+    top: 8%;
+    right: 8%;
+  }
+
+  &:nth-child(5) {
+    --slot-max-w: #{vw(220)};
+    --slot-max-h: #{vw(220)};
+    top: 40%;
+    right: 5%;
+  }
+
+  &:nth-child(6) {
+    --slot-max-w: #{vw(320)};
+    --slot-max-h: #{vw(220)};
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.media {
+  width: 100%;
+  height: 100%;
+}

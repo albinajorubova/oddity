@@ -8,7 +8,6 @@
 .letter {
   display: inline-block;
   transform-origin: center bottom;
-  will-change: transform, color, filter, opacity, font-weight;
   font-weight: 700;
   color: var(--c-black);
 }

@@ -1,12 +1,21 @@
 .root {
+  position: relative;
+  height: 200svh;
+}
+
+.content {
+  position: sticky;
+  z-index: var(--z-header);
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100svh - var(--header-height));
-  padding-block: var(--spacing-48);
 }
 
 .brand {
+  position: relative;
+  z-index: 2;
   margin: 0;
   font-size: vw(140);
   font-weight: 700;
@@ -23,35 +32,10 @@
   }
 }
 
-.cta {
+.isFlying {
   position: fixed;
-  z-index: var(--z-header);
-  right: var(--padding-horizontal-base);
-  bottom: var(--padding-horizontal-base);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: vw(88);
-  height: vw(88);
-  border-radius: 50%;
-  background-color: var(--c-accent);
-  color: var(--c-black);
-  text-decoration: none;
-
-  @include mq(lg) {
-    width: vw(72);
-    height: vw(72);
-  }
-
-  @include mq(md) {
-    width: vw(64);
-    height: vw(64);
-  }
-}
-
-.ctaLabel {
-  @include captionM;
-
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  margin: 0;
 }

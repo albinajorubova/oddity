@@ -17,6 +17,7 @@ export type OddLogoProps = {
   oddHoldMs?: number;
   introDelayMs?: number;
   hoverCooldownMs?: number;
+  disabled?: boolean;
 };
 
 export const OddLogo = (props: OddLogoProps) => {
@@ -29,6 +30,7 @@ export const OddLogo = (props: OddLogoProps) => {
     oddHoldMs = 900,
     introDelayMs = 900,
     hoverCooldownMs = 50,
+    disabled = false,
   } = props;
 
   const baseState = useMemo(() => createDefaultLogoState(text), [text]);
@@ -37,6 +39,9 @@ export const OddLogo = (props: OddLogoProps) => {
   const rootRef = useRef<HTMLSpanElement>(null);
   const baseStateRef = useRef(baseState);
   baseStateRef.current = baseState;
+
+  const disabledRef = useRef(disabled);
+  disabledRef.current = disabled;
 
   const controller = useMemo(
     () =>
@@ -56,15 +61,17 @@ export const OddLogo = (props: OddLogoProps) => {
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     controller.setReducedMotion(media.matches);
-    controller.reset(true);
 
     const onMotionChange = () => {
       controller.setReducedMotion(media.matches);
-      if (!media.matches) controller.start();
+      if (disabledRef.current || media.matches) {
+        controller.reset(true);
+        return;
+      }
+      controller.start();
     };
 
     media.addEventListener("change", onMotionChange);
-    if (!media.matches) controller.start();
 
     return () => {
       media.removeEventListener("change", onMotionChange);
@@ -72,7 +79,18 @@ export const OddLogo = (props: OddLogoProps) => {
     };
   }, [baseState, controller]);
 
+  useEffect(() => {
+    if (disabled) {
+      controller.reset(true);
+      return;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    controller.start();
+  }, [disabled, controller]);
+
   const onHover = () => {
+    if (disabled) return;
     if (!controller.canPlay("hover")) return;
     controller.playHover();
   };

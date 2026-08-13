@@ -2,12 +2,14 @@
 
 import type { ComponentProps } from "react";
 import clsx from "clsx";
+import { useRouter } from "next/router";
 
-import { setRandomHoverBlotch, ROUTES } from "@shared/config";
+import { ROUTES, setRandomHoverBlotch } from "@shared/config";
 import { Button } from "@shared/ui/button";
 import { Container } from "@shared/ui/container";
 import { Link } from "@shared/ui/link";
 import { MarkerHighlight } from "@shared/ui/marker";
+import { OddLogo } from "@shared/ui/odd-logo";
 import { RollingText } from "@shared/ui/rolling-text";
 import { HOME_NAV_STUB } from "@/_pages/home/model";
 
@@ -19,10 +21,25 @@ export type HeaderProps = ComponentProps<"header"> & {
 
 export const Header = (props: HeaderProps) => {
   const { className, ...rest } = props;
+  const router = useRouter();
+  const isHome = router.pathname === ROUTES.home;
 
   return (
     <Container tag="header" className={clsx(s.root, className)} {...rest}>
       <nav className={s.nav} aria-label="Primary">
+        <div data-logo-target className={s.logoSlot}>
+          <div
+            data-header-logo
+            className={clsx(s.headerLogo, !isHome && s.isVisible)}
+          >
+            <OddLogo
+              text="ODDITY"
+              className={s.headerLogoInner}
+              introDelayMs={0}
+            />
+          </div>
+        </div>
+
         {HOME_NAV_STUB.map((item) => (
           <Link key={item.label} href={item.href} className={s.navLink}>
             <MarkerHighlight color="lime" variant="background">
