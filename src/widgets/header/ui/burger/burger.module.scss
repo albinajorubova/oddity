@@ -1,0 +1,32 @@
+.root {
+  position: relative;
+  overflow: hidden;
+  width: vw(28);
+  height: vw(24);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--c-black);
+
+  &[aria-expanded="true"] {
+    overflow: visible;
+  }
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: vw(2);
+  background: currentColor;
+  transform-origin: center center;
+
+  &:first-child {
+    top: vw(2);
+  }
+
+  &:last-child {
+    top: vw(10);
+  }
+}

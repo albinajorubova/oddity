@@ -113,10 +113,7 @@ export const HeroSection = () => {
       if (!logo.classList.contains(s.isFlying)) capture();
 
       const morph = Math.min(progress / MORPH_END, 1);
-      const fade =
-        progress <= MORPH_END
-          ? 0
-          : (progress - MORPH_END) / (1 - MORPH_END);
+      const settled = morph >= 1;
 
       logo.classList.add(s.isFlying);
       gsap.set(logo, {
@@ -125,16 +122,16 @@ export const HeroSection = () => {
         x: mix(metrics.fromX, metrics.toX, morph),
         y: mix(metrics.fromY, metrics.toY, morph),
         scale: mix(1, metrics.scale, morph),
-        autoAlpha: 1 - fade,
+        autoAlpha: settled ? 0 : 1,
         pointerEvents: "none",
         force3D: true,
       });
       gsap.set(headerLogo, {
-        autoAlpha: fade,
-        pointerEvents: fade > 0.5 ? "auto" : "none",
+        autoAlpha: settled ? 1 : 0,
+        pointerEvents: settled ? "auto" : "none",
       });
       updateGallery(morph);
-      setMorphing(progress < 1);
+      setMorphing(!settled);
     };
 
     capture();

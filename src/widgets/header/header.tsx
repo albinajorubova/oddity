@@ -7,11 +7,14 @@ import { useRouter } from "next/router";
 import { ROUTES, setRandomHoverBlotch } from "@shared/config";
 import { Button } from "@shared/ui/button";
 import { Container } from "@shared/ui/container";
-import { Link } from "@shared/ui/link";
-import { MarkerHighlight } from "@shared/ui/marker";
 import { OddLogo } from "@shared/ui/odd-logo";
 import { RollingText } from "@shared/ui/rolling-text";
-import { HOME_NAV_STUB } from "@/_pages/home/model";
+
+// import { Link } from "@shared/ui/link";
+// import { MarkerHighlight } from "@shared/ui/marker";
+// import { HOME_NAV_STUB } from "@/_pages/home/model";
+
+import { Burger } from "./ui/burger";
 
 import s from "./header.module.scss";
 
@@ -27,26 +30,28 @@ export const Header = (props: HeaderProps) => {
   return (
     <Container tag="header" className={clsx(s.root, className)} {...rest}>
       <nav className={s.nav} aria-label="Primary">
-        <div data-logo-target className={s.logoSlot}>
-          <div
+        <div className={s.logoSlot}>
+          <Button
+            href={ROUTES.home}
             data-header-logo
             className={clsx(s.headerLogo, !isHome && s.isVisible)}
+            aria-label="ODDITY"
           >
             <OddLogo
               text="ODDITY"
               className={s.headerLogoInner}
               introDelayMs={0}
             />
-          </div>
+          </Button>
         </div>
 
-        {HOME_NAV_STUB.map((item) => (
+        {/* {HOME_NAV_STUB.map((item) => (
           <Link key={item.label} href={item.href} className={s.navLink}>
             <MarkerHighlight color="lime" variant="background">
               {item.label}
             </MarkerHighlight>
           </Link>
-        ))}
+        ))} */}
       </nav>
 
       <Button
@@ -60,14 +65,16 @@ export const Header = (props: HeaderProps) => {
       </Button>
 
       <div className={s.actions}>
-        <Link href={ROUTES.login} className={s.login}>
+        {/* <Link href={ROUTES.login} className={s.login}>
           <MarkerHighlight color="lime" variant="background">
             LOGIN
           </MarkerHighlight>
         </Link>
         <Button href={ROUTES.join} className={s.join}>
           JOIN ↗
-        </Button>
+        </Button> */}
+
+        <Burger />
       </div>
     </Container>
   );
