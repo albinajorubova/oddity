@@ -15,6 +15,8 @@
   aspect-ratio: var(--aspect-ratio, 1);
   width: min(var(--slot-max-w), calc(var(--slot-max-h) * var(--aspect-ratio, 1)));
   max-height: var(--slot-max-h);
+  border-radius: vw(12);
+  overflow: hidden;
 
   &:nth-child(1) {
     --slot-max-w: #{vw(200)};
