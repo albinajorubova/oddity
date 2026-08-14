@@ -52,7 +52,14 @@ export const HeroSection = () => {
       scale: 1,
     };
 
-    let flying = false;
+    let refreshing = false;
+    let morphing = false;
+
+    const setMorphing = (next: boolean) => {
+      if (morphing === next) return;
+      morphing = next;
+      setIsMorphing(next);
+    };
 
     const capture = () => {
       const from = centerOf(logo);
@@ -76,12 +83,11 @@ export const HeroSection = () => {
     const rest = () => {
       logo.classList.remove(s.isFlying);
       gsap.set(logo, {
-        clearProps: "x,y,xPercent,yPercent,scale,transform,opacity,visibility",
+        clearProps:
+          "x,y,xPercent,yPercent,scale,transform,opacity,visibility,pointerEvents",
       });
-      imageMetrics.forEach((_, image) => {
-        gsap.set(image, {
-          clearProps: "x,y,scale,opacity,visibility,transform",
-        });
+      images.forEach((image) => {
+        gsap.set(image, { clearProps: "transform,opacity,visibility" });
       });
       gsap.set(headerLogo, { autoAlpha: 0, pointerEvents: "none" });
     };
@@ -97,6 +103,40 @@ export const HeroSection = () => {
       });
     };
 
+    const render = (progress: number) => {
+      if (progress <= 0) {
+        rest();
+        setMorphing(false);
+        return;
+      }
+
+      if (!logo.classList.contains(s.isFlying)) capture();
+
+      const morph = Math.min(progress / MORPH_END, 1);
+      const fade =
+        progress <= MORPH_END
+          ? 0
+          : (progress - MORPH_END) / (1 - MORPH_END);
+
+      logo.classList.add(s.isFlying);
+      gsap.set(logo, {
+        xPercent: -50,
+        yPercent: -50,
+        x: mix(metrics.fromX, metrics.toX, morph),
+        y: mix(metrics.fromY, metrics.toY, morph),
+        scale: mix(1, metrics.scale, morph),
+        autoAlpha: 1 - fade,
+        pointerEvents: "none",
+        force3D: true,
+      });
+      gsap.set(headerLogo, {
+        autoAlpha: fade,
+        pointerEvents: fade > 0.5 ? "auto" : "none",
+      });
+      updateGallery(morph);
+      setMorphing(progress < 1);
+    };
+
     capture();
     gsap.set(headerLogo, { autoAlpha: 0, pointerEvents: "none" });
 
@@ -104,50 +144,20 @@ export const HeroSection = () => {
       trigger: section,
       scroller: "#scroll",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
       invalidateOnRefresh: true,
-      onRefresh: () => {
-        if (!flying) capture();
+      onRefreshInit: () => {
+        refreshing = true;
+      },
+      onRefresh: (self) => {
+        rest();
+        capture();
+        refreshing = false;
+        render(self.progress);
       },
       onUpdate: (self) => {
-        const t = self.progress;
-        const active = t > 0;
-
-        if (active && !flying) {
-          capture();
-          flying = true;
-          logo.classList.add(s.isFlying);
-          gsap.set(logo, {
-            xPercent: -50,
-            yPercent: -50,
-            force3D: true,
-          });
-          setIsMorphing(true);
-        }
-
-        if (!active) {
-          if (flying) {
-            flying = false;
-            setIsMorphing(false);
-            rest();
-          }
-          return;
-        }
-
-        const morph = Math.min(t / MORPH_END, 1);
-        const fade = t <= MORPH_END ? 0 : (t - MORPH_END) / (1 - MORPH_END);
-
-        updateGallery(t);
-        gsap.set(logo, {
-          x: mix(metrics.fromX, metrics.toX, morph),
-          y: mix(metrics.fromY, metrics.toY, morph),
-          scale: mix(1, metrics.scale, morph),
-          autoAlpha: 1 - fade,
-        });
-        gsap.set(headerLogo, {
-          autoAlpha: fade,
-          pointerEvents: fade > 0.5 ? "auto" : "none",
-        });
+        if (refreshing) return;
+        render(self.progress);
       },
     });
 
