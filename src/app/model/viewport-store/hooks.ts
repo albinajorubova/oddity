@@ -11,5 +11,7 @@ export const useIsDesktop = () => useViewportStore((state) => state.isDesktop);
 const useCurrentBreakpoint = () =>
   useViewportStore((state) => state.currentBreakpoint);
 
+export { useCurrentBreakpoint };
+
 export const useIsBreakpoint = (findBreakpoint: BreakpointKeys) =>
   useCurrentBreakpoint() === findBreakpoint;

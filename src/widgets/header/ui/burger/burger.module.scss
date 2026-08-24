@@ -7,7 +7,7 @@
   border: 0;
   background: transparent;
   cursor: pointer;
-  color: var(--c-black);
+  color: inherit;
 
   &[aria-expanded="true"] {
     overflow: visible;

@@ -29,7 +29,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
         <ResizeProvider>
           <DataStoreProvider data={pageProps.cms}>
             <Header />
-            <Cursor />
+            {/* <Cursor /> */}
             <Preloader />
             <Scroll root wrapper>
               <TransitionLayout router={router}>

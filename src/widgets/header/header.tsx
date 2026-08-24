@@ -1,20 +1,21 @@
 "use client";
 
 import type { ComponentProps } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { useUiActions, useUiStore } from "@app/model/ui-store";
 
 import { ROUTES, setRandomHoverBlotch } from "@shared/config";
+import { BgMorph } from "@shared/ui/bg-morph";
 import { Button } from "@shared/ui/button";
 import { Container } from "@shared/ui/container";
 import { OddLogo } from "@shared/ui/odd-logo";
 import { RollingText } from "@shared/ui/rolling-text";
 
-// import { Link } from "@shared/ui/link";
-// import { MarkerHighlight } from "@shared/ui/marker";
-// import { HOME_NAV_STUB } from "@/_pages/home/model";
-
+import { useHeaderMenuAnimation } from "./model/use-header-menu-animation";
 import { Burger } from "./ui/burger";
+import { HeaderMenuPanel } from "./ui/header-menu-panel";
 
 import s from "./header.module.scss";
 
@@ -26,57 +27,108 @@ export const Header = (props: HeaderProps) => {
   const { className, ...rest } = props;
   const router = useRouter();
   const isHome = router.pathname === ROUTES.home;
+  const isOpenMenu = useUiStore((store) => store.isOpenMenu);
+  const { toggleMenu, closeMenu } = useUiActions();
+  const { menuOverlayRef, menuPanelRef, backdropRef } =
+    useHeaderMenuAnimation(isOpenMenu);
+
+  const isOpenMenuRef = useRef(isOpenMenu);
+  isOpenMenuRef.current = isOpenMenu;
+
+  const [isMenuElevated, setIsMenuElevated] = useState(false);
+
+  useEffect(() => {
+    if (isOpenMenu) setIsMenuElevated(true);
+  }, [isOpenMenu]);
+
+  const onMenuMorphComplete = useCallback((isOpenAnimation: boolean) => {
+    if (!isOpenAnimation && !isOpenMenuRef.current) {
+      setIsMenuElevated(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isOpenMenu) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenu();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [closeMenu, isOpenMenu]);
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", closeMenu);
+    return () => {
+      router.events.off("routeChangeStart", closeMenu);
+    };
+  }, [closeMenu, router.events]);
 
   return (
-    <Container tag="header" className={clsx(s.root, className)} {...rest}>
-      <nav className={s.nav} aria-label="Primary">
-        <div className={s.logoSlot}>
-          <Button
-            href={ROUTES.home}
-            data-header-logo
-            className={clsx(s.headerLogo, !isHome && s.isVisible)}
-            aria-label="ODDITY"
-          >
-            <OddLogo
-              text="ODDITY"
-              className={s.headerLogoInner}
-              introDelayMs={0}
-            />
-          </Button>
+    <header className={clsx(s.root, className)} {...rest}>
+      <Container className={s.bar}>
+        <nav className={s.nav} aria-label="Primary">
+          <div className={s.logoSlot}>
+            <Button
+              href={ROUTES.home}
+              data-header-logo
+              className={clsx(s.headerLogo, !isHome && s.isVisible)}
+              aria-label="ODDITY"
+            >
+              <OddLogo
+                text="ODDITY"
+                className={s.headerLogoInner}
+                introDelayMs={0}
+              />
+            </Button>
+          </div>
+        </nav>
+
+        <Button
+          href={ROUTES.search}
+          className={s.search}
+          aria-label="Search"
+          onMouseEnter={setRandomHoverBlotch}
+        >
+          <span className={s.searchDot} aria-hidden />
+          <RollingText text="SEARCH" />
+        </Button>
+
+        <div className={s.actions}>
+          <Burger isOpen={isOpenMenu} onClick={toggleMenu} />
         </div>
+      </Container>
 
-        {/* {HOME_NAV_STUB.map((item) => (
-          <Link key={item.label} href={item.href} className={s.navLink}>
-            <MarkerHighlight color="lime" variant="background">
-              {item.label}
-            </MarkerHighlight>
-          </Link>
-        ))} */}
-      </nav>
-
-      <Button
-        href={ROUTES.search}
-        className={s.search}
-        aria-label="Search"
-        onMouseEnter={setRandomHoverBlotch}
+      <div
+        id="header-menu"
+        ref={menuOverlayRef}
+        className={s.menuOverlay}
+        data-open={isMenuElevated ? "" : undefined}
+        aria-hidden={!isOpenMenu}
       >
-        <span className={s.searchDot} aria-hidden />
-        <RollingText text="SEARCH" />
-      </Button>
-
-      <div className={s.actions}>
-        {/* <Link href={ROUTES.login} className={s.login}>
-          <MarkerHighlight color="lime" variant="background">
-            LOGIN
-          </MarkerHighlight>
-        </Link>
-        <Button href={ROUTES.join} className={s.join}>
-          JOIN ↗
-        </Button> */}
-
-        <Burger />
+        <button
+          ref={backdropRef}
+          type="button"
+          className={s.menuBackdrop}
+          aria-label="Close menu"
+          tabIndex={-1}
+          onClick={closeMenu}
+        />
+        <nav ref={menuPanelRef} className={s.menuPanel} aria-label="Menu">
+          <BgMorph
+            duration={0.6}
+            uniqSvgId="header-menu-bg-morph"
+            isOpen={isOpenMenu}
+            direction="top"
+            onComplete={onMenuMorphComplete}
+          />
+          <Container>
+            <HeaderMenuPanel onNavigate={closeMenu} />
+          </Container>
+        </nav>
       </div>
-    </Container>
+    </header>
   );
 };
 
