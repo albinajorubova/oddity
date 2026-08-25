@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 import { ROUTES } from "@/shared/config";
 import { Button } from "@/shared/ui/button";
 import { RollingText } from "@/shared/ui/rolling-text";
@@ -18,7 +20,10 @@ export const HomePage = () => {
         className={s.cta}
         aria-label={content.ctaLabel}
       >
-        <RollingText text={content.ctaLabel} className={s.ctaLabel} />
+        <RollingText
+          text={content.ctaLabel}
+          className={clsx(s.ctaLabel, "typo-caption")}
+        />
       </Button>
     </div>
   );

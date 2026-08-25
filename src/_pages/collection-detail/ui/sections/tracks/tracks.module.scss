@@ -15,9 +15,6 @@
 
 .eyebrow {
   margin: 0;
-  font-size: vw(11);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--c-grey-400);
 }
 
@@ -43,23 +40,9 @@
 }
 
 .index {
-  font-size: vw(12);
-  letter-spacing: 0.08em;
   color: var(--c-grey-400);
 }
 
-.title {
-  font-size: vw(18);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-
-  @include mq(md) {
-    font-size: 1.05rem;
-  }
-}
-
 .duration {
-  font-size: vw(12);
-  letter-spacing: 0.04em;
   color: var(--c-grey-600);
 }

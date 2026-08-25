@@ -1,2 +1,33 @@
-@use 'functions/vw' as *;
-@use 'mixins/breakpoints' as *;
+@use "mixins/typography" as *;
+
+.typo-display {
+  @include display;
+}
+
+.typo-h1 {
+  @include h1;
+}
+
+.typo-h2 {
+  @include h2;
+}
+
+.typo-h3 {
+  @include h3;
+}
+
+.typo-p1 {
+  @include p1;
+}
+
+.typo-p2 {
+  @include p2;
+}
+
+.typo-caption {
+  @include caption;
+}
+
+.typo-micro {
+  @include micro;
+}

@@ -21,7 +21,9 @@ export const Radio = (props: RadioProps) => {
     <div className={clsx(s.root, mods, className)}>
       <input className={s.input} type="radio" {...rest} />
       <div className={s.icon} />
-      {children && <div className={s.content}>{children}</div>}
+      {children && (
+        <div className={clsx(s.content, "typo-caption")}>{children}</div>
+      )}
     </div>
   );
 };

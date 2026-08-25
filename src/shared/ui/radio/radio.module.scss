@@ -19,7 +19,6 @@
 
 .content {
   padding-inline: var(--spacing-8);
-  @include captionM;
   font-weight: 600;
   color: var(--text-primary-dark);
 }

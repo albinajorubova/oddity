@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { gsap } from "gsap";
 
 import { Animate, SplitTextAnimate } from "@shared/ui/animate";
-import { Link } from "@shared/ui/link";
+import { Button } from "@shared/ui/button";
 import { TRANSITION_DURATION } from "@widgets/transition-layout/constants";
 import { useTransitionLayout } from "@widgets/transition-layout/hooks/use-transition-layout";
 import type { CollectionDetail } from "@/_pages/collection-detail/model";
@@ -61,7 +61,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
       aria-hidden={!revealed}
     >
       <Animate isVisible={visible} data="fadeTop" delay={0} duration={0.4}>
-        <p className={s.kicker}>
+        <p className={clsx(s.kicker, "typo-micro")}>
           ALBUM
           <span className={s.sep}> / </span>
           {item.year}
@@ -72,7 +72,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
 
       <SplitTextAnimate
         as="h1"
-        className={s.title}
+        className={clsx(s.title, "typo-h1")}
         type="word"
         isVisible={visible}
         stagger={0.08}
@@ -88,7 +88,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
         delay={0.28}
         duration={0.45}
       >
-        <p className={s.artist}>{item.artist}</p>
+        <p className={clsx(s.artist, "typo-p1")}>{item.artist}</p>
       </Animate>
 
       <Animate
@@ -97,7 +97,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
         delay={0.4}
         duration={0.5}
       >
-        <div className={s.description}>
+        <div className={clsx(s.description, "typo-p2")}>
           {paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -111,7 +111,7 @@ export const HeroInfo = (props: HeroInfoProps) => {
           delay={0.5}
           duration={0.45}
         >
-          <p className={s.editorNote}>{item.editorNote}</p>
+          <p className={clsx(s.editorNote, "typo-p2")}>{item.editorNote}</p>
         </Animate>
       )}
 
@@ -124,19 +124,19 @@ export const HeroInfo = (props: HeroInfoProps) => {
         <dl className={s.facts}>
           {item.label && (
             <div className={s.fact}>
-              <dt className={s.factLabel}>Label</dt>
-              <dd className={s.factValue}>{item.label}</dd>
+              <dt className={clsx(s.factLabel, "typo-micro")}>Label</dt>
+              <dd className="typo-p2">{item.label}</dd>
             </div>
           )}
           {item.duration && (
             <div className={s.fact}>
-              <dt className={s.factLabel}>Duration</dt>
-              <dd className={s.factValue}>{item.duration}</dd>
+              <dt className={clsx(s.factLabel, "typo-micro")}>Duration</dt>
+              <dd className="typo-p2">{item.duration}</dd>
             </div>
           )}
           <div className={s.fact}>
-            <dt className={s.factLabel}>Status</dt>
-            <dd className={s.factValue}>{item.status}</dd>
+            <dt className={clsx(s.factLabel, "typo-micro")}>Status</dt>
+            <dd className="typo-p2">{item.status}</dd>
           </div>
         </dl>
       </Animate>
@@ -149,13 +149,18 @@ export const HeroInfo = (props: HeroInfoProps) => {
           duration={0.45}
         >
           <div className={s.availability}>
-            <p className={s.availabilityLabel}>Available on</p>
+            <p className={clsx(s.availabilityLabel, "typo-micro")}>
+              Available on
+            </p>
             <ul className={s.availabilityList}>
               {item.availability.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className={s.availabilityLink}>
+                  <Button
+                    href={link.href}
+                    className={clsx(s.availabilityLink, "typo-p2")}
+                  >
                     {link.label} ↗
-                  </Link>
+                  </Button>
                 </li>
               ))}
             </ul>

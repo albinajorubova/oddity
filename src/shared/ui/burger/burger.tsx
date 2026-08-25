@@ -22,7 +22,7 @@ export const Burger = (props: BurgerProps) => {
 
   return (
     <Button
-      className={clsx(s.root, className, {
+      className={clsx(s.root, "typo-caption", className, {
         [s.open]: isOpen,
       })}
       onClick={onClick}

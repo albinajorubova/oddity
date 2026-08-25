@@ -28,7 +28,7 @@ export const Checkbox = (props: CheckboxProps) => {
       <div className={s.icon}>
         <Icon name="check" size="s" />
       </div>
-      {children && <div className={s.content}>{children}</div>}
+      {children && <div className={clsx(s.content, "typo-p2")}>{children}</div>}
     </div>
   );
 };

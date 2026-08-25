@@ -44,19 +44,12 @@
 /* Sizes via mod(s, 'size', value) */
 .size {
   &-s {
-    .error {
-      font-size: vw(13);
-      line-height: 1.32;
-      letter-spacing: -0.02em;
-    }
-
     .control {
       height: vw(56);
       border-radius: vw(8);
       padding-left: var(--spacing-12);
       padding-right: var(--spacing-48);
 
-      @include btnS;
       font-weight: 600;
     }
 

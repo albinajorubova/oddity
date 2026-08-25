@@ -20,29 +20,17 @@
 
 .eyebrow {
   margin: 0;
-  font-size: vw(11);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--c-grey-400);
 }
 
 .title {
   margin: 0;
-  font-size: vw(48);
   font-weight: 700;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
   text-transform: uppercase;
-
-  @include mq(md) {
-    font-size: 2.25rem;
-  }
 }
 
 .note {
   margin: 0;
-  font-size: vw(14);
-  line-height: 1.5;
   color: var(--c-grey-600);
 
   code {
@@ -60,9 +48,6 @@
   align-self: flex-start;
   margin-top: var(--spacing-8);
   padding: 0;
-  font-size: vw(12);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--c-grey-600);
   cursor: pointer;
   background: none;
@@ -156,22 +141,11 @@
 
 .artist {
   margin: 0;
-  font-size: vw(11);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--c-grey-400);
-}
-
-.cardTitle {
-  margin: 0;
-  font-size: vw(15);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
 }
 
 .year {
   margin: 0;
-  font-size: vw(12);
   color: var(--c-grey-600);
 }
 
@@ -186,9 +160,6 @@
 
 .heroLabel {
   margin: 0;
-  font-size: vw(11);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--c-grey-400);
 }
 
@@ -216,8 +187,6 @@
 
 .heroPlaceholder {
   margin: 0;
-  font-size: vw(13);
-  letter-spacing: 0.04em;
   color: var(--c-grey-400);
 }
 
@@ -229,15 +198,10 @@
 
 .heroTitle {
   margin: 0;
-  font-size: vw(22);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
 }
 
 .heroHint {
   margin: 0;
-  font-size: vw(13);
-  line-height: 1.45;
   color: var(--c-grey-600);
 
   code {

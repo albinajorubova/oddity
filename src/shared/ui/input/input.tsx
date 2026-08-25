@@ -79,7 +79,7 @@ export const Input = (props: InputProps) => {
         <input
           value={value}
           ref={ref}
-          className={s.control}
+          className={clsx(s.control, "typo-caption")}
           onChange={handleChange}
           disabled={disabled}
           {...inputProps}
@@ -92,7 +92,7 @@ export const Input = (props: InputProps) => {
         )}
       </div>
       {error && (
-        <div className={s.error}>
+        <div className={clsx(s.error, "typo-p2")}>
           <Icon size="xs" name="warn" />
           <span>{error}</span>
         </div>

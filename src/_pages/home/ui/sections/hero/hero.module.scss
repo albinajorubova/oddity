@@ -17,19 +17,8 @@
   position: relative;
   z-index: 2;
   margin: 0;
-  font-size: vw(140);
   font-weight: 700;
-  line-height: 0.85;
-  letter-spacing: -0.04em;
   text-transform: uppercase;
-
-  @include mq(lg) {
-    font-size: vw(96);
-  }
-
-  @include mq(md) {
-    font-size: vw(72);
-  }
 }
 
 .isFlying {

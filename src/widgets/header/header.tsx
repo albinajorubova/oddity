@@ -78,7 +78,7 @@ export const Header = (props: HeaderProps) => {
             >
               <OddLogo
                 text="ODDITY"
-                className={s.headerLogoInner}
+                className="typo-p1"
                 introDelayMs={0}
               />
             </Button>
@@ -87,7 +87,7 @@ export const Header = (props: HeaderProps) => {
 
         <Button
           href={ROUTES.search}
-          className={s.search}
+          className={clsx(s.search, "typo-caption")}
           aria-label="Search"
           onMouseEnter={setRandomHoverBlotch}
         >

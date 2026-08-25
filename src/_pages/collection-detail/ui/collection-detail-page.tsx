@@ -39,7 +39,11 @@ export const CollectionDetailPage = (props: CollectionDetailPageProps) => {
 
   return (
     <div className={clsx(s.root, className)}>
-      <button type="button" className={s.back} onClick={handleBack}>
+      <button
+        type="button"
+        className={clsx(s.back, "typo-micro")}
+        onClick={handleBack}
+      >
         ← Collections
       </button>
       <SectionNav items={sectionNav} />

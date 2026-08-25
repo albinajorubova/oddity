@@ -45,7 +45,7 @@ export const StyledButton = (props: StyledButtonProps) => {
   return (
     <Button
       disabled={disabled}
-      className={clsx(s.root, mods, className)}
+      className={clsx(s.root, "typo-caption", mods, className)}
       href={href}
     >
       {children && (

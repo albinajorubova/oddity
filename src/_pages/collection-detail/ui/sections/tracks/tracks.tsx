@@ -23,16 +23,18 @@ export const TracksSection = (props: TracksSectionProps) => {
       data-anchor-scroll="top"
     >
       <Container className={s.inner}>
-        <p className={s.eyebrow}>Tracks</p>
+        <p className={clsx(s.eyebrow, "typo-micro")}>Tracks</p>
         <ol className={s.list}>
           {tracks.map((track, index) => (
             <li key={track.id} className={s.row}>
-              <span className={s.index}>
+              <span className={clsx(s.index, "typo-caption")}>
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className={s.title}>{track.title}</span>
+              <span className="typo-p1">{track.title}</span>
               {track.duration && (
-                <span className={s.duration}>{track.duration}</span>
+                <span className={clsx(s.duration, "typo-caption")}>
+                  {track.duration}
+                </span>
               )}
             </li>
           ))}

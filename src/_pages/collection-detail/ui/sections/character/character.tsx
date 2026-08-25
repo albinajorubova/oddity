@@ -53,7 +53,7 @@ export const CharacterSection = (props: CharacterSectionProps) => {
       data-anchor-scroll="top"
     >
       <Container className={s.inner}>
-        <p className={s.eyebrow}>DNA</p>
+        <p className={clsx(s.eyebrow, "typo-micro")}>DNA</p>
 
         <div className={s.layout}>
           <figure className={s.coverPanel}>
@@ -70,7 +70,7 @@ export const CharacterSection = (props: CharacterSectionProps) => {
             {traitWords.length > 0 && (
               <ul className={s.traits}>
                 {traitWords.map((tag) => (
-                  <li key={tag} className={s.trait}>
+                  <li key={tag} className={clsx(s.trait, "typo-h3")}>
                     {tag}
                   </li>
                 ))}
@@ -81,8 +81,10 @@ export const CharacterSection = (props: CharacterSectionProps) => {
               <ul className={s.folio}>
                 {categoryRows.map((row) => (
                   <li key={row.label} className={s.folioItem}>
-                    <span className={s.folioLabel}>{row.label}</span>
-                    <span className={s.folioValues}>
+                    <span className={clsx(s.folioLabel, "typo-micro")}>
+                      {row.label}
+                    </span>
+                    <span className={clsx(s.folioValues, "typo-p2")}>
                       {row.values.join(" · ")}
                     </span>
                   </li>

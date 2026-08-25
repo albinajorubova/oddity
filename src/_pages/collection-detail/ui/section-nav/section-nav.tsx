@@ -76,7 +76,7 @@ export const SectionNav = (props: SectionNavProps) => {
                   active={isActive}
                   className={s.marker}
                 >
-                  <span className={s.label}>{item.label}</span>
+                  <span className="typo-micro">{item.label}</span>
                 </MarkerHighlight>
               </a>
             </li>

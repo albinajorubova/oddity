@@ -44,9 +44,9 @@ export const CollectionCard = (props: CollectionCardProps) => {
         />
       </div>
       <div className={s.meta}>
-        <p className={s.artist}>{item.artist}</p>
-        <p className={s.title}>{item.title}</p>
-        <p className={s.year}>{item.year}</p>
+        <p className={clsx(s.artist, "typo-micro")}>{item.artist}</p>
+        <p className="typo-p2">{item.title}</p>
+        <p className={clsx(s.year, "typo-p2")}>{item.year}</p>
       </div>
     </Button>
   );

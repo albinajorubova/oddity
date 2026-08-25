@@ -33,13 +33,25 @@
 
 ### Типографика
 
-| Роль | Шрифт | Размер | Weight | Tracking |
-|------|-------|--------|--------|----------|
-| Display | Helvetica Neue / Inter | 72–120px | 500 | -0.02em |
-| Headline | то же | 36–56px | 500 | -0.01em |
-| Body | то же | 14–16px | 400 | 0 |
-| Meta | Mono (IBM Plex Mono) | 10–11px | 400 | +0.08em |
-| Nav | то же | 12px | 400 | +0.12em |
+Паттерн как в Rakurs: миксины = source of truth, глобальные классы `.typo-*` для JSX, в CSS Modules — `@include`.
+
+| Класс | Роль | Desktop | LH | Tracking |
+|-------|------|---------|-----|----------|
+| `typo-display` | Hero / бренд | ~120 | 0.85 | −0.04em |
+| `typo-h1` | Заголовок страницы | ~56 | 0.92 | −0.03em |
+| `typo-h2` | Секция | ~40 | 1 | −0.02em |
+| `typo-h3` | Карточка / подзаголовок | ~28 | 1.1 | −0.02em |
+| `typo-p1` | Лид | ~18 | 1.4 | −0.01em |
+| `typo-p2` | Текст | ~16 | 1.5 | 0 |
+| `typo-caption` | Nav / UI | ~12 | 1 | +0.08em + uppercase |
+| `typo-micro` | Meta / kicker / tags | ~11 | 1.2 | +0.1em + uppercase |
+
+Шрифт: Helvetica Neue / system. Weight и цвет — снаружи (`font-weight`, `--c-*`).
+
+```tsx
+<h1 className={clsx(s.title, "typo-h1")}>{title}</h1>
+```
+
 
 ### Spacing
 

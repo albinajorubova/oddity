@@ -30,15 +30,19 @@ export const LabGalleryPage = (props: LabGalleryPageProps) => {
     <main className={clsx(s.root, className, isOpen && s.isOpen)}>
       <Container className={s.inner}>
         <header className={s.header}>
-          <p className={s.eyebrow}>Lab / Stage 3</p>
-          <h1 className={s.title}>GSAP Gallery</h1>
-          <p className={s.note}>
+          <p className={clsx(s.eyebrow, "typo-micro")}>Lab / Stage 3</p>
+          <h1 className={clsx(s.title, "typo-h1")}>GSAP Gallery</h1>
+          <p className={clsx(s.note, "typo-p2")}>
             Open и close оба летают через <strong>карточку в сетке</strong> (не
             через hero внизу) — иначе overflow обрезает путь. Close: кнопка или
             повторный клик по активной.
           </p>
           {isOpen && (
-            <button type="button" className={s.reset} onClick={close}>
+            <button
+              type="button"
+              className={clsx(s.reset, "typo-caption")}
+              onClick={close}
+            >
               Закрыть (reverse Flip)
             </button>
           )}
@@ -86,9 +90,11 @@ export const LabGalleryPage = (props: LabGalleryPageProps) => {
                     )}
 
                     <div className={s.meta}>
-                      <p className={s.artist}>{item.artist}</p>
-                      <p className={s.cardTitle}>{item.title}</p>
-                      <p className={s.year}>{item.year}</p>
+                      <p className={clsx(s.artist, "typo-micro")}>
+                        {item.artist}
+                      </p>
+                      <p className="typo-p2">{item.title}</p>
+                      <p className={clsx(s.year, "typo-p2")}>{item.year}</p>
                     </div>
                   </button>
                 </li>
@@ -98,7 +104,7 @@ export const LabGalleryPage = (props: LabGalleryPageProps) => {
         </section>
 
         <section className={s.hero} aria-label="Hero slot">
-          <p className={s.heroLabel}>Hero slot</p>
+          <p className={clsx(s.heroLabel, "typo-micro")}>Hero slot</p>
           <div className={clsx(s.heroSlot, activeItem && s.heroSlotActive)}>
             {activeItem ? (
               <div
@@ -114,18 +120,22 @@ export const LabGalleryPage = (props: LabGalleryPageProps) => {
                 />
               </div>
             ) : (
-              <p className={s.heroPlaceholder}>сюда прилетит cover</p>
+              <p className={clsx(s.heroPlaceholder, "typo-p2")}>
+                сюда прилетит cover
+              </p>
             )}
           </div>
 
           {activeItem ? (
             <div ref={heroCopyRef} className={s.heroCopy}>
-              <p className={s.artist}>{activeItem.artist}</p>
-              <p className={s.heroTitle}>{activeItem.title}</p>
-              <p className={s.year}>{activeItem.year}</p>
+              <p className={clsx(s.artist, "typo-micro")}>
+                {activeItem.artist}
+              </p>
+              <p className={clsx(s.heroTitle, "typo-h3")}>{activeItem.title}</p>
+              <p className={clsx(s.year, "typo-p2")}>{activeItem.year}</p>
             </div>
           ) : (
-            <p className={s.heroHint}>
+            <p className={clsx(s.heroHint, "typo-p2")}>
               Open → close: зеркало FLIP (hero → card).
             </p>
           )}

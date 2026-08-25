@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+
 import { Button } from "@shared/ui/button";
 import { HOME_NAV_STUB } from "@/_pages/home/model";
 
@@ -18,7 +20,7 @@ export const HeaderMenuPanel = (props: HeaderMenuPanelProps) => {
         <Button
           key={item.href}
           href={item.href}
-          className={s.item}
+          className={clsx(s.item, "typo-h2")}
           data-header-nav-item
           onClick={onNavigate}
         >

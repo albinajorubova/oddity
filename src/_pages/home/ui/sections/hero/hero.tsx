@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import clsx from "clsx";
 
 import { OddLogo } from "@shared/ui/odd-logo";
 import { HOME_HERO_STUB } from "@/_pages/home/model";
@@ -169,7 +170,11 @@ export const HeroSection = () => {
     <section className={s.root} ref={sectionRef}>
       <div className={s.content}>
         <OrbitGallery ref={galleryRef} />
-        <h1 className={s.brand} aria-label={content.brand} ref={brandRef}>
+        <h1
+          className={clsx("typo-display", s.brand)}
+          aria-label={content.brand}
+          ref={brandRef}
+        >
           <OddLogo text={content.brand} disabled={isMorphing} />
         </h1>
       </div>

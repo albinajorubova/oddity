@@ -1,4 +1,3 @@
-import { mod } from "@shared/utils";
 import { clsx } from "clsx";
 import type { ComponentProps } from "react";
 
@@ -7,14 +6,18 @@ import type { ComponentOrTag } from "@/shared/types";
 import type { TypographyProps } from "../typography";
 import { Typography } from "../typography";
 
-import styles from "./body.module.scss";
-
-export type BodySizeType = "primary" | "secondary" | "small";
+export type BodySizeType = "p1" | "p2" | "caption";
 
 export type BodyProps<Element extends ComponentOrTag<ComponentProps<Element>>> =
   TypographyProps<Element> & {
     size?: BodySizeType;
   };
+
+const TYPO_BY_SIZE: Record<BodySizeType, string> = {
+  p1: "typo-p1",
+  p2: "typo-p2",
+  caption: "typo-caption",
+};
 
 export const Body = <Element extends ComponentOrTag<ComponentProps<Element>>>(
   props: BodyProps<Element>,
@@ -22,16 +25,14 @@ export const Body = <Element extends ComponentOrTag<ComponentProps<Element>>>(
   const {
     className,
     children,
-    size = "primary",
+    size = "p1",
     weight = "medium",
     ...restProps
   } = props as BodyProps<"span">;
 
-  const mods = mod(styles, { size });
-
   return (
     <Typography
-      className={clsx(styles.root, size, className)}
+      className={clsx(TYPO_BY_SIZE[size], className)}
       weight={weight}
       {...restProps}
     >

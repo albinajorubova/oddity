@@ -1,4 +1,3 @@
-import { mod } from "@shared/utils";
 import { clsx } from "clsx";
 import type { ComponentProps } from "react";
 
@@ -7,13 +6,20 @@ import type { ComponentOrTag } from "@/shared/types";
 import type { TypographyProps } from "../typography";
 import { Typography } from "../typography";
 
-import styles from "./heading.module.scss";
+export type HeadingLevel = "display" | "1" | "2" | "3";
 
 export type HeadingProps<
   Element extends ComponentOrTag<ComponentProps<Element>>,
 > = {
-  level: "accentXXL" | "accentM" | "1" | "2" | "3" | "4" | "5";
+  level?: HeadingLevel;
 } & TypographyProps<Element>;
+
+const TYPO_BY_LEVEL: Record<HeadingLevel, string> = {
+  display: "typo-display",
+  "1": "typo-h1",
+  "2": "typo-h2",
+  "3": "typo-h3",
+};
 
 export const Heading = <
   Element extends ComponentOrTag<ComponentProps<Element>>,
@@ -28,13 +34,9 @@ export const Heading = <
     ...restProps
   } = props as HeadingProps<"span">;
 
-  const mods = mod(styles, {
-    level,
-  });
-
   return (
     <Typography
-      className={clsx(styles.root, mods, className)}
+      className={clsx(TYPO_BY_LEVEL[level], className)}
       weight={weight}
       {...restProps}
     >

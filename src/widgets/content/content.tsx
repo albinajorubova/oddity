@@ -16,7 +16,7 @@ export const Content = (props: ContentProps) => {
   return (
     <div className={clsx(s.root, className)} {...rest}>
       <div className={s.header}>
-        <Heading level="4" className={s.title}>
+        <Heading level="3" className={s.title}>
           {title}
         </Heading>
       </div>

@@ -62,7 +62,6 @@
 .content {
   max-width: vw(346);
   padding-inline: var(--spacing-8);
-  @include body-paragraph-secondary();
   font-weight: 600;
 
   a {

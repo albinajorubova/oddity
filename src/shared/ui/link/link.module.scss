@@ -74,18 +74,10 @@
 
 .size {
   &-s {
-    @include btnS()
+    font-weight: 600;
   }
 
   &-m {
-    @include btnM();
-  }
-
-  &-l {
-    @include captionXL();
-  }
-
-  &-xl {
-    @include h3();
+    font-weight: 600;
   }
 }

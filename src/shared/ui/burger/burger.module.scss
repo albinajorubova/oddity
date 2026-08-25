@@ -8,7 +8,7 @@
   overflow: hidden;
 
   @include blur(10px);
-  @include btnS();
+    font-weight: 600;
 
   &.open {
     background-color: transparent;

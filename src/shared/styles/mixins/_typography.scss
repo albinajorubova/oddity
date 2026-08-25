@@ -1,6 +1,13 @@
-@use '../functions/vw' as *;
+@use "../functions/vw" as *;
+@use "breakpoints" as *;
 
-@mixin typography($font-size, $line-height, $letter-spacing: 0, $text-transform: "normal", $font-family: var(--font-family-base)) {
+@mixin typography(
+  $font-size,
+  $line-height,
+  $letter-spacing: 0,
+  $text-transform: "normal",
+  $font-family: var(--font-family-base)
+) {
   font-size: $font-size;
   line-height: $line-height;
   font-family: $font-family;
@@ -14,64 +21,106 @@
   }
 }
 
-@mixin accentXXL {
-  @include typography(vw(132), 0.88, -0.06em);
+// Hero / brand moments
+@mixin display {
+  @include typography(vw(120), 0.85, -0.04em);
+
+  @include mq(lg) {
+    @include typography(vw(96), 0.85, -0.04em);
+  }
+
+  @include mq(md) {
+    @include typography(vw(72), 0.88, -0.04em);
+  }
+
+  @include mq(sm) {
+    @include typography(vw(56), 0.9, -0.03em);
+  }
 }
 
-@mixin accentM {
-  @include typography(vw(80), 0.88, -0.06em);
+// Page title
+@mixin h1 {
+  @include typography(vw(56), 0.92, -0.03em);
+
+  @include mq(lg) {
+    @include typography(vw(48), 0.94, -0.03em);
+  }
+
+  @include mq(md) {
+    @include typography(vw(40), 0.96, -0.02em);
+  }
+
+  @include mq(sm) {
+    @include typography(vw(32), 1, -0.02em);
+  }
 }
 
+// Section title
 @mixin h2 {
-  @include typography(vw(48), 1, -0.05em);
+  @include typography(vw(40), 1, -0.02em);
+
+  @include mq(lg) {
+    @include typography(vw(32), 1.05, -0.02em);
+  }
+
+  @include mq(md) {
+    @include typography(vw(28), 1.08, -0.02em);
+  }
+
+  @include mq(sm) {
+    @include typography(vw(24), 1.1, -0.02em);
+  }
 }
 
+// Card / subsection / menu item
 @mixin h3 {
-  @include typography(vw(36), 1.1, -0.04em);
+  @include typography(vw(28), 1.1, -0.02em);
+
+  @include mq(lg) {
+    @include typography(vw(24), 1.12, -0.02em);
+  }
+
+  @include mq(md) {
+    @include typography(vw(22), 1.15, -0.01em);
+  }
+
+  @include mq(sm) {
+    @include typography(vw(20), 1.15, -0.01em);
+  }
 }
 
-@mixin h4 {
-  @include typography(vw(24), 1.12, -0.04em);
+// Lead / intro
+@mixin p1 {
+  @include typography(vw(18), 1.4, -0.01em);
+
+  @include mq(md) {
+    @include typography(vw(16), 1.45, -0.01em);
+  }
 }
 
-@mixin h5 {
-  @include typography(vw(24), 1.12, -0.04em);
+// Body text
+@mixin p2 {
+  @include typography(vw(16), 1.5, 0);
+
+  @include mq(md) {
+    @include typography(vw(14), 1.5, 0);
+  }
 }
 
-@mixin btnS {
-  @include typography(vw(12), 1, 0.02em, uppercase);
-  font-weight: 600;
+// Nav / buttons / UI labels
+@mixin caption {
+  @include typography(vw(12), 1, 0.08em, uppercase);
+
+  @include mq(sm) {
+    @include typography(vw(11), 1, 0.08em, uppercase);
+  }
 }
 
-@mixin btnM {
-  @include typography(vw(14), 1, 0.02em, uppercase);
-  font-weight: 600;
-}
+// Meta / kicker / tags
+@mixin micro {
+  @include typography(vw(11), 1.2, 0.1em, uppercase);
 
-@mixin captionXL {
-  @include typography(vw(28), 1.08, -0.05em);
-}
-
-@mixin captionM {
-  @include typography(vw(12), 1, 0.02em, uppercase);
-}
-
-@mixin captionXS {
-  @include typography(vw(10), 1.32, 0.02em, uppercase);
-}
-
-@mixin body-paragraph {
-  @include typography(vw(18), 1.32, -0.02em);
-}
-
-@mixin body-paragraph {
-  @include typography(vw(18), 1.32, -0.02em);
-}
-
-@mixin body-paragraph-accent {
-  @include typography(vw(18), 1.32, -0.02em);
-}
-
-@mixin body-paragraph-secondary {
-  @include typography(vw(16), 1.3, -0.02em);
+  @include mq(sm) {
+    @include typography(vw(10), 1.2, 0.1em, uppercase);
+  }
 }

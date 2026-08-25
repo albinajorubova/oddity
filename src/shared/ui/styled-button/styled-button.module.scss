@@ -47,7 +47,7 @@
 
     --btn-icon-type-size: #{vw(36)};
 
-    @include btnS();
+    font-weight: 600;
   }
 
   &M {
@@ -60,7 +60,7 @@
 
     --btn-icon-type-size: #{vw(56)};
 
-    @include btnS();
+    font-weight: 600;
   }
 
   &L {
@@ -72,7 +72,7 @@
 
     --btn-icon-type-size: #{vw(64)};
 
-    @include btnS();
+    font-weight: 600;
   }
 }
 

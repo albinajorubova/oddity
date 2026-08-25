@@ -37,10 +37,13 @@ export const Link = (props: LinkProps) => {
     size,
   });
 
+  const typoClass =
+    size === "l" || size === "xl" ? "typo-h3" : "typo-caption";
+
   return (
     <Button
       disabled={disabled}
-      className={clsx(s.root, className, mods)}
+      className={clsx(s.root, typoClass, className, mods)}
       href={href}
       target={target}
       onMouseEnter={onMouseEnter}

@@ -14,9 +14,6 @@
 
 .eyebrow {
   margin: 0;
-  font-size: vw(11);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--c-grey-400);
 }
 
@@ -61,16 +58,9 @@
 }
 
 .trait {
-  font-size: vw(28);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
   color: var(--c-black);
 
   @include blotch-hover;
-
-  @include mq(md) {
-    font-size: 1.35rem;
-  }
 }
 
 .folio {
@@ -96,18 +86,9 @@
 }
 
 .folioLabel {
-  font-size: vw(10);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--c-grey-400);
 }
 
 .folioValues {
-  font-size: vw(14);
-  line-height: 1.4;
   color: var(--c-black);
-
-  @include mq(md) {
-    font-size: 0.9rem;
-  }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/router";
+import clsx from "clsx";
 
 import { Button } from "../button";
 import { Container } from "../container";
@@ -43,7 +44,11 @@ export const PreviewBanner = ({ isDraftMode = false }: PreviewBannerProps) => {
   return (
     <div className={s.root}>
       <Container size="l" className={s.container}>
-        <Button onClick={handleExitPreview} className={s.button} type="button">
+        <Button
+          onClick={handleExitPreview}
+          className={clsx(s.button, "typo-h3")}
+          type="button"
+        >
           Выйти из Preview
         </Button>
       </Container>

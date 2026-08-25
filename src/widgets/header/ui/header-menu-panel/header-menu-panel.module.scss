@@ -9,12 +9,8 @@
 .item {
   --close-item: 1;
 
-  @include captionM;
-
   width: fit-content;
   font-weight: 700;
-  font-size: vw(32);
-  letter-spacing: -0.04em;
   text-transform: uppercase;
   color: var(--c-white);
   text-decoration: none;
@@ -23,12 +19,4 @@
   transition:
     transform 1s var(--ease-out-expo),
     opacity 1s var(--ease-out-expo);
-
-  @include mq(md) {
-    font-size: vw(28);
-  }
-
-  @include mq(sm) {
-    font-size: vw(24);
-  }
 }
