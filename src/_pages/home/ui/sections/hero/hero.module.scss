@@ -51,6 +51,8 @@
   padding: var(--spacing-48) var(--padding-horizontal-base);
   color: var(--c-white);
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .eyebrow {

@@ -141,7 +141,7 @@ export const HeroSection = () => {
           clearProps: "transform,opacity,visibility,zIndex,borderRadius",
         });
       }
-      gsap.set(copy, { clearProps: "opacity,visibility,transform" });
+      gsap.set(copy, { autoAlpha: 0, y: 28 });
       gsap.set(headerLogo, { autoAlpha: 0, pointerEvents: "none" });
     };
 
@@ -183,7 +183,8 @@ export const HeroSection = () => {
       const morph = clamp01(progress / MORPH_END);
       const expand = clamp01(progress / EXPAND_END);
       const settled = morph >= 1;
-      const copyT = clamp01((progress - EXPAND_END) / (1 - EXPAND_END));
+      const copyT =
+        expand >= 1 ? clamp01((progress - EXPAND_END) / (1 - EXPAND_END)) : 0;
 
       logo.classList.add(s.isFlying);
       gsap.set(logo, {
