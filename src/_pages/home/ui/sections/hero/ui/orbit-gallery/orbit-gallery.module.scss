@@ -57,8 +57,9 @@
     --slot-max-w: #{vw(320)};
     --slot-max-h: #{vw(220)};
     bottom: 8%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin-inline: auto;
   }
 }
 

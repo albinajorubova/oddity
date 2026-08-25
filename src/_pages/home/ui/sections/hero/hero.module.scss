@@ -1,16 +1,17 @@
 .root {
   position: relative;
-  height: 300svh;
+  height: 360svh;
 }
 
 .content {
   position: sticky;
-  z-index: var(--z-header);
-  top: var(--header-height);
-  height: calc(100svh - var(--header-height));
+  z-index: 0;
+  top: 0;
+  height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .brand {
@@ -23,8 +24,48 @@
 
 .isFlying {
   position: fixed;
-  z-index: 20;
+  z-index: calc(var(--z-header) + 1);
   top: 0;
   left: 0;
   margin: 0;
+}
+
+.isExpanding {
+  will-change: transform;
+
+  :global(img) {
+    object-fit: cover !important;
+  }
+}
+
+.copy {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  justify-content: flex-end;
+  box-sizing: border-box;
+  max-width: 40rem;
+  padding: var(--spacing-48) var(--padding-horizontal-base);
+  color: var(--c-white);
+  pointer-events: none;
+}
+
+.eyebrow {
+  margin: 0;
+  opacity: 0.7;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.text {
+  margin: 0;
+  max-width: 28rem;
+  opacity: 0.85;
 }

@@ -1,6 +1,14 @@
 "use client";
 
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useCurrentBreakpoint } from "@app/model/viewport-store/hooks";
 import { gsap } from "gsap";
 
@@ -120,9 +128,7 @@ export const BgMorph = memo(
         });
 
         const offset =
-          direction !== "right"
-            ? (offsets[currentBreakpoint] ?? 0.3)
-            : 0.5;
+          direction !== "right" ? (offsets[currentBreakpoint] ?? 0.3) : 0.5;
 
         if (isOpenAnimation) {
           tl.fromTo(

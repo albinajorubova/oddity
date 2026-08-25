@@ -14,6 +14,13 @@ export type HomeOrbitItem = {
   id: string;
   src: string;
   alt: string;
+  expand?: boolean;
+};
+
+export type HomeExpandStub = {
+  eyebrow: string;
+  title: string;
+  text: string;
 };
 
 export const HOME_HERO_STUB: HomeHeroStub = {
@@ -58,5 +65,12 @@ export const HOME_ORBIT_STUB: HomeOrbitItem[] = [
     id: "6",
     src: "/images/covers/nevermind.jpg",
     alt: "Nevermind",
+    expand: true,
   },
 ];
+
+export const HOME_EXPAND_STUB: HomeExpandStub = {
+  eyebrow: "Featured",
+  title: "COLLECTIONS",
+  text: "Archive cuts, covers, and scenes — one room at a time.",
+};

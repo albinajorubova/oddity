@@ -19,7 +19,11 @@ export const OrbitGallery = (props: OrbitGalleryProps) => {
   return (
     <div className={s.root} ref={ref} aria-hidden>
       {items.map((item) => (
-        <figure key={item.id} className={s.item}>
+        <figure
+          key={item.id}
+          className={s.item}
+          data-orbit-expand={item.expand ? "" : undefined}
+        >
           <MediaImage
             className={s.media}
             src={item.src}
