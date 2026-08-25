@@ -10,7 +10,7 @@ export type {
 export { createLogoController } from "./controller";
 export * from "./generators";
 export { createDefaultLogoState, tokenize } from "./letters";
-export type { OddLogoProps } from "./odd-logo";
+export type { OddLogoHandle, OddLogoProps } from "./odd-logo";
 export { OddLogo } from "./odd-logo";
 export type { LetterState, LogoAction, LogoState } from "./types";
 export { DEFAULT_LETTER, LOGO_COLORS } from "./types";

@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 import clsx from "clsx";
 
 import { createLogoController } from "./controller";
@@ -20,7 +26,11 @@ export type OddLogoProps = {
   disabled?: boolean;
 };
 
-export const OddLogo = (props: OddLogoProps) => {
+export type OddLogoHandle = {
+  setDisabled: (disabled: boolean) => void;
+};
+
+export const OddLogo = forwardRef<OddLogoHandle, OddLogoProps>((props, ref) => {
   const {
     text = "ODDITY",
     className,
@@ -58,6 +68,24 @@ export const OddLogo = (props: OddLogoProps) => {
     [duration, hoverCooldownMs, idleMaxMs, idleMinMs, introDelayMs, oddHoldMs],
   );
 
+  const applyDisabled = (next: boolean) => {
+    disabledRef.current = next;
+    if (next) {
+      controller.reset(true);
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    controller.start();
+  };
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setDisabled: applyDisabled,
+    }),
+    [controller],
+  );
+
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     controller.setReducedMotion(media.matches);
@@ -80,17 +108,11 @@ export const OddLogo = (props: OddLogoProps) => {
   }, [baseState, controller]);
 
   useEffect(() => {
-    if (disabled) {
-      controller.reset(true);
-      return;
-    }
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    controller.start();
+    applyDisabled(disabled);
   }, [disabled, controller]);
 
   const onHover = () => {
-    if (disabled) return;
+    if (disabledRef.current) return;
     if (!controller.canPlay("hover")) return;
     controller.playHover();
   };
@@ -113,6 +135,6 @@ export const OddLogo = (props: OddLogoProps) => {
       ))}
     </span>
   );
-};
+});
 
 OddLogo.displayName = "OddLogo";

@@ -38,6 +38,26 @@
   }
 }
 
+/** Settled expand: CSS cover when progress past expandEnd. */
+.isExpanded {
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 5;
+  width: 100% !important;
+  max-height: none !important;
+  height: 100% !important;
+  margin: 0 !important;
+  aspect-ratio: auto;
+  border-radius: 0;
+  transform: none !important;
+
+  :global(img) {
+    object-fit: cover !important;
+  }
+}
+
 .copy {
   position: absolute;
   z-index: 6;
@@ -53,6 +73,13 @@
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
+}
+
+/** Settled copy when progress ≈ 1. */
+.isCopyVisible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
 
 .eyebrow {
