@@ -52,14 +52,21 @@ type LogoMetrics = {
 
 type ExpandMetrics = {
   dy: number;
-  scale: number;
+  startW: number;
+  startH: number;
+  contentW: number;
+  contentH: number;
+  contentLeft: number;
+  contentTop: number;
 };
 
 export const createHeroAnimation = (els: HeroAnimationElements) => {
   const { classes } = els;
 
-  let logicalProgress = 0;
+  let progress = 0;
   let refreshing = false;
+  let pinProgress = false;
+  let pinnedScroll = 0;
 
   const logoMetrics: LogoMetrics = {
     fromX: 0,
@@ -69,7 +76,15 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
     scale: 1,
   };
   const flyMetrics = new Map<HTMLElement, { x: number; y: number }>();
-  let expandMetrics: ExpandMetrics = { dy: 0, scale: 1 };
+  let expandMetrics: ExpandMetrics = {
+    dy: 0,
+    startW: 0,
+    startH: 0,
+    contentW: 0,
+    contentH: 0,
+    contentLeft: 0,
+    contentTop: 0,
+  };
   let hasCaptured = false;
   let morphing = false;
 
@@ -102,14 +117,20 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
     if (els.expandImage) {
       const contentBox = els.content.getBoundingClientRect();
       const imgBox = els.expandImage.getBoundingClientRect();
+      const gallery = els.expandImage.offsetParent as HTMLElement | null;
+      const galleryBox = gallery?.getBoundingClientRect() ?? contentBox;
+
       const startCy = imgBox.top + imgBox.height / 2;
       const endCy = contentBox.top + contentBox.height / 2;
+
       expandMetrics = {
         dy: endCy - startCy,
-        scale: Math.max(
-          contentBox.width / Math.max(imgBox.width, 1),
-          contentBox.height / Math.max(imgBox.height, 1),
-        ),
+        startW: imgBox.width,
+        startH: imgBox.height,
+        contentW: contentBox.width,
+        contentH: contentBox.height,
+        contentLeft: contentBox.left - galleryBox.left,
+        contentTop: contentBox.top - galleryBox.top,
       };
     }
 
@@ -130,7 +151,8 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
     if (els.expandImage) {
       els.expandImage.classList.remove(classes.isExpanding, classes.isExpanded);
       gsap.set(els.expandImage, {
-        clearProps: "transform,opacity,visibility,zIndex,borderRadius",
+        clearProps:
+          "transform,x,y,top,left,right,bottom,width,height,maxHeight,margin,aspectRatio,opacity,visibility,zIndex,borderRadius",
       });
     }
 
@@ -176,8 +198,11 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
   const renderExpandImage = (expand: number) => {
     if (!els.expandImage) return;
 
-    const eased = easeExpand(expand);
     const done = expand >= 1;
+    const lift = phaseProgress(expand, 0, HERO_ANIM.expandLiftRatio);
+    const grow = phaseProgress(expand, HERO_ANIM.expandLiftRatio, 1);
+    const liftEased = easeExpand(lift);
+    const growEased = easeExpand(grow);
 
     els.expandImage.classList.toggle(
       classes.isExpanding,
@@ -187,21 +212,48 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
 
     if (done) {
       gsap.set(els.expandImage, {
-        clearProps: "transform,x,y,scale,borderRadius",
+        clearProps:
+          "transform,x,y,top,left,right,bottom,width,height,maxHeight,margin,aspectRatio,borderRadius",
         zIndex: HERO_ANIM.expandZIndex,
         autoAlpha: 1,
       });
       return;
     }
 
+    if (grow <= 0) {
+      gsap.set(els.expandImage, {
+        clearProps:
+          "top,left,right,bottom,width,height,maxHeight,margin,aspectRatio",
+        x: 0,
+        y: expandMetrics.dy * liftEased,
+        borderRadius: HERO_ANIM.expandBorderRadiusFrom,
+        zIndex: HERO_ANIM.expandZIndex,
+        autoAlpha: 1,
+        force3D: true,
+      });
+      return;
+    }
+
+    const { startW, startH, contentW, contentH, contentLeft, contentTop } =
+      expandMetrics;
+    const w = lerp(startW, contentW, growEased);
+    const h = lerp(startH, contentH, growEased);
+
     gsap.set(els.expandImage, {
       x: 0,
-      y: expandMetrics.dy * eased,
-      scale: lerp(1, expandMetrics.scale, eased),
-      borderRadius: lerp(HERO_ANIM.expandBorderRadiusFrom, 0, eased),
+      y: 0,
+      top: contentTop + (contentH - h) / 2,
+      left: contentLeft + (contentW - w) / 2,
+      width: w,
+      height: h,
+      bottom: "auto",
+      right: "auto",
+      margin: 0,
+      maxHeight: "none",
+      aspectRatio: "auto",
+      borderRadius: lerp(HERO_ANIM.expandBorderRadiusFrom, 0, growEased),
       zIndex: HERO_ANIM.expandZIndex,
       autoAlpha: 1,
-      force3D: true,
     });
   };
 
@@ -222,9 +274,10 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
     });
   };
 
-  const renderHero = (progress: number) => {
-    if (progress <= 0) {
-      logicalProgress = 0;
+  const renderHero = (p: number) => {
+    if (p <= 0) {
+      progress = 0;
+      pinProgress = false;
       resetHero();
       return;
     }
@@ -240,9 +293,9 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
       capture();
     }
 
-    const morph = phaseProgress(progress, 0, HERO_PHASES.morphEnd);
-    const expand = phaseProgress(progress, 0, HERO_PHASES.expandEnd);
-    const copy = phaseProgress(progress, HERO_PHASES.expandEnd, 1);
+    const morph = phaseProgress(p, 0, HERO_PHASES.morphEnd);
+    const expand = phaseProgress(p, 0, HERO_PHASES.expandEnd);
+    const copy = phaseProgress(p, HERO_PHASES.expandEnd, 1);
     const settled = morph >= 1;
 
     renderLogo(morph);
@@ -252,16 +305,17 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
     setMorphing(!settled);
   };
 
-  const restoreScrollToProgress = (self: ScrollTrigger, progress: number) => {
+  const restoreScrollToProgress = (self: ScrollTrigger, p: number) => {
     const distance = self.end - self.start;
-    if (distance <= 0) return;
-    const target = self.start + clamp01(progress) * distance;
+    if (distance <= 0) return self.scroll();
+    const target = self.start + clamp01(p) * distance;
     const lenis = window.__GLOBAL_SCROLL__;
     if (lenis) {
       lenis.scrollTo(target, { immediate: true, force: true });
     } else {
       self.scroll(target);
     }
+    return target;
   };
 
   capture();
@@ -278,24 +332,44 @@ export const createHeroAnimation = (els: HeroAnimationElements) => {
       refreshing = true;
     },
     onRefresh: (self) => {
-      restoreScrollToProgress(self, logicalProgress);
+      if (progress >= HERO_PROGRESS.endEpsilon) progress = 1;
+
+      pinnedScroll = restoreScrollToProgress(self, progress);
+      pinProgress = true;
       resetHero();
       capture();
-      renderHero(logicalProgress);
+      renderHero(progress);
+
       requestAnimationFrame(() => {
+        pinnedScroll = restoreScrollToProgress(self, progress);
         refreshing = false;
       });
     },
     onUpdate: (self) => {
       if (refreshing) return;
-      logicalProgress = self.progress;
-      renderHero(logicalProgress);
+
+      if (pinProgress) {
+        const synced = Math.abs(self.progress - progress) <= 0.02;
+        const userScrolled = Math.abs(self.scroll() - pinnedScroll) > 40;
+
+        if (synced || userScrolled) {
+          pinProgress = false;
+          progress = self.progress;
+        }
+
+        renderHero(progress);
+        return;
+      }
+
+      progress = self.progress;
+      renderHero(progress);
     },
   });
 
   const destroy = () => {
     trigger.kill();
-    logicalProgress = 0;
+    progress = 0;
+    pinProgress = false;
     resetHero();
     gsap.set(els.headerLogo, {
       clearProps: "opacity,visibility,pointerEvents",

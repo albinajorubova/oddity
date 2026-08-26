@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 10%;
   overflow: hidden;
 }
 
@@ -31,8 +32,6 @@
 }
 
 .isExpanding {
-  will-change: transform;
-
   :global(img) {
     object-fit: cover !important;
   }

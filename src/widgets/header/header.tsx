@@ -2,9 +2,9 @@
 
 import type { ComponentProps } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useUiActions, useUiStore } from "@app/model/ui-store";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { useUiActions, useUiStore } from "@app/model/ui-store";
 
 import { ROUTES, setRandomHoverBlotch } from "@shared/config";
 import { BgMorph } from "@shared/ui/bg-morph";
@@ -66,39 +66,40 @@ export const Header = (props: HeaderProps) => {
   }, [closeMenu, router.events]);
 
   return (
-    <header className={clsx(s.root, className)} {...rest}>
-      <Container className={s.bar}>
-        <nav className={s.nav} aria-label="Primary">
-          <div className={s.logoSlot}>
-            <Button
-              href={ROUTES.home}
-              data-header-logo
-              className={clsx(s.headerLogo, !isHome && s.isVisible)}
-              aria-label="ODDITY"
-            >
-              <OddLogo
-                text="ODDITY"
-                className="typo-p1"
-                introDelayMs={0}
-              />
-            </Button>
+    <>
+      <header
+        className={clsx(s.root, isMenuElevated && s.isMenuOpen, className)}
+        {...rest}
+      >
+        <Container className={s.bar}>
+          <nav className={s.nav} aria-label="Primary">
+            <div className={s.logoSlot}>
+              <Button
+                href={ROUTES.home}
+                data-header-logo
+                className={clsx(s.headerLogo, !isHome && s.isVisible)}
+                aria-label="ODDITY"
+              >
+                <OddLogo text="ODDITY" className="typo-p1" introDelayMs={0} />
+              </Button>
+            </div>
+          </nav>
+
+          <Button
+            href={ROUTES.search}
+            className={clsx(s.search, "typo-caption")}
+            aria-label="Search"
+            onMouseEnter={setRandomHoverBlotch}
+          >
+            <span className={s.searchDot} aria-hidden />
+            <RollingText text="SEARCH" />
+          </Button>
+
+          <div className={s.actions}>
+            <Burger isOpen={isOpenMenu} onClick={toggleMenu} />
           </div>
-        </nav>
-
-        <Button
-          href={ROUTES.search}
-          className={clsx(s.search, "typo-caption")}
-          aria-label="Search"
-          onMouseEnter={setRandomHoverBlotch}
-        >
-          <span className={s.searchDot} aria-hidden />
-          <RollingText text="SEARCH" />
-        </Button>
-
-        <div className={s.actions}>
-          <Burger isOpen={isOpenMenu} onClick={toggleMenu} />
-        </div>
-      </Container>
+        </Container>
+      </header>
 
       <div
         id="header-menu"
@@ -128,7 +129,7 @@ export const Header = (props: HeaderProps) => {
           </Container>
         </nav>
       </div>
-    </header>
+    </>
   );
 };
 

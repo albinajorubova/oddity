@@ -21,45 +21,107 @@
   &:nth-child(1) {
     --slot-max-w: #{vw(200)};
     --slot-max-h: #{vw(280)};
-    top: 10%;
+    top: 6%;
     left: 6%;
+
+    @include mq(xl, min) {
+      --slot-max-w: #{vw(280)};
+      --slot-max-h: #{vw(380)};
+    }
+
+    @include mq(2xl, min) {
+      --slot-max-w: #{vw(320)};
+      --slot-max-h: #{vw(440)};
+    }
   }
 
   &:nth-child(2) {
     --slot-max-w: #{vw(280)};
     --slot-max-h: #{vw(200)};
-    top: 42%;
-    left: 4%;
+    top: 48%;
+    left: 3%;
+
+    @include mq(xl, min) {
+      --slot-max-w: #{vw(380)};
+      --slot-max-h: #{vw(280)};
+    }
+
+    @include mq(2xl, min) {
+      --slot-max-w: #{vw(440)};
+      --slot-max-h: #{vw(320)};
+    }
   }
 
   &:nth-child(3) {
     --slot-max-w: #{vw(180)};
     --slot-max-h: #{vw(220)};
-    bottom: 12%;
-    left: 14%;
+    bottom: 10%;
+    left: 12%;
+
+    @include mq(xl, min) {
+      --slot-max-w: #{vw(260)};
+      --slot-max-h: #{vw(300)};
+    }
+
+    @include mq(2xl, min) {
+      --slot-max-w: #{vw(300)};
+      --slot-max-h: #{vw(340)};
+    }
   }
 
   &:nth-child(4) {
     --slot-max-w: #{vw(260)};
     --slot-max-h: #{vw(180)};
-    top: 8%;
-    right: 8%;
+    top: 5%;
+    right: 6%;
+
+    @include mq(xl, min) {
+      --slot-max-w: #{vw(360)};
+      --slot-max-h: #{vw(250)};
+    }
+
+    @include mq(2xl, min) {
+      --slot-max-w: #{vw(420)};
+      --slot-max-h: #{vw(290)};
+    }
   }
 
   &:nth-child(5) {
     --slot-max-w: #{vw(220)};
     --slot-max-h: #{vw(220)};
-    top: 40%;
-    right: 5%;
+    top: 46%;
+    right: 3%;
+
+    @include mq(xl, min) {
+      --slot-max-w: #{vw(300)};
+      --slot-max-h: #{vw(300)};
+    }
+
+    @include mq(2xl, min) {
+      --slot-max-w: #{vw(360)};
+      --slot-max-h: #{vw(360)};
+    }
   }
 
+  /* Expand card — larger on desktop so cover scale stays closer to 1 */
   &:nth-child(6) {
     --slot-max-w: #{vw(320)};
     --slot-max-h: #{vw(220)};
-    bottom: 8%;
+    bottom: 5%;
     left: 0;
     right: 0;
     margin-inline: auto;
+
+    @include mq(xl, min) {
+      --slot-max-w: #{vw(320)};
+      --slot-max-h: #{vw(380)};
+      bottom: 4%;
+    }
+
+    @include mq(2xl, min) {
+      --slot-max-w: #{vw(880)};
+      --slot-max-h: #{vw(560)};
+    }
   }
 }
 

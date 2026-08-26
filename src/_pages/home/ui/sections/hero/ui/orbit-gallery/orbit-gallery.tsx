@@ -28,9 +28,9 @@ export const OrbitGallery = (props: OrbitGalleryProps) => {
             className={s.media}
             src={item.src}
             alt={item.alt}
-            objectFit="contain"
+            objectFit={item.expand ? "cover" : "contain"}
             placeholder={false}
-            sizes="30vw"
+            sizes={item.expand ? "(min-width: 1280px) 70vw, 50vw" : "40vw"}
           />
         </figure>
       ))}

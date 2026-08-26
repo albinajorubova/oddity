@@ -13,9 +13,11 @@ export const HERO_ANIM = {
   flyDistance: 0.6,
   /** Extra scale while gallery images fly out */
   flyScaleAmount: 0.15,
-  /** Power for expand ease-out: 1 - (1 - t)^power */
+  /** Within expand phase: 0→liftRatio = rise to center, then grow size */
+  expandLiftRatio: 0.42,
+  /** Ease for lift / size grow: 1 - (1 - t)^power */
   expandEasePower: 1.45,
-  /** Toggle object-fit cover slightly after expand starts */
+  /** Toggle object-fit cover after expand starts */
   expandActiveThreshold: 0.02,
   /** Starting border-radius (px) before expand flattens to 0 */
   expandBorderRadiusFrom: 12,
