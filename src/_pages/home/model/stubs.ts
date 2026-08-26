@@ -58,13 +58,13 @@ export const HOME_ORBIT_STUB: HomeOrbitItem[] = [
   },
   {
     id: "5",
-    src: "/images/covers/kind-of-blue.jpg",
-    alt: "Kind of Blue",
+    src: "/images/covers/nevermind.jpg",
+    alt: "Nevermind",
   },
   {
     id: "6",
-    src: "/images/covers/nevermind.jpg",
-    alt: "Nevermind",
+    src: "/images/covers/kind-of-blue.jpg",
+    alt: "Kind of Blue",
     expand: true,
   },
 ];
