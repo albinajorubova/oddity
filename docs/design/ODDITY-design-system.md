@@ -1,5 +1,7 @@
 # ODDITY — Design System & Motion Spec
 
+> Практический Style DNA для разработки: [`DESIGN.md`](../../DESIGN.md)  
+> Live showcase: `/lab/style-guide`  
 > Визуальные макеты: `assets/oddity-*-white.png`
 
 ---
@@ -322,6 +324,7 @@ flowchart LR
 - [x] Related content strip
 - [x] Image viewer (встроен в FLIP hero, pinch-zoom на mobile)
 - [x] Custom cursor
+- [ ] Admin profile (curator desk) — см. [`ODDITY-admin.md`](./ODDITY-admin.md)
 
 ---
 
@@ -337,3 +340,4 @@ flowchart LR
 | `oddity-06-collection-page-white.png` | Collection |
 | `oddity-07-search-white.png` | Search |
 | `oddity-08-cursor-system-white.png` | Cursor States |
+| `assets/oddity-09-admin-profile-white.png` | Admin Profile |

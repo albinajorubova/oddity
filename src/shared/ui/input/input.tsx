@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 
 import type { ElementSize } from "@shared/types";
@@ -12,9 +12,12 @@ import { mod } from "@shared/utils/css-mods";
 import s from "./input.module.scss";
 
 export type InputSize = ElementSize;
-export type InputScheme = "primary" | "secondary";
+export type InputScheme = "primary" | "secondary" | "line";
 
-export type InputProps = React.ComponentPropsWithoutRef<"input"> & {
+export type InputProps = Omit<
+  React.ComponentPropsWithoutRef<"input">,
+  "size"
+> & {
   className?: string;
   sizeScheme?: InputSize;
   scheme?: InputScheme;
@@ -22,6 +25,10 @@ export type InputProps = React.ComponentPropsWithoutRef<"input"> & {
   error?: string;
   ref?: React.ForwardedRef<HTMLInputElement>;
   initialValue?: string;
+  /** Show clear button. Default: false for `line`, true otherwise. */
+  clearable?: boolean;
+  /** Animate placeholder out on focus / when filled. Default: true for `line`. */
+  animatedPlaceholder?: boolean;
 };
 
 export const Input = (props: InputProps) => {
@@ -34,29 +41,56 @@ export const Input = (props: InputProps) => {
     ref,
     initialValue = "",
     disabled,
+    clearable,
+    animatedPlaceholder,
+    placeholder,
+    value: valueProp,
+    defaultValue,
+    onChange,
+    onFocus,
+    onBlur,
     ...inputProps
   } = props;
 
-  const [value, setValue] = useState<string | undefined>(initialValue);
+  const isControlled = valueProp !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(() =>
+    String(valueProp ?? defaultValue ?? initialValue ?? ""),
+  );
+  const [isFocused, setIsFocused] = useState(false);
+
+  const value = isControlled ? String(valueProp ?? "") : uncontrolledValue;
+  const isFilled = value.length > 0;
+  const showClear = clearable ?? scheme !== "line";
+  const useAnimatedPlaceholder = animatedPlaceholder ?? scheme === "line";
+  const isPlaceholderHidden = useAnimatedPlaceholder && (isFocused || isFilled);
 
   const mods = mod(s, {
     size: sizeScheme,
     scheme,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isControlled) setUncontrolledValue(event.target.value);
+    onChange?.(event);
   };
 
   const handleClear = () => {
-    setValue("");
+    if (!isControlled) setUncontrolledValue("");
+    onChange?.({
+      target: { value: "" },
+      currentTarget: { value: "" },
+    } as React.ChangeEvent<HTMLInputElement>);
   };
 
-  const isFilled = useMemo(() => {
-    return !!value;
-  }, [value]);
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true);
+    onFocus?.(event);
+  };
 
-  const renderClear = !disabled;
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(false);
+    onBlur?.(event);
+  };
 
   return (
     <div
@@ -64,9 +98,11 @@ export const Input = (props: InputProps) => {
         s.root,
         mods,
         isFilled && s.filled,
+        isFocused && s.focused,
         disabled && s.disabled,
         icon && s.withIcon,
         error && s.hasError,
+        useAnimatedPlaceholder && s.animatedPlaceholder,
         className,
       )}
     >
@@ -76,17 +112,45 @@ export const Input = (props: InputProps) => {
             <Icon className={s.icon} name={icon} size={sizeScheme} />
           </span>
         )}
+
+        {useAnimatedPlaceholder && placeholder && (
+          <span
+            className={clsx(
+              s.placeholder,
+              "typo-caption",
+              isPlaceholderHidden && s.isPlaceholderHidden,
+            )}
+            aria-hidden
+          >
+            {placeholder}
+          </span>
+        )}
+
         <input
+          {...inputProps}
           value={value}
           ref={ref}
           className={clsx(s.control, "typo-caption")}
+          placeholder={useAnimatedPlaceholder ? undefined : placeholder}
+          aria-label={
+            inputProps["aria-label"] ??
+            (useAnimatedPlaceholder ? placeholder : undefined)
+          }
           onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           disabled={disabled}
-          {...inputProps}
         />
 
-        {renderClear && (
-          <Button className={s.clear} onClick={handleClear}>
+        {scheme === "line" && (
+          <>
+            <span className={s.line} aria-hidden />
+            <span className={s.lineAccent} aria-hidden />
+          </>
+        )}
+
+        {showClear && (
+          <Button className={s.clear} onClick={handleClear} type="button">
             <Icon size="s" name="close" />
           </Button>
         )}

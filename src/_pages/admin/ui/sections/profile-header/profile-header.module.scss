@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  padding-bottom: var(--spacing-40);
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--c-black);
+}
+
+.kicker {
+  margin: 0;
+  color: var(--c-grey-400);
+}

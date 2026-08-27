@@ -10,8 +10,12 @@ export const ROUTES = {
   search: "/search",
   login: "/login",
   join: "/join",
+  admin: "/admin",
   labGallery: "/lab/gallery",
 } as const;
+
+export const adminCardPath = (slug: string) =>
+  `${ROUTES.admin}/cards/${slug}` as const;
 
 /** Next.js Pages Router `router.route` patterns (dynamic segments). */
 export const ROUTE_PATTERNS = {

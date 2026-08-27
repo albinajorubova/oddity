@@ -1,0 +1,12 @@
+.root {
+  position: relative;
+  min-height: 100%;
+  padding-top: var(--header-height);
+  background-color: var(--c-white);
+  color: var(--c-black);
+}
+
+.inner {
+  width: 100%;
+  padding-top: var(--spacing-48);
+}

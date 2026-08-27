@@ -10,7 +10,6 @@ import { ResizeProvider } from "@widgets/resize";
 import { Scroll } from "@widgets/scroll";
 import { SeoLayout } from "@widgets/seo-layout";
 import { TransitionLayout } from "@widgets/transition-layout";
-import { Cursor } from "@widgets/сursor";
 import type { AppProps } from "next/app";
 
 import { PreviewBanner } from "@shared/ui/preview-banner";
@@ -29,7 +28,6 @@ export default function App({ Component, pageProps, router }: AppProps) {
         <ResizeProvider>
           <DataStoreProvider data={pageProps.cms}>
             <Header />
-            {/* <Cursor /> */}
             <Preloader />
             <Scroll root wrapper>
               <TransitionLayout router={router}>
