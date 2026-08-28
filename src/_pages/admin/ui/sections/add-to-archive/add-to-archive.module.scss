@@ -32,6 +32,15 @@
 .field {
   flex: 1;
   width: 100%;
+
+  &.loading {
+    opacity: 0.6;
+  }
+}
+
+.error {
+  margin: 0;
+  color: var(--c-grey-600);
 }
 
 .submit {
