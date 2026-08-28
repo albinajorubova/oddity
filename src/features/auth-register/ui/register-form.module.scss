@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  width: 100%;
+  max-width: 28rem;
+}
+
+.error {
+  margin: 0;
+  color: var(--c-light-graphite);
+}
+
+.success {
+  margin: 0;
+}
+
+.footer {
+  margin: 0;
+  color: var(--c-grey-400);
+}
+
+.link {
+  display: inline;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

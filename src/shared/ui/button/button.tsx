@@ -1,8 +1,8 @@
 "use client";
 
+import type React from "react";
 import clsx from "clsx";
 import Link from "next/link";
-import type React from "react";
 
 import s from "./button.module.scss";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { type MouseEventHandler, useMemo } from "react";
 import clsx from "clsx";
 
 import type { ElementSize } from "@shared/types";
@@ -29,6 +29,7 @@ export const StyledButton = (props: StyledButtonProps) => {
     icon,
     disabled,
     href,
+    ...rest
   } = props;
 
   const mods = mod(s, { size, variant, colorScheme });
@@ -42,12 +43,8 @@ export const StyledButton = (props: StyledButtonProps) => {
     }
   }, [variant]);
 
-  return (
-    <Button
-      disabled={disabled}
-      className={clsx(s.root, "typo-caption", mods, className)}
-      href={href}
-    >
+  const content = (
+    <>
       {children && (
         <span className={s.bodyWrap}>
           <span className={s.body}>{children}</span>
@@ -58,6 +55,32 @@ export const StyledButton = (props: StyledButtonProps) => {
           <Icon size={iconSize} name={icon} />
         </span>
       )}
+    </>
+  );
+
+  const classNames = clsx(s.root, "typo-caption", mods, className);
+
+  if (href) {
+    return (
+      <Button disabled={disabled} className={classNames} href={href}>
+        {content}
+      </Button>
+    );
+  }
+
+  const { type, onClick } = rest as {
+    type?: "button" | "submit" | "reset";
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+  };
+
+  return (
+    <Button
+      disabled={disabled}
+      className={classNames}
+      type={type}
+      onClick={onClick}
+    >
+      {content}
     </Button>
   );
 };

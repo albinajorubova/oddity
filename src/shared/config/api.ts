@@ -7,7 +7,7 @@ export type StrapiConfigType = {
   previewSecret?: string;
 };
 
-export const baseUrl = `http://${process.env.PROJECT_SLUG}_backend:1337/api`;
+export const baseUrl = `http://${process.env.PROJECT_SLUG}:1337/api`;
 
 export const STRAPI_CONFIG: StrapiConfigType = {
   strapiUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:1337",
