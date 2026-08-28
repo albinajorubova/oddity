@@ -47,11 +47,6 @@ export const useLogin = () => {
       const redirect =
         typeof redirectParam === "string" ? redirectParam : ROUTES.home;
 
-      if (redirect.startsWith(ROUTES.admin)) {
-        await router.push(ROUTES.admin);
-        return;
-      }
-
       await router.push(redirect);
     } catch (error) {
       setRootError(parseAuthError(error, "Invalid email or password"));

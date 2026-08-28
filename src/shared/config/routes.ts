@@ -10,6 +10,7 @@ export const ROUTES = {
   search: "/search",
   login: "/login",
   join: "/join",
+  profile: "/profile",
   admin: "/admin",
   labGallery: "/lab/gallery",
 } as const;

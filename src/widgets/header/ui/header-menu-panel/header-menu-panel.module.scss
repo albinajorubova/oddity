@@ -20,3 +20,12 @@
     transform 1s var(--ease-out-expo),
     opacity 1s var(--ease-out-expo);
 }
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  margin-top: var(--spacing-24);
+  padding-top: var(--spacing-24);
+  border-top: 1px solid rgb(255 255 255 / 20%);
+}

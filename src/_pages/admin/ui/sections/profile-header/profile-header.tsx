@@ -15,7 +15,7 @@ export const ProfileHeader = (props: ProfileHeaderProps) => {
 
   return (
     <header className={clsx(s.root, className)}>
-      <h1 className={clsx(s.title, "typo-h1")}>PROFILE</h1>
+      <h1 className={clsx(s.title, "typo-h1")}>ADMIN DASHBOARD</h1>
       <p className={clsx(s.kicker, "typo-micro")}>
         {role} · EST. {established}
       </p>

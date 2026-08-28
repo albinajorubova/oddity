@@ -11,6 +11,7 @@ export type User = {
   email: string;
   confirmed?: boolean;
   blocked?: boolean;
+  createdAt?: string;
   role?: UserRole;
 };
 
