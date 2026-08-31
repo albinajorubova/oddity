@@ -20,8 +20,8 @@ export type LogoControllerOptions = {
   idleMaxMs: number;
   oddHoldMs: number;
   introDelayMs: number;
-  /** Min gap between hover plays (ms). */
   hoverCooldownMs?: number;
+  getIdleEnabled?: () => boolean;
   pickRecipe?: RecipePicker;
 };
 
@@ -50,6 +50,7 @@ export const createLogoController = (
     oddHoldMs,
     introDelayMs,
     hoverCooldownMs = 1200,
+    getIdleEnabled = () => true,
     pickRecipe = createRecipePicker(),
   } = options;
 
@@ -92,6 +93,8 @@ export const createLogoController = (
   };
 
   const playIdleBeat = () => {
+    if (!getIdleEnabled()) return;
+
     if (!canPlay("idle")) {
       schedule(nextIdleDelay(), playIdleBeat);
       return;
@@ -139,7 +142,9 @@ export const createLogoController = (
 
       schedule(duration * 1000, () => {
         phase = "idle";
-        schedule(nextIdleDelay(), playIdleBeat);
+        if (getIdleEnabled()) {
+          schedule(nextIdleDelay(), playIdleBeat);
+        }
       });
     });
   };
@@ -147,6 +152,10 @@ export const createLogoController = (
   const start = () => {
     clearTimers();
     phase = "idle";
+    if (!getIdleEnabled()) {
+      goHome(false);
+      return;
+    }
     schedule(introDelayMs, playIdleBeat);
   };
 

@@ -22,7 +22,6 @@ export type HeroSectionProps = {
 };
 
 export const HeroSection = ({ orbitItems = [] }: HeroSectionProps) => {
-
   const hero = HOME_HERO_STUB;
   const bridge = HOME_EXPAND_STUB;
 

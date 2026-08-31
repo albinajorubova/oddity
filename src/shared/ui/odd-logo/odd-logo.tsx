@@ -23,6 +23,7 @@ export type OddLogoProps = {
   oddHoldMs?: number;
   introDelayMs?: number;
   hoverCooldownMs?: number;
+  idle?: boolean;
   disabled?: boolean;
 };
 
@@ -40,6 +41,7 @@ export const OddLogo = forwardRef<OddLogoHandle, OddLogoProps>((props, ref) => {
     oddHoldMs = 900,
     introDelayMs = 900,
     hoverCooldownMs = 50,
+    idle = true,
     disabled = false,
   } = props;
 
@@ -53,11 +55,15 @@ export const OddLogo = forwardRef<OddLogoHandle, OddLogoProps>((props, ref) => {
   const disabledRef = useRef(disabled);
   disabledRef.current = disabled;
 
+  const idleRef = useRef(idle);
+  idleRef.current = idle;
+
   const controller = useMemo(
     () =>
       createLogoController({
         getRoot: () => rootRef.current,
         getBaseState: () => baseStateRef.current,
+        getIdleEnabled: () => idleRef.current,
         duration,
         idleMinMs,
         idleMaxMs,
@@ -68,20 +74,29 @@ export const OddLogo = forwardRef<OddLogoHandle, OddLogoProps>((props, ref) => {
     [duration, hoverCooldownMs, idleMaxMs, idleMinMs, introDelayMs, oddHoldMs],
   );
 
-  const applyDisabled = (next: boolean) => {
-    disabledRef.current = next;
-    if (next) {
+  const syncController = () => {
+    if (disabledRef.current) {
       controller.reset(true);
       return;
     }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    controller.start();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      controller.reset(true);
+      return;
+    }
+    if (idleRef.current) {
+      controller.start();
+      return;
+    }
+    controller.reset(true);
   };
 
   useImperativeHandle(
     ref,
     () => ({
-      setDisabled: applyDisabled,
+      setDisabled: (next) => {
+        disabledRef.current = next;
+        syncController();
+      },
     }),
     [controller],
   );
@@ -92,11 +107,7 @@ export const OddLogo = forwardRef<OddLogoHandle, OddLogoProps>((props, ref) => {
 
     const onMotionChange = () => {
       controller.setReducedMotion(media.matches);
-      if (disabledRef.current || media.matches) {
-        controller.reset(true);
-        return;
-      }
-      controller.start();
+      syncController();
     };
 
     media.addEventListener("change", onMotionChange);
@@ -108,8 +119,8 @@ export const OddLogo = forwardRef<OddLogoHandle, OddLogoProps>((props, ref) => {
   }, [baseState, controller]);
 
   useEffect(() => {
-    applyDisabled(disabled);
-  }, [disabled, controller]);
+    syncController();
+  }, [disabled, idle, controller]);
 
   const onHover = () => {
     if (disabledRef.current) return;

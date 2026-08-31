@@ -77,10 +77,19 @@ export const Header = (props: HeaderProps) => {
               <Button
                 href={ROUTES.home}
                 data-header-logo
-                className={clsx(s.headerLogo, !isHome && s.isVisible)}
+                className={clsx(
+                  s.headerLogo,
+                  isHome && s.isHomeHidden,
+                  !isHome && s.isStaticVisible,
+                )}
                 aria-label="ODDITY"
               >
-                <OddLogo text="ODDITY" className="typo-p1" introDelayMs={0} />
+                <OddLogo
+                  text="ODDITY"
+                  className="typo-p1"
+                  introDelayMs={0}
+                  idle={isHome}
+                />
               </Button>
             </div>
           </nav>
