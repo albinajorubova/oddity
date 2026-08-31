@@ -3,9 +3,16 @@ import { STRAPI_CONFIG } from "@shared/config";
 
 import {
   getErrorDetails,
+  hydrateMusicItemPeople,
+  hydrateMusicItemsPeople,
   mapMusicItemToStrapiPayload,
   mapStrapiToMusicItem,
 } from "../lib";
+import {
+  coalesceMusicItemFromDraft,
+  coalescePublishedWithDrafts,
+  mergeDraftAndPublishedMusicItems,
+} from "../lib/coalesce-music-item-from-draft";
 import { musicError, musicLog } from "../lib/logger";
 import type { CreateMusicItemInput, MusicItem } from "../model";
 import { STRAPI_MUSIC_ITEM_TYPE_COLLECTION } from "./music-item-type-api";
@@ -26,10 +33,35 @@ const basePopulate = {
   people: { populate: { person: true } },
 } as const;
 
+const withHydratedPeople = async (
+  item: MusicItem | null,
+  options?: {
+    status?: "draft" | "published";
+    fallbackPeople?: CreateMusicItemInput["people"];
+  },
+): Promise<MusicItem | null> => {
+  if (!item) return null;
+
+  let hydrated = await hydrateMusicItemPeople(item, options);
+
+  if (
+    options?.fallbackPeople?.length &&
+    !hydrated.people.some((ref) => ref.person?.name?.trim())
+  ) {
+    hydrated = { ...hydrated, people: options.fallbackPeople };
+  }
+
+  return hydrated;
+};
+
 const itemIdentityKey = (item: MusicItem): string =>
-  item.documentId ?? item.id ?? item.youtubeId ?? item.slug;
+  item.documentId ?? item.slug ?? item.id ?? item.youtubeId;
 
 const mergeMusicItems = (lists: MusicItem[][]): MusicItem[] => {
+  if (lists.length === 2 && lists[0] && lists[1]) {
+    return mergeDraftAndPublishedMusicItems(lists[0], lists[1]);
+  }
+
   const merged = new Map<string, MusicItem>();
 
   for (const list of lists) {
@@ -39,6 +71,27 @@ const mergeMusicItems = (lists: MusicItem[][]): MusicItem[] => {
   }
 
   return [...merged.values()];
+};
+
+const withDraftFallback = async (
+  item: MusicItem | null,
+  slug: string,
+  options?: MusicItemFindOptions,
+): Promise<MusicItem | null> => {
+  if (!item || options?.status !== "published") {
+    return item;
+  }
+
+  if (item.people.some((ref) => ref.person?.name?.trim())) {
+    return item;
+  }
+
+  const draft = await getMusicItemBySlug(slug, {
+    status: "draft",
+    curatorStatus: options.curatorStatus,
+  });
+
+  return coalesceMusicItemFromDraft(item, draft);
 };
 
 const logStrapiConfig = (): void => {
@@ -78,7 +131,12 @@ export const createMusicItem = async (
       id: response.data?.id,
     });
 
-    return mapStrapiToMusicItem(response.data);
+    const mapped = mapStrapiToMusicItem(response.data);
+
+    return withHydratedPeople(mapped, {
+      status: options?.status,
+      fallbackPeople: input.people,
+    });
   } catch (error) {
     musicError("createMusicItem:failed", getErrorDetails(error));
     throw error;
@@ -114,9 +172,11 @@ export const getMusicItems = async (
       return item ? [item] : [];
     });
 
-    musicLog("getMusicItems:success", { count: mapped.length });
+    const hydrated = await hydrateMusicItemsPeople(mapped, options);
 
-    return mapped;
+    musicLog("getMusicItems:success", { count: hydrated.length });
+
+    return hydrated;
   } catch (error) {
     musicError("getMusicItems:failed", getErrorDetails(error));
     throw error;
@@ -143,6 +203,68 @@ export const getAllMusicItems = async (
 
   return merged;
 };
+
+export const getPublicMusicItems = async (): Promise<MusicItem[]> => {
+  const [published, drafts] = await Promise.all([
+    getMusicItems({ status: "published", curatorStatus: "public" }),
+    getMusicItems({ status: "draft" }),
+  ]);
+
+  return coalescePublishedWithDrafts(published, drafts);
+};
+
+export const getMusicItemBySlug = async (
+  slug: string,
+  options?: MusicItemFindOptions,
+): Promise<MusicItem | null> => {
+  musicLog("getMusicItemBySlug", { slug, ...options });
+
+  const filters: Record<string, unknown> = {
+    slug: { $eq: slug },
+  };
+
+  if (options?.curatorStatus) {
+    filters.curatorStatus = { $eq: options.curatorStatus };
+  }
+
+  const findOptions: Parameters<ReturnType<typeof items>["find"]>[0] = {
+    filters,
+    populate: basePopulate,
+    pagination: { pageSize: 1 },
+  };
+
+  if (options?.status) {
+    findOptions.status = options.status;
+  }
+
+  try {
+    const response = await items().find(findOptions);
+    const first = response.data?.[0];
+    const mapped = first ? mapStrapiToMusicItem(first) : null;
+
+    musicLog("getMusicItemBySlug:result", { slug, found: Boolean(mapped) });
+
+    const hydrated = await withHydratedPeople(mapped, {
+      status: options?.status,
+    });
+
+    return withDraftFallback(hydrated, slug, options);
+  } catch (error) {
+    musicError("getMusicItemBySlug:failed", {
+      slug,
+      error: getErrorDetails(error),
+    });
+    throw error;
+  }
+};
+
+export const getPublicMusicItemBySlug = (
+  slug: string,
+): Promise<MusicItem | null> =>
+  getMusicItemBySlug(slug, {
+    status: "published",
+    curatorStatus: "public",
+  });
 
 export const getMusicItemByYoutubeId = async (
   youtubeId: string,
@@ -184,7 +306,7 @@ const findMusicItemByYoutubeId = async (
       found: Boolean(mapped),
     });
 
-    return mapped;
+    return withHydratedPeople(mapped, { status });
   } catch (error) {
     musicError("getMusicItemByYoutubeId:failed", {
       youtubeId,

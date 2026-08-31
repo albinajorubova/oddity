@@ -104,17 +104,13 @@ export const shouldProcessWithImgProxy = (
     return false;
   }
 
-  // Обрабатываем только изображения из Strapi uploads или внешние HTTP URL
-  return url.includes("/uploads/") || url.startsWith("http");
+  if (url.includes("/uploads/")) {
+    return true;
+  }
+
+  return false;
 };
 
-/**
- * Нормализует URL изображения для использования в imgproxy
- * Преобразует относительные пути в полные URL
- * @param imagePath - Путь к изображению (может быть относительным или полным URL)
- * @param options - Опции для нормализации
- * @returns Нормализованный URL для imgproxy или null, если не нужно обрабатывать
- */
 export const normalizeImageSourceUrl = (
   imagePath: string,
   options: NormalizeImageUrlOptions = {},

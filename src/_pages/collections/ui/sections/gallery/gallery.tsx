@@ -10,7 +10,6 @@ import {
 } from "@entities/collection-card";
 
 import { MasonryGrid } from "@shared/ui/masonry";
-import { COLLECTION_ITEMS_STUB } from "@/_pages/collections/model";
 
 import s from "./gallery.module.scss";
 
@@ -26,11 +25,12 @@ const META_ESTIMATE = 0.22;
 
 export type GallerySectionProps = {
   className?: string;
+  items: CollectionItem[];
 };
 
 /** Навигация обычным Link — morph делает TransitionLayout (sync). */
 export const GallerySection = (props: GallerySectionProps) => {
-  const { className } = props;
+  const { className, items } = props;
 
   const estimateHeight = useCallback(
     (item: CollectionItem) => ASPECT_ESTIMATE[item.aspect] + META_ESTIMATE,
@@ -39,14 +39,18 @@ export const GallerySection = (props: GallerySectionProps) => {
 
   return (
     <section id="gallery" className={clsx(s.root, className)}>
-      <MasonryGrid
-        items={COLLECTION_ITEMS_STUB}
-        estimateHeight={estimateHeight}
-        className={s.masonry}
-        renderItem={(item, { onLoad }) => (
-          <CollectionCard item={item} onImageLoad={onLoad} />
-        )}
-      />
+      {items.length === 0 ? (
+        <p className="typo-micro">Nothing in the archive yet.</p>
+      ) : (
+        <MasonryGrid
+          items={items}
+          estimateHeight={estimateHeight}
+          className={s.masonry}
+          renderItem={(item, { onLoad }) => (
+            <CollectionCard item={item} onImageLoad={onLoad} />
+          )}
+        />
+      )}
     </section>
   );
 };

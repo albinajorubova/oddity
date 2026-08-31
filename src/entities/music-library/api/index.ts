@@ -1,8 +1,11 @@
 export {
   createMusicItem,
   getAllMusicItems,
+  getMusicItemBySlug,
   getMusicItemByYoutubeId,
   getMusicItems,
+  getPublicMusicItemBySlug,
+  getPublicMusicItems,
   STRAPI_MUSIC_ITEM_COLLECTION,
   STRAPI_MUSIC_ITEM_TYPE_COLLECTION,
 } from "./music-item-api";

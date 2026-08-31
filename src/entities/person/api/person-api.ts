@@ -52,6 +52,30 @@ export const createPerson = async (
   return mapStrapiToPerson(response.data);
 };
 
+export const getPersonByDocumentId = async (
+  documentId: string,
+  options?: { status?: "draft" | "published" },
+): Promise<Person | null> => {
+  const trimmed = documentId.trim();
+  if (!trimmed) return null;
+
+  const statuses: Array<"draft" | "published"> = options?.status
+    ? [options.status]
+    : ["draft", "published"];
+
+  for (const status of statuses) {
+    try {
+      const response = await people().findOne(trimmed, { status });
+      const mapped = mapStrapiToPerson(response.data);
+      if (mapped) return mapped;
+    } catch {
+      // try other publication status
+    }
+  }
+
+  return null;
+};
+
 export const findOrCreatePersonByName = async (
   name: string,
   options?: { status?: "draft" | "published" },

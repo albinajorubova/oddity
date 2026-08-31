@@ -1,44 +1,19 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type { InferGetServerSidePropsType } from "next";
 
-import type { CollectionDetail } from "@/_pages/collection-detail/model";
-import { getCollectionDetailBySlug } from "@/_pages/collection-detail/model";
+import {
+  type CollectionDetailPageProps,
+  getCollectionDetailPageProps,
+} from "@/_pages/collection-detail/api/get-collection-detail-page-props";
 import { CollectionDetailPage } from "@/_pages/collection-detail/ui";
-
-type CollectionDetailPageProps = {
-  item: CollectionDetail;
-  isDraftMode: boolean;
-  cms: Record<string, never>;
-};
 
 const Page = ({
   item,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: InferGetServerSidePropsType<typeof getCollectionDetailPageProps>) => {
   return <CollectionDetailPage item={item} />;
 };
 
-export const getServerSideProps: GetServerSideProps<
-  CollectionDetailPageProps
-> = async (context) => {
-  const slug = context.params?.slug;
-  const resolvedSlug = Array.isArray(slug) ? slug[0] : slug;
-
-  if (!resolvedSlug) {
-    return { notFound: true };
-  }
-
-  const item = getCollectionDetailBySlug(resolvedSlug);
-
-  if (!item) {
-    return { notFound: true };
-  }
-
-  return {
-    props: {
-      item,
-      isDraftMode: false,
-      cms: {},
-    },
-  };
-};
+export const getServerSideProps = getCollectionDetailPageProps;
 
 export default Page;
+
+export type { CollectionDetailPageProps };

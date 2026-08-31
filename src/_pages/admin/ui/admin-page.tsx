@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 import { Container } from "@shared/ui/container";
 import {
-  ADMIN_PROFILE_STUB,
+  ADMIN_PROFILE,
   type AdminCard,
   useAdminCardsActions,
   useAdminCardsStore,
@@ -22,7 +22,7 @@ export type AdminPageProps = {
 
 export const AdminPage = (props: AdminPageProps) => {
   const { className, cards: initialCards } = props;
-  const profile = ADMIN_PROFILE_STUB;
+  const profile = ADMIN_PROFILE;
   const cards = useAdminCardsStore((state) => state.cards);
   const { hydrate } = useAdminCardsActions();
 

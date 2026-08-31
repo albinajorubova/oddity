@@ -115,7 +115,7 @@ export const mapMusicItemToStrapiPayload = (item: CreateMusicItemInput) => {
   const people = item.people.flatMap((ref) => {
     const documentId = ref.person?.documentId;
     if (!documentId) return [];
-    return [{ person: documentId }];
+    return [{ person: { connect: [documentId] } }];
   });
 
   return stripNullish({

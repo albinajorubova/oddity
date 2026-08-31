@@ -1,9 +1,13 @@
+export { getCollectionDetailBySlug } from "../api/get-collection-detail-by-slug";
+export {
+  type CollectionDetailPageProps,
+  getCollectionDetailPageProps,
+} from "../api/get-collection-detail-page-props";
 export {
   getCollectionSectionNav,
   hasDnaSection,
   hasTracksSection,
 } from "./section-nav";
-export { COLLECTION_DETAIL_STUBS, getCollectionDetailBySlug } from "./stubs";
 export type {
   CollectionAvailabilityLink,
   CollectionCategories,

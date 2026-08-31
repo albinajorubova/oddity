@@ -20,7 +20,6 @@ export {
   YoutubeResolvedDataSchema,
   YoutubeResolvedTrackSchema,
 } from "./schemas";
-export { ADMIN_PROFILE_STUB } from "./stubs";
 export type {
   AdminCard,
   AdminFilter,
@@ -29,6 +28,11 @@ export type {
 } from "./types";
 
 export const ADMIN_FILTERS = ["all", "draft", "public"] as const;
+
+export const ADMIN_PROFILE = {
+  role: "CURATOR",
+  established: "2026",
+} as const;
 
 export const formatPublishStatus = (status: "draft" | "public") =>
   status.toUpperCase();

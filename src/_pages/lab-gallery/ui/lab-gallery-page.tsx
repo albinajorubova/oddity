@@ -2,28 +2,23 @@
 
 import clsx from "clsx";
 
+import type { CollectionItem } from "@entities/collection-card";
+
 import { Container } from "@shared/ui/container";
 
-import { LAB_GALLERY_ITEMS } from "../model";
 import { useLabFlip } from "./use-lab-flip";
 
 import s from "./lab-gallery-page.module.scss";
 
 export type LabGalleryPageProps = {
   className?: string;
+  items: CollectionItem[];
 };
 
-/**
- * Lab / этапы 2–3 — open Flip + close reverse.
- *
- * Open:  card → hero
- * Close: кнопка «Закрыть» или повторный клик по активной карточке → hero → card
- */
 export const LabGalleryPage = (props: LabGalleryPageProps) => {
-  const { className } = props;
+  const { className, items } = props;
   const { activeSlug, isOpen, open, close, heroCopyRef } = useLabFlip();
-  const activeItem =
-    LAB_GALLERY_ITEMS.find((item) => item.slug === activeSlug) ?? null;
+  const activeItem = items.find((item) => item.slug === activeSlug) ?? null;
 
   return (
     <main className={clsx(s.root, className, isOpen && s.isOpen)}>
@@ -48,58 +43,64 @@ export const LabGalleryPage = (props: LabGalleryPageProps) => {
         </header>
 
         <section className={s.gallery} aria-label="Album covers">
-          <ul className={s.grid}>
-            {LAB_GALLERY_ITEMS.map((item) => {
-              const isActive = item.slug === activeSlug;
+          {items.length === 0 ? (
+            <p className={clsx(s.note, "typo-p2")}>
+              Nothing in the archive yet.
+            </p>
+          ) : (
+            <ul className={s.grid}>
+              {items.map((item) => {
+                const isActive = item.slug === activeSlug;
 
-              return (
-                <li
-                  key={item.id}
-                  className={s.card}
-                  data-lab-card
-                  data-slug={item.slug}
-                >
-                  <button
-                    type="button"
-                    className={s.cardButton}
-                    aria-label={`${item.artist} — ${item.title}`}
-                    aria-pressed={isActive}
-                    onClick={() => open(item.slug)}
+                return (
+                  <li
+                    key={item.id}
+                    className={s.card}
+                    data-lab-card
+                    data-slug={item.slug}
                   >
-                    <div
-                      className={s.slot}
-                      data-flip-id={item.slug}
-                      data-flip-role="card"
-                      hidden={isActive}
+                    <button
+                      type="button"
+                      className={s.cardButton}
+                      aria-label={`${item.artist} — ${item.title}`}
+                      aria-pressed={isActive}
+                      onClick={() => open(item.slug)}
                     >
-                      <img
-                        className={s.image}
-                        src={item.imageUrl}
-                        alt={`${item.artist} — ${item.title}`}
-                        draggable={false}
-                      />
-                    </div>
-
-                    {isActive && (
                       <div
-                        className={clsx(s.slot, s.slotEmpty)}
-                        data-slot-empty
-                        aria-hidden
-                      />
-                    )}
+                        className={s.slot}
+                        data-flip-id={item.slug}
+                        data-flip-role="card"
+                        hidden={isActive}
+                      >
+                        <img
+                          className={s.image}
+                          src={item.imageUrl}
+                          alt={`${item.artist} — ${item.title}`}
+                          draggable={false}
+                        />
+                      </div>
 
-                    <div className={s.meta}>
-                      <p className={clsx(s.artist, "typo-micro")}>
-                        {item.artist}
-                      </p>
-                      <p className="typo-p2">{item.title}</p>
-                      <p className={clsx(s.year, "typo-p2")}>{item.year}</p>
-                    </div>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                      {isActive && (
+                        <div
+                          className={clsx(s.slot, s.slotEmpty)}
+                          data-slot-empty
+                          aria-hidden
+                        />
+                      )}
+
+                      <div className={s.meta}>
+                        <p className={clsx(s.artist, "typo-micro")}>
+                          {item.artist}
+                        </p>
+                        <p className="typo-p2">{item.title}</p>
+                        <p className={clsx(s.year, "typo-p2")}>{item.year}</p>
+                      </div>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
 
         <section className={s.hero} aria-label="Hero slot">

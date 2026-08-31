@@ -4,17 +4,21 @@ import { ROUTES } from "@/shared/config";
 import { Button } from "@/shared/ui/button";
 import { RollingText } from "@/shared/ui/rolling-text";
 
-import { HOME_HERO_STUB } from "../model";
+import { HOME_HERO_STUB, type HomeOrbitItem } from "../model";
 import { HeroSection } from "./sections";
 
 import s from "./home-page.module.scss";
 
-export const HomePage = () => {
+export type HomePageProps = {
+  orbitItems: HomeOrbitItem[];
+};
+
+export const HomePage = ({ orbitItems }: HomePageProps) => {
   const content = HOME_HERO_STUB;
 
   return (
     <div className={s.root}>
-      <HeroSection />
+      <HeroSection orbitItems={orbitItems} />
       <Button
         href={ROUTES.collections}
         className={s.cta}

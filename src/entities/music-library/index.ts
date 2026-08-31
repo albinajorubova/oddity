@@ -1,12 +1,16 @@
 export {
   createMusicItem,
   getAllMusicItems,
+  getMusicItemBySlug,
   getMusicItemByYoutubeId,
   getMusicItemTypeBySlug,
+  getPublicMusicItemBySlug,
+  getPublicMusicItems,
   requireMusicItemTypeBySlug,
   STRAPI_MUSIC_ITEM_COLLECTION,
   STRAPI_MUSIC_ITEM_TYPE_COLLECTION,
 } from "./api";
+export type { MusicItemPageDisplay } from "./lib";
 export {
   formatMusicItemForPage,
   formatMusicItemTypeLabel,
@@ -17,7 +21,6 @@ export {
   musicLog,
   resolveItemTypeSlug,
 } from "./lib";
-export type { MusicItemPageDisplay } from "./lib";
 export type {
   ArchiveWorkComponents,
   AvailabilityLink,

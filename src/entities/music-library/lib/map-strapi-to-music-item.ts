@@ -25,24 +25,46 @@ const mapTracks = (tracks: StrapiMusicItem["tracks"]): MusicItem["tracks"] => {
 const mapPeople = (people: StrapiMusicItem["people"]): PersonRef[] =>
   (people ?? []).flatMap((ref) => {
     const raw = ref.person;
-    if (!raw || typeof raw !== "object" || !("name" in raw)) return [];
+
+    if (typeof raw === "string" && raw) {
+      return [
+        {
+          id: ref.id,
+          person: {
+            id: raw,
+            documentId: raw,
+            name: "",
+            slug: null,
+            description: null,
+            imageUrl: null,
+          },
+        },
+      ];
+    }
+
+    if (!raw || typeof raw !== "object") return [];
 
     const person = raw as {
       id?: number;
       documentId?: string;
-      name: string;
+      name?: string;
       slug?: string | null;
       description?: string | null;
       imageUrl?: string | null;
     };
 
+    const documentId = person.documentId;
+    const name = person.name ?? "";
+
+    if (!documentId && !name.trim()) return [];
+
     return [
       {
         id: ref.id,
         person: {
-          id: person.documentId ?? String(person.id ?? ""),
-          documentId: person.documentId,
-          name: person.name,
+          id: documentId ?? String(person.id ?? ""),
+          documentId,
+          name,
           slug: person.slug ?? null,
           description: person.description ?? null,
           imageUrl: person.imageUrl ?? null,

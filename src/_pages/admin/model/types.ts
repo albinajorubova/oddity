@@ -24,5 +24,4 @@ export type AdminFilter = "all" | "draft" | "public";
 export type AdminProfile = {
   role: string;
   established: string;
-  cards: AdminCard[];
 };

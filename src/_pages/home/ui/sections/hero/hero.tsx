@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 import type { OddLogoHandle } from "@shared/ui/odd-logo";
 import { OddLogo } from "@shared/ui/odd-logo";
+import type { HomeOrbitItem } from "@/_pages/home/model";
 import { HOME_EXPAND_STUB, HOME_HERO_STUB } from "@/_pages/home/model";
 
 import { createHeroAnimation } from "./hero-animation";
@@ -16,7 +17,12 @@ import s from "./hero.module.scss";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const HeroSection = () => {
+export type HeroSectionProps = {
+  orbitItems?: HomeOrbitItem[];
+};
+
+export const HeroSection = ({ orbitItems = [] }: HeroSectionProps) => {
+
   const hero = HOME_HERO_STUB;
   const bridge = HOME_EXPAND_STUB;
 
@@ -84,7 +90,7 @@ export const HeroSection = () => {
   return (
     <section className={s.root} ref={sectionRef}>
       <div className={s.content} ref={contentRef}>
-        <OrbitGallery ref={galleryRef} />
+        <OrbitGallery ref={galleryRef} items={orbitItems} />
         <h1
           className={clsx("typo-display", s.brand)}
           aria-label={hero.brand}

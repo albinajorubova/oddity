@@ -1,4 +1,10 @@
 export {
+  getArchiveCardBySlug,
+  getArchiveCards,
+  getPublicArchiveCardBySlug,
+  getPublicArchiveCards,
+} from "./archive-card-api";
+export {
   createMusicCard,
   createMusicCardFromYoutube,
   getAllMusicCards,

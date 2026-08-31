@@ -34,41 +34,6 @@ export const HOME_NAV_STUB: HomeNavItem[] = [
   { label: "ABOUT", href: ROUTES.about },
 ];
 
-/** 6 photos — позиции и maxW/maxH в orbit-gallery.module.scss */
-export const HOME_ORBIT_STUB: HomeOrbitItem[] = [
-  {
-    id: "1",
-    src: "/images/covers/sgt-pepper.jpg",
-    alt: "Sgt. Pepper",
-  },
-  {
-    id: "2",
-    src: "/images/covers/crimson-king.jpg",
-    alt: "Crimson King",
-  },
-  {
-    id: "3",
-    src: "/images/covers/aladdin-sane.jpg",
-    alt: "Aladdin Sane",
-  },
-  {
-    id: "4",
-    src: "/images/covers/dark-side-of-the-moon.jpg",
-    alt: "Dark Side of the Moon",
-  },
-  {
-    id: "5",
-    src: "/images/covers/nevermind.jpg",
-    alt: "Nevermind",
-  },
-  {
-    id: "6",
-    src: "/images/covers/kind-of-blue.jpg",
-    alt: "Kind of Blue",
-    expand: true,
-  },
-];
-
 export const HOME_EXPAND_STUB: HomeExpandStub = {
   eyebrow: "Featured",
   title: "COLLECTIONS",
