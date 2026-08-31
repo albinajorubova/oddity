@@ -35,7 +35,7 @@ const FILTER_LABEL: Record<AdminFilter, string> = {
 
 export const LibrarySection = (props: LibrarySectionProps) => {
   const { className, cards } = props;
-  const [filter, setFilter] = useState<AdminFilter>("draft");
+  const [filter, setFilter] = useState<AdminFilter>("all");
   const skipFirstEnterRef = useRef(true);
   const counts = useMemo(() => countByStatus(cards), [cards]);
 

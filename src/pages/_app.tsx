@@ -28,7 +28,7 @@ type OddityPageProps = {
   isDraftMode?: boolean;
 };
 
-export default function App({
+function OddityApp({
   Component,
   pageProps,
   router,
@@ -69,3 +69,5 @@ export default function App({
     </>
   );
 }
+
+export default OddityApp;

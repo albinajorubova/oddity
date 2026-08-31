@@ -1,9 +1,8 @@
-import type { GetServerSideProps } from "next";
-
 import {
   getPublicCollectionItems,
   mapCollectionItemToOrbitItem,
 } from "@entities/collection-card";
+import { withAuth } from "@entities/user";
 
 import { HomePage } from "@/_pages/home/ui";
 
@@ -15,7 +14,7 @@ const Page = ({ orbitItems }: HomePageProps) => {
   return <HomePage orbitItems={orbitItems} />;
 };
 
-export const getServerSideProps: GetServerSideProps<HomePageProps> = async () => {
+export const getServerSideProps = withAuth(async () => {
   try {
     const items = await getPublicCollectionItems();
     const orbitItems = items.slice(0, 6).map((item, index, arr) =>
@@ -32,6 +31,6 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async () =>
       props: { orbitItems: [] },
     };
   }
-};
+});
 
 export default Page;

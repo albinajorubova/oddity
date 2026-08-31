@@ -12,7 +12,9 @@ export {
   isAdmin,
   parseAuthApiError,
   parseAuthError,
+  resolveSessionFromRequest,
   serializeAuthCookie,
+  type Session,
   withAuth,
 } from "./lib";
 export {

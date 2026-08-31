@@ -1,6 +1,5 @@
-import type { GetServerSideProps } from "next";
-
 import { getPublicCollectionItems } from "@entities/collection-card";
+import { withAuth } from "@entities/user";
 
 import { CollectionsPage } from "@/_pages/collections/ui";
 
@@ -12,9 +11,7 @@ const Page = ({ items }: CollectionsPageProps) => {
   return <CollectionsPage items={items} />;
 };
 
-export const getServerSideProps: GetServerSideProps<
-  CollectionsPageProps
-> = async () => {
+export const getServerSideProps = withAuth(async () => {
   try {
     const items = await getPublicCollectionItems();
 
@@ -26,6 +23,6 @@ export const getServerSideProps: GetServerSideProps<
       props: { items: [] },
     };
   }
-};
+});
 
 export default Page;

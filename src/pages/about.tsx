@@ -1,3 +1,7 @@
+import { withAuth } from "@entities/user";
+
+export const getServerSideProps = withAuth();
+
 const style = {
   height: "100vh",
   width: "100vw",

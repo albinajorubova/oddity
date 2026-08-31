@@ -4,9 +4,8 @@ import type {
   GetServerSidePropsResult,
 } from "next";
 
-import { getUser } from "../api";
-import { AUTH_COOKIE_NAME } from "../model/constants";
 import type { User } from "../model/types";
+import { resolveSessionFromRequest } from "./resolve-session";
 
 export type AuthPageContext = GetServerSidePropsContext & {
   user: User | null;
@@ -21,19 +20,9 @@ export const withAuth = (
   getServerSidePropsFunc?: AuthGetServerSideProps,
 ): GetServerSideProps => {
   return async (context) => {
-    const token = context.req.cookies[AUTH_COOKIE_NAME];
-    let user: User | null = null;
-    let userIsAuthenticated = false;
-
-    if (token) {
-      try {
-        user = await getUser(token);
-        userIsAuthenticated = true;
-      } catch {
-        user = null;
-        userIsAuthenticated = false;
-      }
-    }
+    const { user, userIsAuthenticated } = await resolveSessionFromRequest(
+      context.req,
+    );
 
     const authContext: AuthPageContext = {
       ...context,

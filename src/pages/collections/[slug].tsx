@@ -1,5 +1,7 @@
 import type { InferGetServerSidePropsType } from "next";
 
+import { withAuth } from "@entities/user";
+
 import {
   type CollectionDetailPageProps,
   getCollectionDetailPageProps,
@@ -12,7 +14,9 @@ const Page = ({
   return <CollectionDetailPage item={item} />;
 };
 
-export const getServerSideProps = getCollectionDetailPageProps;
+export const getServerSideProps = withAuth((context) =>
+  getCollectionDetailPageProps(context),
+);
 
 export default Page;
 

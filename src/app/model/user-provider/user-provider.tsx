@@ -43,7 +43,7 @@ export const UserProvider = (props: UserProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(userIsAuthenticated);
 
   useEffect(() => {
-    setUser(initialUser);
+    setUser(initialUser ?? null);
     setIsAuthenticated(userIsAuthenticated);
   }, [initialUser, userIsAuthenticated]);
 
