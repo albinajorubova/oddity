@@ -1,7 +1,7 @@
+import { historyScroll } from "@widgets/scroll/coreHooks/use-history-scroll-position";
 import { gsap } from "gsap";
 
 import { ROUTES } from "@shared/config";
-import { historyScroll } from "@widgets/scroll/coreHooks/use-history-scroll-position";
 
 import { TRANSITION_DURATION } from "../constants";
 import { EVENTS_TRANSITION_LAYOUT, transitionLayoutEmitter } from "../emmiter";

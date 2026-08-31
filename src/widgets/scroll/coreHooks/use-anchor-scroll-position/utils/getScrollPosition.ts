@@ -35,7 +35,8 @@ export const getScrollPosition = (el: HTMLElement): number => {
         : 0
       : Math.max(window.innerHeight - bound.height, 0) * -0.5;
 
-  const initialPosition = bound.y + window.__GLOBAL_SCROLL__.scroll + margin * -1;
+  const initialPosition =
+    bound.y + window.__GLOBAL_SCROLL__.scroll + margin * -1;
   const scrollPosition = initialPosition + (anchorTop || offset);
 
   if (isSticky) {

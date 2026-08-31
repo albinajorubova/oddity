@@ -1,9 +1,9 @@
 "use client";
 
-import clsx from "clsx";
-import { gsap } from "gsap";
 import type { ReactElement } from "react";
 import { cloneElement, useEffect, useRef, useState } from "react";
+import clsx from "clsx";
+import { gsap } from "gsap";
 
 // import { useCursor } from "../cursor";
 

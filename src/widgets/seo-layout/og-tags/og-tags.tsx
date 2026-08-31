@@ -3,14 +3,15 @@ import { useRouter } from "next/router";
 
 import { APP_INFO } from "@shared/config";
 
-import { mergeSeoData } from "./utils";
 import type { SeoLayoutDataType } from "../type";
+import { mergeSeoData } from "./utils";
 
 export const OgTags = (props: SeoLayoutDataType) => {
   const { asPath } = useRouter();
   const curLink = asPath.split("?")[0];
 
-  const { title, description, keywords, ogImage, theme, origin } = mergeSeoData(props);
+  const { title, description, keywords, ogImage, theme, origin } =
+    mergeSeoData(props);
 
   return (
     <Head>

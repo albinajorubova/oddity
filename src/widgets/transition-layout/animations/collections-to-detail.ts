@@ -1,9 +1,8 @@
-import { gsap } from "gsap";
-
 import {
   historyScroll,
   historyScrollRef,
 } from "@widgets/scroll/coreHooks/use-history-scroll-position";
+import { gsap } from "gsap";
 
 import { TRANSITION_DURATION } from "../constants";
 import { EVENTS_TRANSITION_LAYOUT, transitionLayoutEmitter } from "../emmiter";
@@ -19,10 +18,7 @@ const applyScrollFreeze = (mains: HTMLElement[]) => {
   for (const main of mains) {
     const firstChild = main.children[0] as HTMLElement | undefined;
     if (!firstChild) continue;
-    firstChild.style.setProperty(
-      "--transition-scroll-freeze",
-      `${-shift}px`,
-    );
+    firstChild.style.setProperty("--transition-scroll-freeze", `${-shift}px`);
     firstChild.classList.add(s.scrollFreeze);
   }
 

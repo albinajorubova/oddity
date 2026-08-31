@@ -39,7 +39,7 @@ export const LibraryCard = (props: LibraryCardProps) => {
         </p>
         <p className={clsx(s.title, "typo-p2")}>{card.title}</p>
         <p className={clsx(s.credit, "typo-micro")}>{card.credit}</p>
-        <p className={clsx(s.year, "typo-p2")}>{card.year}</p>
+        <p className={clsx(s.year, "typo-p2")}>{card.year ?? ""}</p>
       </div>
     </Button>
   );

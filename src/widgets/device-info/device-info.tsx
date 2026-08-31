@@ -1,8 +1,9 @@
 "use client";
 
-import { isApiSupported } from "@shared/utils";
-import isEqual from "lodash.isequal";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import isEqual from "lodash.isequal";
+
+import { isApiSupported } from "@shared/utils";
 
 import {
   DeviceContext,

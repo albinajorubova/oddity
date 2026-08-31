@@ -1,8 +1,9 @@
 "use client";
 
-import { useIntersectionObserver } from "@shared/hooks/use-intersection-observer";
-import clsx from "clsx";
 import { type ComponentProps, useEffect } from "react";
+import clsx from "clsx";
+
+import { useIntersectionObserver } from "@shared/hooks/use-intersection-observer";
 
 import s from "./video.module.scss";
 

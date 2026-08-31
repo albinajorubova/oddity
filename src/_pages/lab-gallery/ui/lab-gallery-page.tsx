@@ -5,7 +5,6 @@ import clsx from "clsx";
 import { Container } from "@shared/ui/container";
 
 import { LAB_GALLERY_ITEMS } from "../model";
-
 import { useLabFlip } from "./use-lab-flip";
 
 import s from "./lab-gallery-page.module.scss";

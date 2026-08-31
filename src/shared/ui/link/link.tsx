@@ -37,8 +37,7 @@ export const Link = (props: LinkProps) => {
     size,
   });
 
-  const typoClass =
-    size === "l" || size === "xl" ? "typo-h3" : "typo-caption";
+  const typoClass = size === "l" || size === "xl" ? "typo-h3" : "typo-caption";
 
   return (
     <Button

@@ -18,11 +18,7 @@ export const HeroCover = (props: HeroCoverProps) => {
 
   return (
     <div className={clsx(s.root, className)}>
-      <div
-        className={s.stage}
-        data-flip-id={slug}
-        data-flip-role="hero"
-      >
+      <div className={s.stage} data-flip-id={slug} data-flip-role="hero">
         <MediaImage
           className={s.image}
           src={cover.url}

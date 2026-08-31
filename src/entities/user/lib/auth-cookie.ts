@@ -2,10 +2,7 @@ import { stringifySetCookie } from "cookie";
 
 import { isProd } from "@shared/config";
 
-import {
-  AUTH_COOKIE_MAX_AGE,
-  AUTH_COOKIE_NAME,
-} from "../model/constants";
+import { AUTH_COOKIE_MAX_AGE, AUTH_COOKIE_NAME } from "../model/constants";
 
 export const serializeAuthCookie = (jwt: string): string =>
   stringifySetCookie({

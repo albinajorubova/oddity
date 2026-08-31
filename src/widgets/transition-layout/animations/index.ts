@@ -13,10 +13,7 @@ import { detailToCollectionsTransition } from "./detail-to-collections";
 import { fadeTransition } from "./fade";
 import type { AnimationType, TransitionAnimation } from "./types";
 
-export const ANIMATION_FUNCTIONS: Record<
-  AnimationType,
-  TransitionAnimation
-> = {
+export const ANIMATION_FUNCTIONS: Record<AnimationType, TransitionAnimation> = {
   "collections-to-detail": collectionsToDetailTransition,
   "detail-to-collections": detailToCollectionsTransition,
   fade: fadeTransition,

@@ -7,11 +7,7 @@ import type { TransitionAnimation, TransitionAnimationParams } from "./types";
 export const fadeTransition: TransitionAnimation = {
   id: "fade",
 
-  onLeave: ({
-    prevNode,
-    nextNode,
-    onComplete,
-  }: TransitionAnimationParams) => {
+  onLeave: ({ prevNode, nextNode, onComplete }: TransitionAnimationParams) => {
     if (prevNode) {
       gsap.set(prevNode, { pointerEvents: "none" });
     }

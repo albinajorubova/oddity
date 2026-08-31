@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
 import z, { ZodError } from "zod";
 
 import type { ResponseData } from "./type";

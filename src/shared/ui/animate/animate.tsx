@@ -1,9 +1,10 @@
+import { useEffect, useId, useMemo, useRef } from "react";
+import { gsap } from "gsap";
+
 import { useIntersectionObserver } from "@shared/hooks/use-intersection-observer";
 import useValueUpdate from "@shared/hooks/use-value-update";
 import { Slot } from "@shared/ui/slot";
 import { composeRefs } from "@shared/utils/compose-refs";
-import { gsap } from "gsap";
-import { useEffect, useId, useMemo, useRef } from "react";
 
 import { ANIMATES, type AnimationData } from "./animates";
 

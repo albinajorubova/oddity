@@ -1,5 +1,5 @@
-import normalizeWheel from "normalize-wheel-es";
 import { useEffect } from "react";
+import normalizeWheel from "normalize-wheel-es";
 
 export type WheelEventData = {
   x: number;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useScroll } from "@widgets/scroll/hooks/use-scroll";
 import clsx from "clsx";
 
 import { MarkerHighlight } from "@shared/ui/marker";
-import { useScroll } from "@widgets/scroll/hooks/use-scroll";
 import type {
   CollectionSectionId,
   CollectionSectionNavItem,

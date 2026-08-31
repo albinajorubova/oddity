@@ -17,7 +17,11 @@ const lineCenter = (line: HTMLElement, root: HTMLElement) => {
   return lineBox.top - rootBox.top + lineBox.height / 2;
 };
 
-const meetOffsets = (top: HTMLElement, bottom: HTMLElement, root: HTMLElement) => {
+const meetOffsets = (
+  top: HTMLElement,
+  bottom: HTMLElement,
+  root: HTMLElement,
+) => {
   const topCenter = lineCenter(top, root);
   const bottomCenter = lineCenter(bottom, root);
   const meet = (topCenter + bottomCenter) / 2;

@@ -7,7 +7,6 @@ import { DelayDelete, SwitchElement } from "@shared/ui/animate-presence";
 
 import { TransitionLayoutContext } from "../context/transition-layout-context";
 import { EVENTS_TRANSITION_LAYOUT, transitionLayoutEmitter } from "../emmiter";
-
 import s from "../transition-layout.module.scss";
 
 const TRANSITION_DURATION = 0.4;

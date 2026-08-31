@@ -1,6 +1,7 @@
+import { gsap } from "gsap";
+
 import { calculateSizeImage } from "@shared/utils/calculate-size-image";
 import { loaderAllImages } from "@shared/utils/loaders/image";
-import { gsap } from "gsap";
 
 type CanvasRenderOptions = {
   canvas: HTMLCanvasElement;

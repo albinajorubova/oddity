@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 
 import { ROUTES } from "@shared/config";
 import {
+  type CollectionDetail,
   getCollectionSectionNav,
   hasDnaSection,
   hasTracksSection,
-  type CollectionDetail,
 } from "@/_pages/collection-detail/model";
 
 import { SectionNav } from "./section-nav";

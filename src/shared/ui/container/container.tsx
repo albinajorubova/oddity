@@ -1,9 +1,10 @@
-import type { ComponentOrTag, DynamicProps, ElementSize } from "@shared/types";
-import { clsx } from "clsx";
 import type { ComponentProps } from "react";
+import { clsx } from "clsx";
+
+import type { ComponentOrTag, DynamicProps, ElementSize } from "@shared/types";
+import { mod } from "@/shared/utils";
 
 import s from "./container.module.scss";
-import { mod } from "@/shared/utils";
 
 export type ContainerProps<
   Element extends ComponentOrTag<ComponentProps<Element>>,
@@ -31,10 +32,7 @@ export const Container = <
   });
 
   return (
-    <Component
-      className={clsx(s.root, className, mods)}
-      {...restProps}
-    >
+    <Component className={clsx(s.root, className, mods)} {...restProps}>
       {children}
     </Component>
   );

@@ -1,9 +1,10 @@
+import { useEffect, useRef } from "react";
+import clsx from "clsx";
+import { gsap } from "gsap";
+
 import { useIntersectionObserver } from "@shared/hooks/use-intersection-observer";
 import { SplitText } from "@shared/ui/split-text";
 import { composeRefs } from "@shared/utils/compose-refs";
-import clsx from "clsx";
-import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
 
 import s from "./split-text.module.scss";
 

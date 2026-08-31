@@ -3,8 +3,6 @@ import "@/shared/styles/globals.scss";
 import { DataStoreProvider } from "@app/model/data-store";
 import { UserProvider } from "@app/model/user-provider";
 import { useAppViewport } from "@app/model/viewport-store";
-import type { User } from "@entities/user";
-import type { Seo } from "@shared/types/strapi-components";
 import { AppHooks } from "@widgets/app-hooks/app-hooks";
 import { Gsap } from "@widgets/gsap";
 import { Header } from "@widgets/header";
@@ -15,6 +13,9 @@ import { SeoLayout } from "@widgets/seo-layout";
 import { TransitionLayout } from "@widgets/transition-layout";
 import type { AppProps } from "next/app";
 
+import type { User } from "@entities/user";
+
+import type { Seo } from "@shared/types/strapi-components";
 import { PreviewBanner } from "@shared/ui/preview-banner";
 
 type OddityPageProps = {

@@ -19,13 +19,13 @@ export const RollingText = (props: RollingTextProps) => {
         <span
           key={`${i}-${char}`}
           className={s.letter}
-style={
-  {
-    "--delay": `${i * 35}ms`,
-    "--duration": `${450 + (i % 4) * 80}ms`,
-    "--direction": i % 2 === 0 ? "-25%" : "-50%",
-  } as CSSProperties
-}
+          style={
+            {
+              "--delay": `${i * 35}ms`,
+              "--duration": `${450 + (i % 4) * 80}ms`,
+              "--direction": i % 2 === 0 ? "-25%" : "-50%",
+            } as CSSProperties
+          }
         >
           <span className={s.drum}>
             <span>{char === " " ? "\u00A0" : char}</span>

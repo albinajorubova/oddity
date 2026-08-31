@@ -11,4 +11,3 @@ export const gaTrackingId = process.env.NEXT_PUBLIC_GA_TRACKING_ID || "";
 export const yandexTrackingId = Number(
   process.env.NEXT_PUBLIC_YANDEX_TRACKING_ID,
 );
-

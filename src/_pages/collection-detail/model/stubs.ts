@@ -69,10 +69,7 @@ export const COLLECTION_DETAIL_STUBS: CollectionDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    cover: cover(
-      "kind-of-blue.jpg",
-      "Miles Davis — Kind of Blue cover",
-    ),
+    cover: cover("kind-of-blue.jpg", "Miles Davis — Kind of Blue cover"),
     characteristics: {
       oddity: ["Artistic", "Emotional", "Accessible", "Philosophical"],
       meme: ["Cult"],
@@ -109,10 +106,7 @@ export const COLLECTION_DETAIL_STUBS: CollectionDetail[] = [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    cover: cover(
-      "nevermind.jpg",
-      "Nirvana — Nevermind cover",
-    ),
+    cover: cover("nevermind.jpg", "Nirvana — Nevermind cover"),
     characteristics: {
       oddity: ["Emotional", "Dark", "Chaotic", "Accessible"],
       meme: ["Cult", "Edge"],
@@ -177,7 +171,11 @@ export const COLLECTION_DETAIL_STUBS: CollectionDetail[] = [
         title: "Sgt. Pepper's Lonely Hearts Club Band",
         duration: "2:02",
       },
-      { id: "2", title: "With a Little Help from My Friends", duration: "2:44" },
+      {
+        id: "2",
+        title: "With a Little Help from My Friends",
+        duration: "2:44",
+      },
       { id: "3", title: "Lucy in the Sky with Diamonds", duration: "3:28" },
       { id: "4", title: "Getting Better", duration: "2:48" },
       { id: "5", title: "Fixing a Hole", duration: "2:36" },
@@ -255,15 +253,13 @@ export const COLLECTION_DETAIL_STUBS: CollectionDetail[] = [
     label: "RCA",
     shortDescription:
       "Ziggy on the road through America—glam lightning, piano fractures and a face split by a bolt.",
-    editorNote: "Watch the makeup, listen to the piano. Both are the character.",
+    editorNote:
+      "Watch the makeup, listen to the piano. Both are the character.",
     availability: [
       { label: "Spotify", href: "#" },
       { label: "Apple Music", href: "#" },
     ],
-    cover: cover(
-      "aladdin-sane.jpg",
-      "David Bowie — Aladdin Sane cover",
-    ),
+    cover: cover("aladdin-sane.jpg", "David Bowie — Aladdin Sane cover"),
     characteristics: {
       oddity: ["Artistic", "Weird", "Emotional", "Experimental"],
       meme: ["Cult", "Camp"],

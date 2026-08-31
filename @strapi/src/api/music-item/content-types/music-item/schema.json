@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "music_items",
+  "info": {
+    "singularName": "music-item",
+    "pluralName": "music-items",
+    "displayName": "Music Item"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "itemType": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::music-item-type.music-item-type",
+      "inversedBy": "musicItems",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "releaseDate": {
+      "type": "date"
+    },
+    "coverUrl": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "string"
+    },
+    "curatorStatus": {
+      "type": "enumeration",
+      "enum": ["draft", "public"],
+      "default": "draft"
+    },
+    "youtubeId": {
+      "type": "string"
+    },
+    "youtubeSourceUrl": {
+      "type": "string"
+    },
+    "people": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cards.person-ref"
+    },
+    "tracks": {
+      "type": "component",
+      "component": "card.music-track",
+      "repeatable": true
+    },
+    "availability": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": true
+    }
+  }
+}

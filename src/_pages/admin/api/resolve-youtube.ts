@@ -4,7 +4,7 @@ import {
   type YoutubeResolvedData,
   YoutubeResolvedDataSchema,
   type YoutubeResolvedTrack,
-} from "@/_pages/admin/model/schemas";
+} from "@entities/card";
 
 export type ResolveYoutubeResult =
   | { ok: true; data: YoutubeResolvedData }

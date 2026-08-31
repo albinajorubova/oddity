@@ -6,10 +6,7 @@ import clsx from "clsx";
 import { Button } from "@shared/ui/button";
 import { Input } from "@shared/ui/input";
 import { RollingText } from "@shared/ui/rolling-text";
-import {
-  useArchiveLinksActions,
-  useArchiveLinksStore,
-} from "@/_pages/admin/model";
+import { useAdminCardsActions, useAdminCardsStore } from "@/_pages/admin/model";
 
 import s from "./add-to-archive.module.scss";
 
@@ -22,9 +19,9 @@ const PLACEHOLDER = "Paste a YouTube Music link — song or album…";
 export const AddToArchive = (props: AddToArchiveProps) => {
   const { className } = props;
   const [url, setUrl] = useState("");
-  const isLoading = useArchiveLinksStore((state) => state.isLoading);
-  const error = useArchiveLinksStore((state) => state.error);
-  const { addFromUrl, clearError } = useArchiveLinksActions();
+  const isLoading = useAdminCardsStore((state) => state.isLoading);
+  const error = useAdminCardsStore((state) => state.error);
+  const { addFromUrl, clearError } = useAdminCardsActions();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

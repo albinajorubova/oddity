@@ -1,5 +1,3 @@
-import clsx from "clsx";
-import htmlReactParser from "html-react-parser";
 import {
   Children,
   cloneElement,
@@ -8,6 +6,8 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
+import clsx from "clsx";
+import htmlReactParser from "html-react-parser";
 
 import { getWordsArray, hasHTMLTags } from "./utils";
 

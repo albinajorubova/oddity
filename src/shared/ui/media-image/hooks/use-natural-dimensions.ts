@@ -1,7 +1,10 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
 
-const setDimensionVariables = (target: HTMLElement, image: HTMLImageElement) => {
+const setDimensionVariables = (
+  target: HTMLElement,
+  image: HTMLImageElement,
+) => {
   target.style.setProperty("--natural-width", String(image.naturalWidth));
   target.style.setProperty("--natural-height", String(image.naturalHeight));
   target.style.setProperty(

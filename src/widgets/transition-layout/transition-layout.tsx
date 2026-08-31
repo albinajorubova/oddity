@@ -7,10 +7,7 @@ import type { NextRouter } from "next/router";
 
 import { DelayDelete, SwitchElement } from "@shared/ui/animate-presence";
 
-import {
-  ANIMATION_FUNCTIONS,
-  type AnimationType,
-} from "./animations";
+import { ANIMATION_FUNCTIONS, type AnimationType } from "./animations";
 import { TRANSITION_DURATION } from "./constants";
 import { TransitionLayoutContext } from "./context/transition-layout-context";
 import { EVENTS_TRANSITION_LAYOUT, transitionLayoutEmitter } from "./emmiter";
@@ -81,8 +78,7 @@ export const TransitionLayout = memo(
         transitionLayoutEmitter.send(EVENTS_TRANSITION_LAYOUT.pageOutStart);
 
         const slug =
-          (router.query?.slug as string | undefined) ??
-          prevSlugRef.current;
+          (router.query?.slug as string | undefined) ?? prevSlugRef.current;
 
         const animationType: AnimationType = getAnimationType({
           prevRoute: prevRouterRef.current,
@@ -134,7 +130,9 @@ export const TransitionLayout = memo(
           {({ ref, isVisible }) => (
             <main
               ref={ref}
-              className={clsx(isVisible && entering && [s.pageFixed, s.pageEnter])}
+              className={clsx(
+                isVisible && entering && [s.pageFixed, s.pageEnter],
+              )}
             >
               <TransitionLayoutContext.Provider
                 value={{

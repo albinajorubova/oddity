@@ -373,6 +373,61 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCardCard extends Struct.CollectionTypeSchema {
+  collectionName: 'cards';
+  info: {
+    displayName: 'Card';
+    pluralName: 'cards';
+    singularName: 'card';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    artist: Schema.Attribute.String;
+    availability: Schema.Attribute.Component<'shared.link', true>;
+    country: Schema.Attribute.String;
+    cover: Schema.Attribute.Media<'images'>;
+    coverUrl: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    curatorStatus: Schema.Attribute.Enumeration<['draft', 'public']> &
+      Schema.Attribute.DefaultTo<'draft'>;
+    duration: Schema.Attribute.String;
+    durationSeconds: Schema.Attribute.Integer;
+    fullDescription: Schema.Attribute.Text;
+    label: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::card.card'> &
+      Schema.Attribute.Private;
+    musicKind: Schema.Attribute.Enumeration<['song', 'album', 'playlist']>;
+    originalTitle: Schema.Attribute.String;
+    people: Schema.Attribute.Component<'cards.person-ref', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    releaseStatus: Schema.Attribute.Enumeration<
+      ['Released', 'Ongoing', 'Upcoming']
+    > &
+      Schema.Attribute.DefaultTo<'Released'>;
+    releaseYear: Schema.Attribute.Integer;
+    shortDescription: Schema.Attribute.Text;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    tracks: Schema.Attribute.Component<'card.music-track', true>;
+    type: Schema.Attribute.Enumeration<
+      ['movie', 'series', 'anime', 'music', 'book', 'game']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'music'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    youtubeId: Schema.Attribute.String;
+    youtubeSourceUrl: Schema.Attribute.String;
+    youtubeSubtitle: Schema.Attribute.String;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -492,6 +547,119 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     seo: Schema.Attribute.Component<'widgets.seo', false>;
     slug: Schema.Attribute.UID;
     title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMusicItemTypeMusicItemType
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'music_item_types';
+  info: {
+    displayName: 'Music Item Type';
+    pluralName: 'music-item-types';
+    singularName: 'music-item-type';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::music-item-type.music-item-type'
+    > &
+      Schema.Attribute.Private;
+    musicItems: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::music-item.music-item'
+    >;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMusicItemMusicItem extends Struct.CollectionTypeSchema {
+  collectionName: 'music_items';
+  info: {
+    displayName: 'Music Item';
+    pluralName: 'music-items';
+    singularName: 'music-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    availability: Schema.Attribute.Component<'shared.link', true>;
+    coverUrl: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    curatorStatus: Schema.Attribute.Enumeration<['draft', 'public']> &
+      Schema.Attribute.DefaultTo<'draft'>;
+    description: Schema.Attribute.Text;
+    duration: Schema.Attribute.String;
+    itemType: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::music-item-type.music-item-type'
+    > &
+      Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::music-item.music-item'
+    > &
+      Schema.Attribute.Private;
+    people: Schema.Attribute.Component<'cards.person-ref', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    releaseDate: Schema.Attribute.Date;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    tracks: Schema.Attribute.Component<'card.music-track', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    youtubeId: Schema.Attribute.String;
+    youtubeSourceUrl: Schema.Attribute.String;
+  };
+}
+
+export interface ApiPersonPerson extends Struct.CollectionTypeSchema {
+  collectionName: 'people';
+  info: {
+    displayName: 'Person';
+    pluralName: 'people';
+    singularName: 'person';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    imageUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::person.person'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1044,10 +1212,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::card.card': ApiCardCard;
       'api::category.category': ApiCategoryCategory;
       'api::common.common': ApiCommonCommon;
       'api::contact.contact': ApiContactContact;
       'api::home-page.home-page': ApiHomePageHomePage;
+      'api::music-item-type.music-item-type': ApiMusicItemTypeMusicItemType;
+      'api::music-item.music-item': ApiMusicItemMusicItem;
+      'api::person.person': ApiPersonPerson;
       'api::product.product': ApiProductProduct;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

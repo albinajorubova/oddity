@@ -1,5 +1,6 @@
-import { JoinPage } from "@/_pages/join/ui";
 import { withAuth } from "@entities/user";
+
+import { JoinPage } from "@/_pages/join/ui";
 
 const Page = () => {
   return <JoinPage />;

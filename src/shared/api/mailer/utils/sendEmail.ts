@@ -3,7 +3,7 @@ import { createTransporter } from "./createTransporter";
 // import type
 type ContactFormData = {
   name: string;
-}
+};
 
 export async function sendEmail(data: ContactFormData): Promise<void> {
   if (!process.env.SMTP_CONTACT_FORM_EMAIL) {
@@ -24,6 +24,6 @@ export async function sendEmail(data: ContactFormData): Promise<void> {
     to: recipientEmail,
     subject: `Новая заявка от ${data.name}`,
     html: htmlContent,
-    text: `Новая заявка с сайта`
+    text: `Новая заявка с сайта`,
   });
 }

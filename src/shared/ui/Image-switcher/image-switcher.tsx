@@ -1,7 +1,8 @@
+import clsx from "clsx";
+
 import type { RebuiltMedia } from "@shared/types";
 import { MediaImage } from "@shared/ui/media-image";
 import { SwitchTransition } from "@shared/ui/transition";
-import clsx from "clsx";
 
 import s from "./ImageSwitcher.module.scss";
 

@@ -1,6 +1,8 @@
 import rebuild from "./rebuild";
 
-type RequestFunction = (options?: { status?: "draft" | "published" }) => Promise<unknown>;
+type RequestFunction = (options?: {
+  status?: "draft" | "published";
+}) => Promise<unknown>;
 
 export const getServerSidePropsData = async <
   T extends Record<string, RequestFunction>,
@@ -15,7 +17,9 @@ export const getServerSidePropsData = async <
     // const servicesList = await getHomeServices();
 
     // Определяем status для запросов к Strapi
-    const status = options?.isDraftMode ? ("draft" as const) : ("published" as const);
+    const status = options?.isDraftMode
+      ? ("draft" as const)
+      : ("published" as const);
 
     // Получаем дополнительные данные, если они переданы
     const additionalData: Record<string, unknown> = {};

@@ -1,5 +1,29 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface CardMusicTrack extends Struct.ComponentSchema {
+  collectionName: 'components_card_music_tracks';
+  info: {
+    displayName: 'MusicTrack';
+  };
+  attributes: {
+    artists: Schema.Attribute.JSON;
+    duration: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+    youtubeId: Schema.Attribute.String;
+  };
+}
+
+export interface CardsPersonRef extends Struct.ComponentSchema {
+  collectionName: 'components_cards_person_refs';
+  info: {
+    description: 'Link to a shared Person. Role is implied by the parent work type (music, movie, etc.).';
+    displayName: 'PersonRef';
+  };
+  attributes: {
+    person: Schema.Attribute.Relation<'manyToOne', 'api::person.person'>;
+  };
+}
+
 export interface SharedLink extends Struct.ComponentSchema {
   collectionName: 'components_shared_links';
   info: {
@@ -108,6 +132,8 @@ export interface WidgetsSeo extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'card.music-track': CardMusicTrack;
+      'cards.person-ref': CardsPersonRef;
       'shared.link': SharedLink;
       'shared.link-social': SharedLinkSocial;
       'shared.media': SharedMedia;

@@ -1,5 +1,6 @@
-import { useIsHydrated } from "@shared/hooks/use-is-hydrated";
 import { useContext } from "react";
+
+import { useIsHydrated } from "@shared/hooks/use-is-hydrated";
 
 import { DeviceContext } from "./context";
 import { type DeviceInfo, getDeviceObject } from "./lib/detect";

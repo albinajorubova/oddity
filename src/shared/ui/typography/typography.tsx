@@ -1,7 +1,7 @@
-import { mod } from "@shared/utils";
-import clsx from "clsx";
 import type { ComponentProps } from "react";
+import clsx from "clsx";
 
+import { mod } from "@shared/utils";
 import type { ComponentOrTag, DynamicProps } from "@/shared/types";
 
 import styles from "./typography.module.scss";

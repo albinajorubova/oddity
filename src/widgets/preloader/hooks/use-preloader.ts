@@ -1,13 +1,14 @@
 "use client";
 
-import { round } from "@shared/utils";
-import { loaderAllImages } from "@shared/utils/loaders/image";
+import { useEffect } from "react";
 import {
   usePreloaderActions,
   // usePreloaderStore,
 } from "@widgets/preloader/model/preloaderStore";
 import gsap from "gsap";
-import { useEffect } from "react";
+
+import { round } from "@shared/utils";
+import { loaderAllImages } from "@shared/utils/loaders/image";
 
 export const usePreloader = (delay = 0, additionalResources: string[]) => {
   const { setPercents } = usePreloaderActions();

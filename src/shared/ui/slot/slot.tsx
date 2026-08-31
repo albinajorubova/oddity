@@ -1,5 +1,6 @@
-import { composeRefs } from "@shared/utils/compose-refs";
 import * as React from "react";
+
+import { composeRefs } from "@shared/utils/compose-refs";
 
 // Types
 interface SlottableProps {

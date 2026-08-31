@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_card_music_tracks",
+  "info": {
+    "displayName": "MusicTrack"
+  },
+  "options": {},
+  "attributes": {
+    "youtubeId": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "string"
+    },
+    "artists": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}

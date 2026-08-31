@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_cards_person_refs",
+  "info": {
+    "displayName": "PersonRef",
+    "description": "Link to a shared Person. Role is implied by the parent work type (music, movie, etc.)."
+  },
+  "options": {},
+  "attributes": {
+    "person": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::person.person"
+    }
+  },
+  "config": {}
+}

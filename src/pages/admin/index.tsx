@@ -1,9 +1,14 @@
-import { AdminPage } from "@/_pages/admin/ui";
-import { isAdmin, withAuth } from "@entities/user";
-import { ROUTES } from "@shared/config";
+import type { ComponentProps } from "react";
 
-const Page = () => {
-  return <AdminPage />;
+import { cardError } from "@entities/card/lib/logger";
+import { isAdmin, withAuth } from "@entities/user";
+
+import { ROUTES } from "@shared/config";
+import { getAdminCards } from "@/_pages/admin/api/get-admin-cards";
+import { AdminPage } from "@/_pages/admin/ui";
+
+const Page = (props: ComponentProps<typeof AdminPage>) => {
+  return <AdminPage {...props} />;
 };
 
 export const getServerSideProps = withAuth(async (context) => {
@@ -16,9 +21,19 @@ export const getServerSideProps = withAuth(async (context) => {
     };
   }
 
-  return {
-    props: {},
-  };
+  try {
+    const cards = await getAdminCards();
+
+    return {
+      props: { cards },
+    };
+  } catch (error) {
+    cardError("admin/getServerSideProps:failed", error);
+
+    return {
+      props: { cards: [] },
+    };
+  }
 });
 
 export default Page;

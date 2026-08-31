@@ -1,9 +1,10 @@
 "use client";
 
-import { useIntersectionObserver } from "@shared/hooks/use-intersection-observer";
+import { type ComponentProps, useEffect, useRef } from "react";
 import clsx from "clsx";
 import gsap from "gsap";
-import { type ComponentProps, useEffect, useRef } from "react";
+
+import { useIntersectionObserver } from "@shared/hooks/use-intersection-observer";
 
 import CanvasRender from "./CanvasSequence";
 

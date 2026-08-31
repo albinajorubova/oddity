@@ -1,2 +1,2 @@
-export type { ResizeProviderProps } from './resize-provider';
-export { ResizeProvider } from './resize-provider';
+export type { ResizeProviderProps } from "./resize-provider";
+export { ResizeProvider } from "./resize-provider";

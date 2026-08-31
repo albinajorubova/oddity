@@ -1,8 +1,9 @@
 "use client";
 
-import { mod } from "@shared/utils";
-import clsx from "clsx";
 import type { ComponentProps } from "react";
+import clsx from "clsx";
+
+import { mod } from "@shared/utils";
 
 import s from "./radio.module.scss";
 

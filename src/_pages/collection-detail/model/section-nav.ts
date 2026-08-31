@@ -1,14 +1,9 @@
-import type {
-  CollectionDetail,
-  CollectionSectionNavItem,
-} from "./types";
+import type { CollectionDetail, CollectionSectionNavItem } from "./types";
 
 const hasCharacteristics = (item: CollectionDetail) => {
   const { characteristics } = item;
   if (!characteristics) return false;
-  return (
-    characteristics.oddity.length > 0 || characteristics.meme.length > 0
-  );
+  return characteristics.oddity.length > 0 || characteristics.meme.length > 0;
 };
 
 const hasCategories = (item: CollectionDetail) => {
@@ -27,9 +22,7 @@ export const hasTracksSection = (item: CollectionDetail) =>
 export const getCollectionSectionNav = (
   item: CollectionDetail,
 ): CollectionSectionNavItem[] => {
-  const items: CollectionSectionNavItem[] = [
-    { id: "core", label: "Core" },
-  ];
+  const items: CollectionSectionNavItem[] = [{ id: "core", label: "Core" }];
 
   if (hasDnaSection(item)) {
     items.push({ id: "dna", label: "DNA" });

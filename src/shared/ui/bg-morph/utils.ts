@@ -32,8 +32,8 @@ export const morphConcat = (type: BgMorphDirection): MorphFn => {
           L${width} ${height}
           L${width} ${height - height * points.start}
           Q${0.5 * width} ${
-          height - points.center * (1 + points.offset) * height
-        }
+            height - points.center * (1 + points.offset) * height
+          }
           0 ${height - height * points.start}
           Z
         `;

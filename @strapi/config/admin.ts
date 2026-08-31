@@ -7,6 +7,12 @@ const getPreviewPathname = (uid: string, { locale, document }: { locale?: string
     return "/";
   }
 
+  if (uid === "api::card.card") {
+    return document?.slug
+      ? `/collections/${document.slug}`
+      : "/collections";
+  }
+
   // Для других content types возвращаем null (preview не поддерживается)
   return null;
 };

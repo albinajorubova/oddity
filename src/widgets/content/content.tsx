@@ -1,6 +1,7 @@
-import { Heading } from "@shared/ui/typography/heading";
-import clsx from "clsx";
 import type { ComponentProps } from "react";
+import clsx from "clsx";
+
+import { Heading } from "@shared/ui/typography/heading";
 
 import s from "./content.module.scss";
 

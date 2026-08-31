@@ -1,0 +1,102 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cards",
+  "info": {
+    "singularName": "card",
+    "pluralName": "cards",
+    "displayName": "Card"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "originalTitle": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["movie", "series", "anime", "music", "book", "game"],
+      "required": true,
+      "default": "music"
+    },
+    "releaseYear": {
+      "type": "integer"
+    },
+    "country": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "string"
+    },
+    "durationSeconds": {
+      "type": "integer"
+    },
+    "releaseStatus": {
+      "type": "enumeration",
+      "enum": ["Released", "Ongoing", "Upcoming"],
+      "default": "Released"
+    },
+    "shortDescription": {
+      "type": "text"
+    },
+    "fullDescription": {
+      "type": "text"
+    },
+    "artist": {
+      "type": "string"
+    },
+    "people": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cards.person-ref"
+    },
+    "label": {
+      "type": "string"
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "coverUrl": {
+      "type": "string"
+    },
+    "curatorStatus": {
+      "type": "enumeration",
+      "enum": ["draft", "public"],
+      "default": "draft"
+    },
+    "musicKind": {
+      "type": "enumeration",
+      "enum": ["song", "album", "playlist"]
+    },
+    "youtubeId": {
+      "type": "string"
+    },
+    "youtubeSourceUrl": {
+      "type": "string"
+    },
+    "youtubeSubtitle": {
+      "type": "string"
+    },
+    "tracks": {
+      "type": "component",
+      "component": "card.music-track",
+      "repeatable": true
+    },
+    "availability": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": true
+    }
+  }
+}

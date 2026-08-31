@@ -2,17 +2,17 @@ import type { CollectionItemAspect } from "@entities/collection-card";
 
 export type PublishStatus = "draft" | "public";
 
-export type AdminCardType = "movie" | "album" | "series" | "book";
-
 export type AdminCard = {
   id: string;
   slug: string;
   title: string;
   /** Director / artist / author — meta line under title in library */
   credit: string;
-  type: AdminCardType;
-  year: number;
-  country: string;
+  /** Human-readable work type, e.g. Album, Track */
+  typeLabel: string;
+  /** Preformatted meta: `ALBUM · 1973` */
+  metaLine: string;
+  year: number | null;
   shortDescription: string;
   imageUrl: string;
   aspect: CollectionItemAspect;

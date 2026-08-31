@@ -7,4 +7,3 @@ export const DEFAULT_SCROLL_OPTIONS: ScrollOptions = {
   gestureOrientation: "vertical",
   smoothWheel: true,
 };
-

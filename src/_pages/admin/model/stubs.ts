@@ -1,4 +1,12 @@
+import { formatArchiveMetaLine } from "@shared/lib/format-archive-card";
+
 import type { AdminProfile } from "./types";
+
+const meta = (
+  typeLabel: string,
+  year: number,
+  country: string,
+): string => formatArchiveMetaLine({ typeLabel, year, country });
 
 /** Curator desk stubs — layout only, no CMS. */
 export const ADMIN_PROFILE_STUB: AdminProfile = {
@@ -10,9 +18,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "blade-runner-2049",
       title: "Blade Runner 2049",
       credit: "Denis Villeneuve",
-      type: "movie",
+      typeLabel: "Movie",
+      metaLine: meta("Movie", 2017, "USA"),
       year: 2017,
-      country: "USA",
       shortDescription:
         "A young blade runner's discovery of a long-buried secret leads him to track down former blade runner Rick Deckard, who's been missing for thirty years.",
       imageUrl: "https://picsum.photos/seed/bladerunner2049/600/900",
@@ -24,9 +32,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "inland-empire",
       title: "Inland Empire",
       credit: "David Lynch",
-      type: "movie",
+      typeLabel: "Movie",
+      metaLine: meta("Movie", 2006, "USA"),
       year: 2006,
-      country: "USA",
       shortDescription:
         "As an actress begins to adopt the persona of her character in a film, her world becomes nightmarish and surreal.",
       imageUrl: "https://picsum.photos/seed/inlandempire/600/900",
@@ -38,9 +46,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "the-queen-is-dead",
       title: "The Queen Is Dead",
       credit: "The Smiths",
-      type: "album",
+      typeLabel: "Album",
+      metaLine: meta("Album", 1986, "UK"),
       year: 1986,
-      country: "UK",
       shortDescription:
         "The Smiths' third studio album — melancholic indie anthems wrapped in jangle and wit.",
       imageUrl: "/images/covers/sgt-pepper.jpg",
@@ -52,9 +60,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "twin-peaks-fire-walk-with-me",
       title: "Twin Peaks: Fire Walk With Me",
       credit: "David Lynch",
-      type: "movie",
+      typeLabel: "Movie",
+      metaLine: meta("Movie", 1992, "USA"),
       year: 1992,
-      country: "USA",
       shortDescription:
         "A feature film prequel to the Twin Peaks series, focusing on the last days of Laura Palmer.",
       imageUrl: "https://picsum.photos/seed/firewalkwithme/600/900",
@@ -66,9 +74,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "aladdin-sane",
       title: "Aladdin Sane",
       credit: "David Bowie",
-      type: "album",
+      typeLabel: "Album",
+      metaLine: meta("Album", 1973, "UK"),
       year: 1973,
-      country: "UK",
       shortDescription:
         "Bowie's lightning-bolt glam statement — Ziggy in America.",
       imageUrl: "/images/covers/aladdin-sane.jpg",
@@ -80,9 +88,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "kind-of-blue",
       title: "Kind of Blue",
       credit: "Miles Davis",
-      type: "album",
+      typeLabel: "Album",
+      metaLine: meta("Album", 1959, "USA"),
       year: 1959,
-      country: "USA",
       shortDescription: "Modal jazz landmark — cool, spacious, definitive.",
       imageUrl: "/images/covers/kind-of-blue.jpg",
       aspect: "square",
@@ -93,9 +101,9 @@ export const ADMIN_PROFILE_STUB: AdminProfile = {
       slug: "dark-side-of-the-moon",
       title: "The Dark Side of the Moon",
       credit: "Pink Floyd",
-      type: "album",
+      typeLabel: "Album",
+      metaLine: meta("Album", 1973, "UK"),
       year: 1973,
-      country: "UK",
       shortDescription: "Prism, pulse, and the machine — Floyd's peak.",
       imageUrl: "/images/covers/dark-side-of-the-moon.jpg",
       aspect: "square",

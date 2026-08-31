@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,45 +19,19 @@
       }
     ],
     "paths": {
-      "public/*": [
-        "./public/*"
-      ],
-      "@/*": [
-        "./src/*"
-      ],
-      "@app/*": [
-        "./src/app/*"
-      ],
-      "@processes/*": [
-        "./src/processes/*"
-      ],
-      "@pages/*": [
-        "./src/pages/*"
-      ],
-      "@widgets/*": [
-        "./src/widgets/*"
-      ],
-      "@features/*": [
-        "./src/features/*"
-      ],
-      "@entities/*": [
-        "./src/entities/*"
-      ],
-      "@shared/*": [
-        "./src/shared/*"
-      ],
-      "@shared/config/*": [
-        "./src/constants/*"
-      ],
-      "@shared/styles/*": [
-        "./src/styles/*"
-      ],
-      "@shared/types": [
-        "./src/shared/types/index.ts"
-      ],
-      "@content/types": [
-        "./src/shared/content-types"
-      ]
+      "public/*": ["./public/*"],
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@processes/*": ["./src/processes/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@widgets/*": ["./src/widgets/*"],
+      "@features/*": ["./src/features/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@shared/config/*": ["./src/constants/*"],
+      "@shared/styles/*": ["./src/styles/*"],
+      "@shared/types": ["./src/shared/types/index.ts"],
+      "@content/types": ["./src/shared/content-types"]
     }
   },
   "include": [
@@ -71,8 +41,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "@strapi"
-  ]
+  "exclude": ["node_modules", "@strapi"]
 }

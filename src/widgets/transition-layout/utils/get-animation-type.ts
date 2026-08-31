@@ -1,4 +1,4 @@
-import { ROUTES, ROUTE_PATTERNS } from "@shared/config";
+import { ROUTE_PATTERNS, ROUTES } from "@shared/config";
 
 import type { AnimationType } from "../animations";
 

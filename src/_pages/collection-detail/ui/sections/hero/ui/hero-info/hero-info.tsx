@@ -1,13 +1,13 @@
 "use client";
 
 import { useLayoutEffect, useState } from "react";
+import { TRANSITION_DURATION } from "@widgets/transition-layout/constants";
+import { useTransitionLayout } from "@widgets/transition-layout/hooks/use-transition-layout";
 import clsx from "clsx";
 import { gsap } from "gsap";
 
 import { Animate, SplitTextAnimate } from "@shared/ui/animate";
 import { Button } from "@shared/ui/button";
-import { TRANSITION_DURATION } from "@widgets/transition-layout/constants";
-import { useTransitionLayout } from "@widgets/transition-layout/hooks/use-transition-layout";
 import type { CollectionDetail } from "@/_pages/collection-detail/model";
 
 import s from "./hero-info.module.scss";
@@ -82,21 +82,11 @@ export const HeroInfo = (props: HeroInfoProps) => {
         {item.title}
       </SplitTextAnimate>
 
-      <Animate
-        isVisible={visible}
-        data="fadeTop"
-        delay={0.28}
-        duration={0.45}
-      >
+      <Animate isVisible={visible} data="fadeTop" delay={0.28} duration={0.45}>
         <p className={clsx(s.artist, "typo-p1")}>{item.artist}</p>
       </Animate>
 
-      <Animate
-        isVisible={visible}
-        data="fadeTop"
-        delay={0.4}
-        duration={0.5}
-      >
+      <Animate isVisible={visible} data="fadeTop" delay={0.4} duration={0.5}>
         <div className={clsx(s.description, "typo-p2")}>
           {paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
@@ -105,22 +95,12 @@ export const HeroInfo = (props: HeroInfoProps) => {
       </Animate>
 
       {item.editorNote && (
-        <Animate
-          isVisible={visible}
-          data="fadeTop"
-          delay={0.5}
-          duration={0.45}
-        >
+        <Animate isVisible={visible} data="fadeTop" delay={0.5} duration={0.45}>
           <p className={clsx(s.editorNote, "typo-p2")}>{item.editorNote}</p>
         </Animate>
       )}
 
-      <Animate
-        isVisible={visible}
-        data="fadeTop"
-        delay={0.58}
-        duration={0.45}
-      >
+      <Animate isVisible={visible} data="fadeTop" delay={0.58} duration={0.45}>
         <dl className={s.facts}>
           {item.label && (
             <div className={s.fact}>

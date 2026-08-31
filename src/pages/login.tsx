@@ -1,5 +1,6 @@
-import { LoginPage } from "@/_pages/login/ui";
 import { withAuth } from "@entities/user";
+
+import { LoginPage } from "@/_pages/login/ui";
 
 const Page = () => {
   return <LoginPage />;

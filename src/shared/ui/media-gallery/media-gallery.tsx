@@ -1,11 +1,11 @@
 "use client";
 
-import clsx from "clsx";
 import type { ComponentProps } from "react";
+import clsx from "clsx";
 
-import type { MediaWithBreakpoints } from "@/shared/types";
 import { MediaImage } from "@shared/ui/media-image";
 import { Video } from "@shared/ui/video";
+import type { MediaWithBreakpoints } from "@/shared/types";
 
 import s from "./media-gallery.module.scss";
 
@@ -48,13 +48,7 @@ export const MediaGallery = (props: MediaGalleryProps) => {
 
             return (
               <div key={key} className={s.item}>
-                <Video
-                  src={videoUrl}
-                  className={s.video}
-                  muted
-                  loop
-                  autoPlay
-                />
+                <Video src={videoUrl} className={s.video} muted loop autoPlay />
               </div>
             );
           }

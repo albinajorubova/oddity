@@ -8,7 +8,6 @@ import { Button } from "@shared/ui/button";
 import { mod } from "@shared/utils";
 import {
   type AdminCard,
-  formatCardMeta,
   formatPublishStatus,
 } from "@/_pages/admin/model";
 
@@ -39,7 +38,7 @@ export const DraftPreview = (props: DraftPreviewProps) => {
         <p className={clsx(s.status, "typo-micro")}>
           {formatPublishStatus(card.publishStatus)}
         </p>
-        <p className={clsx(s.meta, "typo-micro")}>{formatCardMeta(card)}</p>
+        <p className={clsx(s.meta, "typo-micro")}>{card.metaLine}</p>
         <h2 className={clsx(s.title, "typo-h3")}>{card.title}</h2>
         <p className={clsx(s.description, "typo-p2")}>
           {card.shortDescription}

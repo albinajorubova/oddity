@@ -19,7 +19,8 @@ export default async function registerHandler(
 
   if (!parsed.success) {
     return res.status(400).json({
-      message: parsed.error.issues[0]?.message ?? "Invalid registration payload",
+      message:
+        parsed.error.issues[0]?.message ?? "Invalid registration payload",
     });
   }
 
