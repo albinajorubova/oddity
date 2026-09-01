@@ -199,6 +199,12 @@ const resolvePlaylist = async (
   };
 };
 
+const RESOLVERS = {
+  song: resolveSong,
+  album: resolveAlbum,
+  playlist: resolvePlaylist,
+} as const;
+
 export const resolveYoutubeUrl = async (
   url: string,
 ): Promise<ResolveYoutubeResult> => {
@@ -216,12 +222,7 @@ export const resolveYoutubeUrl = async (
   try {
     const yt = await Innertube.create({ retrieve_player: false });
 
-    const data =
-      target.kind === "song"
-        ? await resolveSong(yt, target.id, trimmed)
-        : target.kind === "album"
-          ? await resolveAlbum(yt, target.id, trimmed)
-          : await resolvePlaylist(yt, target.id, trimmed);
+    const data = await RESOLVERS[target.kind](yt, target.id, trimmed);
 
     return toResolvedData(data);
   } catch (error) {

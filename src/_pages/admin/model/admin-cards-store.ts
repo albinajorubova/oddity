@@ -2,7 +2,8 @@ import { create } from "zustand";
 
 import { cardLog } from "@entities/card/lib/logger";
 
-import { fetchCreateCardFromUrl } from "./fetch-create-card";
+import { api } from "@shared/api/client";
+
 import type { AdminCard } from "./types";
 
 type AdminCardsActions = {
@@ -42,7 +43,11 @@ export const useAdminCardsStore = create<AdminCardsState>((set, get) => ({
       cardLog("adminCardsStore:addFromUrl:start", { url: trimmed });
       set({ isLoading: true, error: null });
 
-      const result = await fetchCreateCardFromUrl(trimmed);
+      const result = await api.public.post<{ data: AdminCard; created: boolean }>(
+        "/api/admin/cards",
+        { url: trimmed },
+        { timeout: 60_000, fallback: "Failed to create card" },
+      );
 
       if (!result.ok) {
         cardLog("adminCardsStore:addFromUrl:failed", result.error);
@@ -50,15 +55,17 @@ export const useAdminCardsStore = create<AdminCardsState>((set, get) => ({
         return false;
       }
 
+      const { data: card, created } = result.data;
+
       cardLog("adminCardsStore:addFromUrl:success", {
-        slug: result.card.slug,
-        created: result.created,
+        slug: card.slug,
+        created,
       });
 
       set((state) => ({
         isLoading: false,
         error: null,
-        cards: upsertCard(state.cards, result.card),
+        cards: upsertCard(state.cards, card),
       }));
 
       return true;

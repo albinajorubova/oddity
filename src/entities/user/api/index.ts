@@ -1,4 +1,3 @@
-export { getStrapiApiUrl } from "./get-strapi-api-url";
 export {
   getUser,
   type RegisterPayload,

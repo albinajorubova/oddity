@@ -19,4 +19,3 @@ export {
   mapYoutubeToMusicItem,
   resolveItemTypeSlug,
 } from "./map-youtube-to-music-item";
-export { getErrorDetails, stripNullish } from "./sanitize-strapi-payload";

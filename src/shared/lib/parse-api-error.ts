@@ -16,6 +16,10 @@ const getResponseMessage = (data: unknown): string | undefined => {
     return data.message;
   }
 
+  if ("error" in data && typeof data.error === "string") {
+    return data.error;
+  }
+
   if (
     "error" in data &&
     typeof data.error === "object" &&

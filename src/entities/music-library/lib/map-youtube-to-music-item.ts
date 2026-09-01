@@ -1,3 +1,5 @@
+import { compact } from "@shared/lib/compact";
+
 import type {
   AvailabilityLink,
   CreateMusicItemInput,
@@ -5,18 +7,18 @@ import type {
   YoutubeImportData,
   YoutubeImportKind,
 } from "../model";
-import { stripNullish } from "./sanitize-strapi-payload";
 import {
   formatDurationSeconds,
   slugFromYoutube,
   sumTracklistDuration,
 } from "./youtube-utils";
 
-const YOUTUBE_KIND_TO_ITEM_TYPE: Record<YoutubeImportKind, MusicItemTypeSlug> = {
-  song: "track",
-  album: "album",
-  playlist: "playlist",
-};
+const YOUTUBE_KIND_TO_ITEM_TYPE: Record<YoutubeImportKind, MusicItemTypeSlug> =
+  {
+    song: "track",
+    album: "album",
+    playlist: "playlist",
+  };
 
 const parseReleaseDate = (year: string | null): string | null => {
   if (!year) return null;
@@ -104,7 +106,7 @@ const mapAvailabilityLinks = (availability: AvailabilityLink[]) =>
 export const mapMusicItemToStrapiPayload = (item: CreateMusicItemInput) => {
   const tracks =
     item.tracks?.map((track) =>
-      stripNullish({
+      compact({
         youtubeId: track.youtubeId,
         title: track.title,
         duration: track.duration,
@@ -118,7 +120,7 @@ export const mapMusicItemToStrapiPayload = (item: CreateMusicItemInput) => {
     return [{ person: { connect: [documentId] } }];
   });
 
-  return stripNullish({
+  return compact({
     title: item.title,
     slug: item.slug,
     itemType: item.itemTypeDocumentId,

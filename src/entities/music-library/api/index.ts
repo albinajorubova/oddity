@@ -6,9 +6,11 @@ export {
   getMusicItems,
   getPublicMusicItemBySlug,
   getPublicMusicItems,
+  STRAPI_ITEM_TYPE_COLLECTION,
   STRAPI_MUSIC_ITEM_COLLECTION,
-  STRAPI_MUSIC_ITEM_TYPE_COLLECTION,
+  updateMusicItemCuratorStatus,
 } from "./music-item-api";
+export type { MusicItemFindOptions } from "./music-item-query";
 export {
   getMusicItemTypeBySlug,
   requireMusicItemTypeBySlug,

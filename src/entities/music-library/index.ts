@@ -7,8 +7,9 @@ export {
   getPublicMusicItemBySlug,
   getPublicMusicItems,
   requireMusicItemTypeBySlug,
+  STRAPI_ITEM_TYPE_COLLECTION,
   STRAPI_MUSIC_ITEM_COLLECTION,
-  STRAPI_MUSIC_ITEM_TYPE_COLLECTION,
+  updateMusicItemCuratorStatus,
 } from "./api";
 export type { MusicItemPageDisplay } from "./lib";
 export {

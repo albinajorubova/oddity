@@ -17,7 +17,6 @@ import {
   animateLibraryFilterLeave,
   LIBRARY_FILTER_TRANSITION,
 } from "./animate-library-filter";
-import { DraftPreview } from "./ui/draft-preview";
 import { LibraryCard } from "./ui/library-card";
 
 import s from "./library.module.scss";
@@ -43,15 +42,6 @@ export const LibrarySection = (props: LibrarySectionProps) => {
     if (filter === "all") return cards;
     return cards.filter((card) => card.publishStatus === filter);
   }, [cards, filter]);
-
-  const featured =
-    filter === "public"
-      ? null
-      : (filtered.find((card) => card.publishStatus === "draft") ?? null);
-
-  const gridCards = featured
-    ? filtered.filter((card) => card.id !== featured.id)
-    : filtered;
 
   const emptyMessage =
     filter === "draft"
@@ -122,19 +112,13 @@ export const LibrarySection = (props: LibrarySectionProps) => {
                 {filtered.length === 0 ? (
                   <p className={clsx(s.empty, "typo-micro")}>{emptyMessage}</p>
                 ) : (
-                  <div className={clsx(s.content, featured && s.withFeatured)}>
-                    {featured && <DraftPreview card={featured} />}
-
-                    {gridCards.length > 0 && (
-                      <ul className={s.grid}>
-                        {gridCards.map((card) => (
-                          <li key={card.id} className={s.gridItem}>
-                            <LibraryCard card={card} />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                  <ul className={s.grid}>
+                    {filtered.map((card) => (
+                      <li key={card.id} className={s.gridItem}>
+                        <LibraryCard card={card} />
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </div>
             )}

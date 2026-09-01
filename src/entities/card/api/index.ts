@@ -4,6 +4,7 @@ export {
   getPublicArchiveCardBySlug,
   getPublicArchiveCards,
 } from "./archive-card-api";
+export type { ArchiveCardFindOptions } from "./archive-card-query";
 export {
   createMusicCard,
   createMusicCardFromYoutube,

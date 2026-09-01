@@ -6,6 +6,8 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 
+import { parseApiError } from "@shared/lib/parse-api-error";
+
 export type ClientOptions = {
   /**
    * Включать ли авторизацию (по умолчанию true)
@@ -185,46 +187,133 @@ export const createAuthenticatedClient = (
   return createClient(undefined, { token, baseURL });
 };
 
-/**
- * Типизированные методы для работы с API
- */
+export type SafeApiResult<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: string };
+
+export type ApiRequestConfig = AxiosRequestConfig & {
+  fallback?: string;
+};
+
+type ApiMethod = "get" | "post" | "put" | "patch" | "delete";
+
+type ThrowingApiMethods = {
+  get: <T>(url: string, config?: ApiRequestConfig) => Promise<T>;
+  post: <T>(
+    url: string,
+    body?: unknown,
+    config?: ApiRequestConfig,
+  ) => Promise<T>;
+  put: <T>(
+    url: string,
+    body?: unknown,
+    config?: ApiRequestConfig,
+  ) => Promise<T>;
+  patch: <T>(
+    url: string,
+    body?: unknown,
+    config?: ApiRequestConfig,
+  ) => Promise<T>;
+  delete: <T>(url: string, config?: ApiRequestConfig) => Promise<T>;
+};
+
+type SafeApiMethods = {
+  get: <T>(url: string, config?: ApiRequestConfig) => Promise<SafeApiResult<T>>;
+  post: <T>(
+    url: string,
+    body?: unknown,
+    config?: ApiRequestConfig,
+  ) => Promise<SafeApiResult<T>>;
+  put: <T>(
+    url: string,
+    body?: unknown,
+    config?: ApiRequestConfig,
+  ) => Promise<SafeApiResult<T>>;
+  patch: <T>(
+    url: string,
+    body?: unknown,
+    config?: ApiRequestConfig,
+  ) => Promise<SafeApiResult<T>>;
+  delete: <T>(
+    url: string,
+    config?: ApiRequestConfig,
+  ) => Promise<SafeApiResult<T>>;
+};
+
+const resolveRequestConfig = (
+  config?: ApiRequestConfig,
+): { axiosConfig: AxiosRequestConfig; fallback: string } => {
+  const { fallback = "Request failed", ...axiosConfig } = config ?? {};
+  return { axiosConfig, fallback };
+};
+
+const dispatchRequest = <T>(
+  instance: AxiosInstance,
+  method: ApiMethod,
+  url: string,
+  body: unknown | undefined,
+  axiosConfig: AxiosRequestConfig,
+): Promise<AxiosResponse<T>> =>
+  instance.request<T>({
+    ...axiosConfig,
+    method,
+    url,
+    ...(body !== undefined ? { data: body } : {}),
+  });
+
+const API_METHODS = ["get", "post", "put", "patch", "delete"] as const satisfies readonly ApiMethod[];
+
+const createApiMethods = <TSafe extends boolean>(
+  instance: AxiosInstance,
+  safe: TSafe,
+): TSafe extends true ? SafeApiMethods : ThrowingApiMethods => {
+  const run = async <T>(
+    request: Promise<AxiosResponse<T>>,
+    fallback: string,
+  ) => {
+    try {
+      const { data } = await request;
+      return safe
+        ? ({ ok: true, data } satisfies SafeApiResult<T>)
+        : data;
+    } catch (error) {
+      if (!safe) throw error;
+      return {
+        ok: false,
+        error: parseApiError(error, fallback).message,
+      } satisfies SafeApiResult<T>;
+    }
+  };
+
+  const createMethod =
+    (method: ApiMethod) =>
+    <T>(
+      url: string,
+      bodyOrConfig?: unknown | ApiRequestConfig,
+      maybeConfig?: ApiRequestConfig,
+    ) => {
+      const hasBody = method !== "get" && method !== "delete";
+      const body = hasBody ? bodyOrConfig : undefined;
+      const config = hasBody
+        ? maybeConfig
+        : (bodyOrConfig as ApiRequestConfig | undefined);
+      const { axiosConfig, fallback } = resolveRequestConfig(config);
+
+      return run<T>(
+        dispatchRequest<T>(instance, method, url, body, axiosConfig),
+        fallback,
+      );
+    };
+
+  return Object.fromEntries(
+    API_METHODS.map((method) => [method, createMethod(method)]),
+  ) as TSafe extends true ? SafeApiMethods : ThrowingApiMethods;
+};
+
+const throwingApi = createApiMethods(client, false);
+const safePublicApi = createApiMethods(publicClient, true);
+
 export const api = {
-  /**
-   * GET запрос
-   */
-  get: <T = unknown>(url: string, config?: AxiosRequestConfig) =>
-    client.get<ApiResponse<T>>(url, config).then((res) => res.data),
-
-  /**
-   * POST запрос
-   */
-  post: <T = unknown>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig,
-  ) => client.post<ApiResponse<T>>(url, data, config).then((res) => res.data),
-
-  /**
-   * PUT запрос
-   */
-  put: <T = unknown>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig,
-  ) => client.put<ApiResponse<T>>(url, data, config).then((res) => res.data),
-
-  /**
-   * PATCH запрос
-   */
-  patch: <T = unknown>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig,
-  ) => client.patch<ApiResponse<T>>(url, data, config).then((res) => res.data),
-
-  /**
-   * DELETE запрос
-   */
-  delete: <T = unknown>(url: string, config?: AxiosRequestConfig) =>
-    client.delete<ApiResponse<T>>(url, config).then((res) => res.data),
+  ...throwingApi,
+  public: safePublicApi,
 };

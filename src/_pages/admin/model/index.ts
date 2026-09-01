@@ -2,10 +2,6 @@ export {
   useAdminCardsActions,
   useAdminCardsStore,
 } from "./admin-cards-store";
-export type { FetchCreateCardResult } from "./fetch-create-card";
-export { fetchCreateCardFromUrl } from "./fetch-create-card";
-export type { FetchYoutubeResolveResult } from "./fetch-youtube-resolve";
-export { fetchYoutubeResolve } from "./fetch-youtube-resolve";
 export { mapMusicItemToAdminCard } from "./map-music-item-to-admin-card";
 export type {
   ResolveYoutubeRequest,
@@ -17,6 +13,7 @@ export {
   ResolveYoutubeErrorSchema,
   ResolveYoutubeRequestSchema,
   ResolveYoutubeSuccessSchema,
+  UpdatePublishStatusSchema,
   YoutubeResolvedDataSchema,
   YoutubeResolvedTrackSchema,
 } from "./schemas";
@@ -40,13 +37,6 @@ export const formatPublishStatus = (status: "draft" | "public") =>
 export const countByStatus = (
   cards: { publishStatus: "draft" | "public" }[],
 ) => {
-  let draft = 0;
-  let published = 0;
-
-  for (const card of cards) {
-    if (card.publishStatus === "draft") draft += 1;
-    else published += 1;
-  }
-
-  return { draft, published };
+  const draft = cards.filter((card) => card.publishStatus === "draft").length;
+  return { draft, published: cards.length - draft };
 };

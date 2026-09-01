@@ -1,12 +1,9 @@
-import { strapiClient } from "@shared/api/strapi";
-import { STRAPI_CONFIG } from "@shared/config";
+import { createStrapiCollection } from "@shared/api/strapi";
 
 import {
-  getErrorDetails,
   hydrateMusicItemPeople,
   hydrateMusicItemsPeople,
   mapMusicItemToStrapiPayload,
-  mapStrapiToMusicItem,
 } from "../lib";
 import {
   coalesceMusicItemFromDraft,
@@ -14,24 +11,21 @@ import {
   mergeDraftAndPublishedMusicItems,
 } from "../lib/coalesce-music-item-from-draft";
 import { musicError, musicLog } from "../lib/logger";
-import type { CreateMusicItemInput, MusicItem } from "../model";
-import { STRAPI_MUSIC_ITEM_TYPE_COLLECTION } from "./music-item-type-api";
+import type { CreateMusicItemInput, CuratorStatus, MusicItem } from "../model";
+import {
+  itemBySlug,
+  itemByYoutube,
+  items,
+  type MusicItemFindOptions,
+  mutation,
+  STRAPI_MUSIC_ITEM_COLLECTION,
+} from "./music-item-query";
+import { itemRebuild, itemsRebuild } from "./music-item-rebuild";
+import { STRAPI_ITEM_TYPE_COLLECTION } from "./music-item-type-query";
 
-export const STRAPI_MUSIC_ITEM_COLLECTION = "music-items" as const;
+export { STRAPI_MUSIC_ITEM_COLLECTION, STRAPI_ITEM_TYPE_COLLECTION };
 
-type MusicItemFindOptions = {
-  status?: "draft" | "published";
-  curatorStatus?: "draft" | "public";
-};
-
-const items = () => strapiClient.collection(STRAPI_MUSIC_ITEM_COLLECTION);
-
-const basePopulate = {
-  itemType: true,
-  tracks: true,
-  availability: true,
-  people: { populate: { person: true } },
-} as const;
+const musicItems = createStrapiCollection(STRAPI_MUSIC_ITEM_COLLECTION);
 
 const withHydratedPeople = async (
   item: MusicItem | null,
@@ -62,15 +56,11 @@ const mergeMusicItems = (lists: MusicItem[][]): MusicItem[] => {
     return mergeDraftAndPublishedMusicItems(lists[0], lists[1]);
   }
 
-  const merged = new Map<string, MusicItem>();
-
-  for (const list of lists) {
-    for (const item of list) {
-      merged.set(itemIdentityKey(item), item);
-    }
-  }
-
-  return [...merged.values()];
+  return [
+    ...new Map(
+      lists.flat().map((item) => [itemIdentityKey(item), item] as const),
+    ).values(),
+  ];
 };
 
 const withDraftFallback = async (
@@ -94,19 +84,10 @@ const withDraftFallback = async (
   return coalesceMusicItemFromDraft(item, draft);
 };
 
-const logStrapiConfig = (): void => {
-  musicLog("strapi config", {
-    baseURL: STRAPI_CONFIG.strapiNetworkUrl,
-    hasToken: Boolean(STRAPI_CONFIG.strapiApiToken),
-    collection: STRAPI_MUSIC_ITEM_COLLECTION,
-  });
-};
-
 export const createMusicItem = async (
   input: CreateMusicItemInput,
   options?: { status?: "draft" | "published" },
 ): Promise<MusicItem | null> => {
-  logStrapiConfig();
   musicLog("createMusicItem:start", {
     slug: input.slug,
     title: input.title,
@@ -119,26 +100,53 @@ export const createMusicItem = async (
   musicLog("createMusicItem:payload", payload);
 
   try {
-    const queryParams: Parameters<ReturnType<typeof items>["create"]>[1] = {
-      populate: basePopulate,
-      ...(options?.status ? { status: options.status } : {}),
-    };
-
-    const response = await items().create(payload, queryParams);
+    const response = await musicItems.create(
+      payload,
+      mutation(options?.status),
+    );
 
     musicLog("createMusicItem:success", {
       documentId: response.data?.documentId,
       id: response.data?.id,
     });
 
-    const mapped = mapStrapiToMusicItem(response.data);
-
-    return withHydratedPeople(mapped, {
+    return withHydratedPeople(itemRebuild(response.data), {
       status: options?.status,
       fallbackPeople: input.people,
     });
   } catch (error) {
-    musicError("createMusicItem:failed", getErrorDetails(error));
+    musicError("createMusicItem:failed", error);
+    throw error;
+  }
+};
+
+export const updateMusicItemCuratorStatus = async (
+  documentId: string,
+  curatorStatus: CuratorStatus,
+  options?: { status?: "draft" | "published" },
+): Promise<MusicItem | null> => {
+  musicLog("updateMusicItemCuratorStatus:start", {
+    documentId,
+    curatorStatus,
+    status: options?.status,
+  });
+
+  try {
+    const response = await musicItems.update(
+      documentId,
+      { curatorStatus },
+      mutation(options?.status),
+    );
+
+    musicLog("updateMusicItemCuratorStatus:success", {
+      documentId: response.data?.documentId,
+    });
+
+    return withHydratedPeople(itemRebuild(response.data), {
+      status: options?.status,
+    });
+  } catch (error) {
+    musicError("updateMusicItemCuratorStatus:failed", error);
     throw error;
   }
 };
@@ -146,39 +154,18 @@ export const createMusicItem = async (
 export const getMusicItems = async (
   options?: MusicItemFindOptions,
 ): Promise<MusicItem[]> => {
-  logStrapiConfig();
   musicLog("getMusicItems:start", options);
 
-  const filters: Record<string, unknown> = {};
-
-  if (options?.curatorStatus) {
-    filters.curatorStatus = { $eq: options.curatorStatus };
-  }
-
-  const findOptions: Parameters<ReturnType<typeof items>["find"]>[0] = {
-    filters,
-    populate: basePopulate,
-    sort: ["createdAt:desc"],
-  };
-
-  if (options?.status) {
-    findOptions.status = options.status;
-  }
-
   try {
-    const response = await items().find(findOptions);
-    const mapped = (response.data ?? []).flatMap((entry) => {
-      const item = mapStrapiToMusicItem(entry);
-      return item ? [item] : [];
-    });
-
+    const response = await musicItems.find(items(options));
+    const mapped = itemsRebuild(response.data ?? []);
     const hydrated = await hydrateMusicItemsPeople(mapped, options);
 
     musicLog("getMusicItems:success", { count: hydrated.length });
 
     return hydrated;
   } catch (error) {
-    musicError("getMusicItems:failed", getErrorDetails(error));
+    musicError("getMusicItems:failed", error);
     throw error;
   }
 };
@@ -219,28 +206,9 @@ export const getMusicItemBySlug = async (
 ): Promise<MusicItem | null> => {
   musicLog("getMusicItemBySlug", { slug, ...options });
 
-  const filters: Record<string, unknown> = {
-    slug: { $eq: slug },
-  };
-
-  if (options?.curatorStatus) {
-    filters.curatorStatus = { $eq: options.curatorStatus };
-  }
-
-  const findOptions: Parameters<ReturnType<typeof items>["find"]>[0] = {
-    filters,
-    populate: basePopulate,
-    pagination: { pageSize: 1 },
-  };
-
-  if (options?.status) {
-    findOptions.status = options.status;
-  }
-
   try {
-    const response = await items().find(findOptions);
-    const first = response.data?.[0];
-    const mapped = first ? mapStrapiToMusicItem(first) : null;
+    const first = await musicItems.findFirst(itemBySlug(slug, options));
+    const mapped = itemRebuild(first);
 
     musicLog("getMusicItemBySlug:result", { slug, found: Boolean(mapped) });
 
@@ -250,10 +218,7 @@ export const getMusicItemBySlug = async (
 
     return withDraftFallback(hydrated, slug, options);
   } catch (error) {
-    musicError("getMusicItemBySlug:failed", {
-      slug,
-      error: getErrorDetails(error),
-    });
+    musicError("getMusicItemBySlug:failed", { slug, error });
     throw error;
   }
 };
@@ -286,19 +251,9 @@ const findMusicItemByYoutubeId = async (
   youtubeId: string,
   status: "draft" | "published",
 ): Promise<MusicItem | null> => {
-  const findOptions: Parameters<ReturnType<typeof items>["find"]>[0] = {
-    filters: {
-      youtubeId: { $eq: youtubeId },
-    },
-    populate: basePopulate,
-    pagination: { pageSize: 1 },
-    status,
-  };
-
   try {
-    const response = await items().find(findOptions);
-    const first = response.data?.[0];
-    const mapped = first ? mapStrapiToMusicItem(first) : null;
+    const first = await musicItems.findFirst(itemByYoutube(youtubeId, status));
+    const mapped = itemRebuild(first);
 
     musicLog("getMusicItemByYoutubeId:result", {
       youtubeId,
@@ -308,13 +263,7 @@ const findMusicItemByYoutubeId = async (
 
     return withHydratedPeople(mapped, { status });
   } catch (error) {
-    musicError("getMusicItemByYoutubeId:failed", {
-      youtubeId,
-      status,
-      error: getErrorDetails(error),
-    });
+    musicError("getMusicItemByYoutubeId:failed", { youtubeId, status, error });
     throw error;
   }
 };
-
-export { STRAPI_MUSIC_ITEM_TYPE_COLLECTION };

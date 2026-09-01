@@ -1,9 +1,10 @@
 import axios from "axios";
 
-import type { AuthResponse, User } from "../model/types";
-import { getStrapiApiUrl } from "./get-strapi-api-url";
+import { STRAPI_CONFIG } from "@shared/config";
 
-const strapiEndpoint = () => getStrapiApiUrl();
+import type { AuthResponse, User } from "../model/types";
+
+const strapiUrl = STRAPI_CONFIG.strapiNetworkUrl;
 
 export type RegisterPayload = {
   username: string;
@@ -18,7 +19,7 @@ export type SignInPayload = {
 
 export const userRegister = async (data: RegisterPayload): Promise<User> => {
   const response = await axios.post<AuthResponse>(
-    `${strapiEndpoint()}/auth/local/register`,
+    `${strapiUrl}/auth/local/register`,
     data,
   );
 
@@ -29,7 +30,7 @@ export const userSignIn = async (
   data: SignInPayload,
 ): Promise<{ jwt: string; user: User }> => {
   const response = await axios.post<AuthResponse>(
-    `${strapiEndpoint()}/auth/local`,
+    `${strapiUrl}/auth/local`,
     data,
   );
 
@@ -40,7 +41,7 @@ export const userSignIn = async (
 };
 
 export const getUser = async (token: string): Promise<User> => {
-  const response = await axios.get<User>(`${strapiEndpoint()}/users/me`, {
+  const response = await axios.get<User>(`${strapiUrl}/users/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

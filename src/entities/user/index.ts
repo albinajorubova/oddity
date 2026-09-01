@@ -1,5 +1,4 @@
 export {
-  getStrapiApiUrl,
   getUser,
   type RegisterPayload,
   type SignInPayload,

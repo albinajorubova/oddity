@@ -1,55 +1,25 @@
 import { strapiClient } from "@shared/api/strapi";
 
 import { cardError, cardLog } from "../lib/logger";
-import { mapStrapiToArchiveCard } from "../lib/map-strapi-to-archive-card";
 import { getErrorDetails } from "../lib/sanitize-strapi-payload";
 import type { ArchiveCard } from "../model/archive-types";
-import { STRAPI_CARD_COLLECTION } from "../model/constants";
+import {
+  cardBySlug,
+  cards,
+  STRAPI_CARD_COLLECTION,
+} from "./archive-card-query";
+import { cardRebuild, cardsRebuild } from "./archive-card-rebuild";
 
-type ArchiveCardFindOptions = {
-  status?: "draft" | "published";
-  curatorStatus?: "draft" | "public";
-};
-
-const cards = () => strapiClient.collection(STRAPI_CARD_COLLECTION);
-
-const basePopulate = {
-  availability: true,
-  cover: true,
-  people: { populate: { person: true } },
-} as const;
-
-const NON_MUSIC_TYPES = ["movie", "series", "anime", "book", "game"] as const;
+const collection = () => strapiClient.collection(STRAPI_CARD_COLLECTION);
 
 export const getArchiveCards = async (
-  options?: ArchiveCardFindOptions,
+  options?: Parameters<typeof cards>[0],
 ): Promise<ArchiveCard[]> => {
   cardLog("getArchiveCards:start", options);
 
-  const filters: Record<string, unknown> = {
-    type: { $in: NON_MUSIC_TYPES },
-  };
-
-  if (options?.curatorStatus) {
-    filters.curatorStatus = { $eq: options.curatorStatus };
-  }
-
-  const findOptions: Parameters<ReturnType<typeof cards>["find"]>[0] = {
-    filters,
-    populate: basePopulate,
-    sort: ["createdAt:desc"],
-  };
-
-  if (options?.status) {
-    findOptions.status = options.status;
-  }
-
   try {
-    const response = await cards().find(findOptions);
-    const mapped = (response.data ?? []).flatMap((item) => {
-      const card = mapStrapiToArchiveCard(item);
-      return card ? [card] : [];
-    });
+    const response = await collection().find(cards(options));
+    const mapped = cardsRebuild(response.data ?? []);
 
     cardLog("getArchiveCards:success", { count: mapped.length });
 
@@ -65,34 +35,14 @@ export const getPublicArchiveCards = (): Promise<ArchiveCard[]> =>
 
 export const getArchiveCardBySlug = async (
   slug: string,
-  options?: ArchiveCardFindOptions,
+  options?: Parameters<typeof cardBySlug>[1],
 ): Promise<ArchiveCard | null> => {
   cardLog("getArchiveCardBySlug", { slug, ...options });
 
-  const findOptions: Parameters<ReturnType<typeof cards>["find"]>[0] = {
-    filters: {
-      slug: { $eq: slug },
-      type: { $in: NON_MUSIC_TYPES },
-    },
-    populate: basePopulate,
-    pagination: { pageSize: 1 },
-  };
-
-  if (options?.status) {
-    findOptions.status = options.status;
-  }
-
-  if (options?.curatorStatus) {
-    findOptions.filters = {
-      ...findOptions.filters,
-      curatorStatus: { $eq: options.curatorStatus },
-    };
-  }
-
   try {
-    const response = await cards().find(findOptions);
+    const response = await collection().find(cardBySlug(slug, options));
     const first = response.data?.[0];
-    const mapped = first ? mapStrapiToArchiveCard(first) : null;
+    const mapped = cardRebuild(first);
 
     cardLog("getArchiveCardBySlug:result", { slug, found: Boolean(mapped) });
 

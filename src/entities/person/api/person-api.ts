@@ -1,10 +1,16 @@
 import { strapiClient } from "@shared/api/strapi";
 
-import { mapStrapiToPerson } from "../lib/map-strapi-person";
 import { slugFromPersonName } from "../lib/slug-from-name";
 import type { Person } from "../model/types";
+import {
+  byDocId,
+  byName,
+  createOpts,
+  STRAPI_PERSON_COLLECTION,
+} from "./person-query";
+import { personRebuild } from "./person-rebuild";
 
-export const STRAPI_PERSON_COLLECTION = "people" as const;
+export { STRAPI_PERSON_COLLECTION };
 
 const people = () => strapiClient.collection(STRAPI_PERSON_COLLECTION);
 
@@ -12,14 +18,10 @@ const findPersonByName = async (
   name: string,
   status: "draft" | "published",
 ): Promise<Person | null> => {
-  const response = await people().find({
-    filters: { name: { $eqi: name } },
-    pagination: { pageSize: 1 },
-    status,
-  });
-
+  const response = await people().find(byName(name, status));
   const first = response.data?.[0];
-  return first ? mapStrapiToPerson(first) : null;
+
+  return personRebuild(first);
 };
 
 export const getPersonByName = async (name: string): Promise<Person | null> => {
@@ -44,12 +46,10 @@ export const createPerson = async (
       name: trimmed,
       slug: slugFromPersonName(trimmed),
     },
-    {
-      ...(options?.status ? { status: options.status } : {}),
-    },
+    createOpts(options?.status),
   );
 
-  return mapStrapiToPerson(response.data);
+  return personRebuild(response.data);
 };
 
 export const getPersonByDocumentId = async (
@@ -65,8 +65,8 @@ export const getPersonByDocumentId = async (
 
   for (const status of statuses) {
     try {
-      const response = await people().findOne(trimmed, { status });
-      const mapped = mapStrapiToPerson(response.data);
+      const response = await people().findOne(trimmed, byDocId(status));
+      const mapped = personRebuild(response.data);
       if (mapped) return mapped;
     } catch {
       // try other publication status

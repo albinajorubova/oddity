@@ -1,28 +1,16 @@
 import { strapiClient } from "@shared/api/strapi";
 
-import { getErrorDetails } from "../lib";
 import { musicError, musicLog } from "../lib/logger";
 import type { MusicItemType, MusicItemTypeSlug } from "../model";
-import { StrapiMusicItemTypeSchema } from "../model/schemas";
+import {
+  STRAPI_ITEM_TYPE_COLLECTION,
+  typeBySlug,
+} from "./music-item-type-query";
+import { typeRebuild } from "./music-item-type-rebuild";
 
-export const STRAPI_MUSIC_ITEM_TYPE_COLLECTION = "music-item-types" as const;
+export { STRAPI_ITEM_TYPE_COLLECTION };
 
-const types = () => strapiClient.collection(STRAPI_MUSIC_ITEM_TYPE_COLLECTION);
-
-const mapStrapiToMusicItemType = (raw: unknown): MusicItemType | null => {
-  const parsed = StrapiMusicItemTypeSchema.safeParse(raw);
-  if (!parsed.success) return null;
-
-  const item = parsed.data;
-
-  return {
-    id: item.id != null ? String(item.id) : (item.documentId ?? ""),
-    documentId: item.documentId,
-    name: item.name,
-    slug: item.slug,
-    description: item.description ?? null,
-  };
-};
+const types = () => strapiClient.collection(STRAPI_ITEM_TYPE_COLLECTION);
 
 export const getMusicItemTypeBySlug = async (
   slug: MusicItemTypeSlug,
@@ -30,19 +18,15 @@ export const getMusicItemTypeBySlug = async (
   musicLog("getMusicItemTypeBySlug", { slug });
 
   try {
-    const response = await types().find({
-      filters: { slug: { $eq: slug } },
-      pagination: { pageSize: 1 },
-    });
-
+    const response = await types().find(typeBySlug(slug));
     const first = response.data?.[0];
-    const mapped = first ? mapStrapiToMusicItemType(first) : null;
+    const mapped = typeRebuild(first);
 
     musicLog("getMusicItemTypeBySlug:result", { slug, found: Boolean(mapped) });
 
     return mapped;
   } catch (error) {
-    musicError("getMusicItemTypeBySlug:failed", { slug, error: getErrorDetails(error) });
+    musicError("getMusicItemTypeBySlug:failed", { slug, error });
     throw error;
   }
 };
